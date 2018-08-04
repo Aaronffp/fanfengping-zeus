@@ -173,5 +173,28 @@ INSERT INTO zeus_homepage_shortcut(dis, disorder, name, icon, url, manager, mobi
   ('1', '30', '宙斯平台', 'http://www.fanfengping.com/images/personal.png', 'http://www.fanfengping.com/zeus/', '范丰平', '15213149225', '范丰平', '');
 
 
+-- ----------------------------
+-- Table structure for zeus_user(用户列表)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_user`;
+CREATE TABLE `zeus_user`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `uuid` varchar(50) NOT NULL COMMENT 'UUID',
+  `name` varchar(50) DEFAULT '规划用户' NOT NULL COMMENT '用户名称',
+  `mobile` varchar(15) DEFAULT '' NOT NULL COMMENT '手机号码',
+  `email` varchar(50) DEFAULT '' NOT NULL COMMENT '用户邮箱',
+  `account` varchar(50) DEFAULT '' NOT NULL COMMENT '用户账号（字母数字下划线）',
+  `passwd` varchar(50) DEFAULT '' NOT NULL COMMENT '用户密码',
+  `valid` int DEFAULT 0 COMMENT '是否启用（默认注销。1，启用；0，注销）',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户列表';
+CREATE UNIQUE INDEX zeus_user_account_uindex ON zeus_user (account);
 
+INSERT INTO zeus_user(uuid, name, mobile, email, account, passwd, valid, operator, ctime, utime) VALUES
+  (UUID(), '超级管理员', '15201800268', 'fengping.fan@shenmajr.com', 'system', 'Shenma2017', '1', '范丰平', NOW(), NOW()),
+  (UUID(), '管理员', '15201800268', 'fengping.fan@shenmajr.com', 'admin', 'Shenma2017', '1', '范丰平', NOW(), NOW()),
+  (UUID(), '访客', '15201800268', 'fengping.fan@shenmajr.com', 'guest', 'Shenma007', '1', '范丰平', NOW(), NOW());
 

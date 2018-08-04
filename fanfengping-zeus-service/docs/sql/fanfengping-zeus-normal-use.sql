@@ -22,8 +22,11 @@ SELECT *
  WHERE 1 = 1 AND zhs.dis = 1
  ORDER BY zhs.id;
 
-
-
+-- 查询：用户列表
+SELECT *
+  FROM zeus_user zu
+ WHERE 1 = 1 AND zu.valid = 1
+ ORDER BY zu.id;
 
 
 
