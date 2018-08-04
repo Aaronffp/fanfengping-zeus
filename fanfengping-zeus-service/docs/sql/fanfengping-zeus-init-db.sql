@@ -198,3 +198,27 @@ INSERT INTO zeus_user(uuid, name, mobile, email, account, passwd, valid, operato
   (UUID(), '管理员', '15201800268', 'fengping.fan@shenmajr.com', 'admin', 'Shenma2017', '1', '范丰平', NOW(), NOW()),
   (UUID(), '访客', '15201800268', 'fengping.fan@shenmajr.com', 'guest', 'Shenma007', '1', '范丰平', NOW(), NOW());
 
+
+-- ----------------------------
+-- Table structure for zeus_menu(菜单列表)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_menu`;
+CREATE TABLE `zeus_menu`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `title` varchar(50) DEFAULT '规划菜单' NOT NULL COMMENT '菜单名称',
+  `icon` varchar(50) DEFAULT 'home' NOT NULL COMMENT '菜单图标',
+  `path` varchar(150) DEFAULT '' NOT NULL COMMENT '菜单路径（配置路径即可）',
+  `level` int DEFAULT 999 COMMENT '菜单级别（1，一级菜单；2，二级菜单；3，三级菜单）',
+  `menu_id` int DEFAULT 999 COMMENT '上级菜单ID',
+  `dis` int DEFAULT 0 NOT NULL COMMENT '是否显示（默认不显示。1，显示；0，不显示。）',
+  `disorder` int DEFAULT 999 NOT NULL COMMENT '显示顺序（数字小，则优先显示）',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单列表';
+
+
+
+
+

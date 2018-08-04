@@ -28,5 +28,11 @@ SELECT *
  WHERE 1 = 1 AND zu.valid = 1
  ORDER BY zu.id;
 
+-- 查询：菜单列表
+SELECT *
+  FROM zeus_menu fir
+  LEFT JOIN zeus_menu sec ON fir.id = SEC.menu_id AND sec.dis = 1
+ WHERE fir.dis = 1 AND fir.level = 1
+ ORDER BY fir.disorder, sec.disorder;
 
 
