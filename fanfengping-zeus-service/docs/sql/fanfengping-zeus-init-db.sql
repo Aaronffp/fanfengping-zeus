@@ -194,9 +194,9 @@ CREATE TABLE `zeus_user`
 CREATE UNIQUE INDEX zeus_user_account_uindex ON zeus_user (account);
 
 INSERT INTO zeus_user(uuid, name, mobile, email, account, passwd, valid, operator, ctime, utime) VALUES
-  (REPLACE(UUID(), '-', ''), '超级管理员', '15201800268', 'fengping.fan@shenmajr.com', 'system', 'Shenma2017', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '管理员', '15201800268', 'fengping.fan@shenmajr.com', 'admin', 'Shenma2017', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '访客', '15201800268', 'fengping.fan@shenmajr.com', 'guest', 'Shenma007', '1', '范丰平', NOW(), NOW());
+  (REPLACE(UUID(), '-', ''), '超级管理员', '15201800268', 'fengping.fan@shenmajr.com', 'system', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '管理员', '15201800268', 'fengping.fan@shenmajr.com', 'admin', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '访客', '15201800268', 'fengping.fan@shenmajr.com', 'guest', 'zeus123456', '1', '范丰平', NOW(), NOW());
 
 
 -- ----------------------------
