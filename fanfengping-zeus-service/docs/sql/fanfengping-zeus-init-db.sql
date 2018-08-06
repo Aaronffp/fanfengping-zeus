@@ -146,10 +146,10 @@ INSERT INTO zeus_code_detail(type_id, valid, code, name, operator, note) VALUES
 
 
 -- ----------------------------
---- zeus_homepage_shortcut（首页快捷网站信息）
+--- zeus_shortcut（首页快捷网站信息）
 -- ----------------------------
-DROP TABLE IF EXISTS `zeus_homepage_shortcut`;
-CREATE TABLE `fanfengping_zeus`.`zeus_homepage_shortcut` (
+DROP TABLE IF EXISTS `zeus_shortcut`;
+CREATE TABLE `fanfengping_zeus`.`zeus_shortcut` (
     `id` INT NOT NULL AUTO_INCREMENT COMMENT '系统主键',
     `dis` INT NOT NULL DEFAULT 0 COMMENT '是否显示（1，显示；0，不显示。默认不显示）',
     `disorder` INT NOT NULL DEFAULT 200 COMMENT '显示顺序（数字小，则优先显示）',
@@ -157,17 +157,17 @@ CREATE TABLE `fanfengping_zeus`.`zeus_homepage_shortcut` (
     `icon` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '网站图标地址',
     `url` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL DEFAULT 'http://www.cnblogs.com/fengpingfan/' COMMENT '网站访问地址',
     `manager` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT '范丰平' COMMENT '网站管理者',
-    `mobile` VARCHAR(15) CHARACTER SET 'utf8' NULL DEFAULT '' COMMENT '手机号码',
+    `mobile` VARCHAR(15) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '手机号码',
     `operator` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT 'system' COMMENT '更新人',
     `note` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '备注',
     `ctime` DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
     `utime` DATETIME NOT NULL DEFAULT NOW() COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `zeus_homepage_shortcut_url_UNIQUE` (`url` ASC)
+    UNIQUE INDEX `zeus_shortcut_url_UNIQUE` (`url` ASC)
 )ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '首页快捷网站信息';
 
 
-INSERT INTO zeus_homepage_shortcut(dis, disorder, name, icon, url, manager, mobile, operator, note) VALUES
+INSERT INTO zeus_shortcut(dis, disorder, name, icon, url, manager, mobile, operator, note) VALUES
   ('1', '10', '个人网站', 'http://www.fanfengping.com/images/personal.png', 'http://www.fanfengping.com/', '范丰平', '15213149225', '范丰平', ''),
   ('1', '20', '个人博客', 'http://www.fanfengping.com/images/personal.png', 'http://www.cnblogs.com/fengpingfan/', '范丰平', '15213149225', '范丰平', ''),
   ('1', '30', '宙斯平台', 'http://www.fanfengping.com/images/personal.png', 'http://www.fanfengping.com/zeus/', '范丰平', '15213149225', '范丰平', '');
@@ -186,7 +186,7 @@ CREATE TABLE `zeus_user`
   `email` varchar(50) DEFAULT '' NOT NULL COMMENT '用户邮箱',
   `account` varchar(50) DEFAULT '' NOT NULL COMMENT '用户账号（字母数字下划线）',
   `passwd` varchar(50) DEFAULT '' NOT NULL COMMENT '用户密码',
-  `valid` int DEFAULT 0 COMMENT '是否启用（默认注销。1，启用；0，注销）',
+  `valid` int DEFAULT 0 NOT NULL COMMENT '是否启用（默认注销。1，启用；0，注销）',
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间'
@@ -209,8 +209,8 @@ CREATE TABLE `zeus_menu`
   `title` varchar(50) DEFAULT '规划菜单' NOT NULL COMMENT '菜单名称',
   `icon` varchar(50) DEFAULT 'home' NOT NULL COMMENT '菜单图标',
   `path` varchar(150) DEFAULT '' NOT NULL COMMENT '菜单路径（配置路径即可）',
-  `level` int DEFAULT 999 COMMENT '菜单级别（1，一级菜单；2，二级菜单；3，三级菜单）',
-  `menu_id` int DEFAULT 999 COMMENT '上级菜单ID',
+  `level` int DEFAULT 999 NOT NULL COMMENT '菜单级别（1，一级菜单；2，二级菜单；3，三级菜单）',
+  `menu_id` int DEFAULT 999 NOT NULL COMMENT '上级菜单ID',
   `dis` int DEFAULT 0 NOT NULL COMMENT '是否显示（默认不显示。1，显示；0，不显示。）',
   `disorder` int DEFAULT 999 NOT NULL COMMENT '显示顺序（数字小，则优先显示）',
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
