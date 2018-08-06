@@ -1,6 +1,6 @@
-package com.fanfengping.zeus.repository;
+package com.fanfengping.zeus.repository.user;
 
-import com.fanfengping.zeus.entity.ZeusUser;
+import com.fanfengping.zeus.entity.user.ZeusUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

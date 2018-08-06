@@ -1,4 +1,4 @@
-package com.fanfengping.zeus.entity;
+package com.fanfengping.zeus.entity.user;
 
 import lombok.Data;
 

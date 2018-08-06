@@ -1,7 +1,7 @@
-package com.fanfengping.zeus.controller;
+package com.fanfengping.zeus.controller.user;
 
-import com.fanfengping.zeus.entity.ZeusUser;
-import com.fanfengping.zeus.repository.UserRepository;
+import com.fanfengping.zeus.entity.user.ZeusUser;
+import com.fanfengping.zeus.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
