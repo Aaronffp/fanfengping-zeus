@@ -194,9 +194,38 @@ CREATE TABLE `zeus_user`
 CREATE UNIQUE INDEX zeus_user_account_uindex ON zeus_user (account);
 
 INSERT INTO zeus_user(uuid, name, mobile, email, account, passwd, valid, operator, ctime, utime) VALUES
-  (REPLACE(UUID(), '-', ''), '超级管理员', '15201800268', 'fengping.fan@shenmajr.com', 'system', 'zeus123456', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '管理员', '15201800268', 'fengping.fan@shenmajr.com', 'admin', 'zeus123456', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '访客', '15201800268', 'fengping.fan@shenmajr.com', 'guest', 'zeus123456', '1', '范丰平', NOW(), NOW());
+  (REPLACE(UUID(), '-', ''), '超级管理员', '15201800268', '263869564@qq.com', 'system', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '管理员', '15201800268', '263869564@qq.com', 'admin', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '普通用户', '15201800268', '263869564@qq.com', 'user', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '访客', '15201800268', '263869564@qq.com', 'guest', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '匿名用户', '15201800268', '263869564@qq.com', 'anon', 'zeus123456', '1', '范丰平', NOW(), NOW());
+
+
+
+-- ----------------------------
+-- Table structure for zeus_role(角色表，角色等级：god > admin > user > guest > anon)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_role`;
+CREATE TABLE `zeus_role`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `code` varchar(50) DEFAULT 'anon' NOT NULL COMMENT '角色代码',
+  `name` varchar(50) DEFAULT '匿名用户' NOT NULL COMMENT '角色名称',
+  `desc` varchar(100) DEFAULT '匿名用户' NULL COMMENT '角色描述',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `zeus_role_code_uindex` (`code`) COMMENT '角色代码唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色列表';
+
+INSERT INTO zeus_role(code, name, `desc`, operator, ctime, utime) VALUES
+  ('god', '超级管理员', '拥有系统所有权限', 'system', NOW(), NOW()),
+  ('admin', '管理员', '拥有除系统设置外的所有权限', 'system', NOW(), NOW()),
+  ('user', '普通用户', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('guest', '访客用户', '拥有除登录用户外的所有读取权限', 'system', NOW(), NOW()),
+  ('anon', '匿名用户', '仅可访问系统公共资源', 'system', NOW(), NOW());
+
+
 
 
 -- ----------------------------
