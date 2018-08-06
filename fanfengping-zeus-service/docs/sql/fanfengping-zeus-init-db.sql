@@ -279,7 +279,7 @@ INSERT INTO zeus_user_and_role(user_id, role_id, operator, ctime, utime) VALUES
 
 
 -- ----------------------------
--- Table structure for zeus_role_and_perm(授权列表)
+-- Table structure for zeus_role_and_perm(角色授权表)
 -- ----------------------------
 DROP TABLE IF EXISTS `zeus_role_and_perm`;
 CREATE TABLE `zeus_role_and_perm`
@@ -291,7 +291,7 @@ CREATE TABLE `zeus_role_and_perm`
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
   UNIQUE INDEX `zeus_role_and_perm_uindex` (`role_id`, `perm_id`) COMMENT '角色授权唯一键'
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='授权列表';
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色授权表';
 
 INSERT INTO zeus_role_and_perm(role_id, perm_id, operator, ctime, utime) VALUES
   (1, 1, 'system', NOW(), NOW()),
