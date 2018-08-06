@@ -361,6 +361,12 @@ INSERT INTO zeus_user_and_group(user_id, group_id, operator, ctime, utime) VALUE
   (4, 4, 'system', NOW(), NOW()),
   (5, 5, 'system', NOW(), NOW());
 
+
+
+
+
+
+
 -- ----------------------------
 -- Table structure for zeus_menu(菜单列表)
 -- ----------------------------
