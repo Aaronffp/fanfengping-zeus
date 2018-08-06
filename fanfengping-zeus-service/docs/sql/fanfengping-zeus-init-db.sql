@@ -261,8 +261,8 @@ DROP TABLE IF EXISTS `zeus_user_and_role`;
 CREATE TABLE `zeus_user_and_role`
 (
   `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
-  `user_id` int NOT NULL COMMENT '系统主键',
-  `role_id` int NOT NULL COMMENT '授权类型（1，菜单；2，按钮）',
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `role_id` int NOT NULL COMMENT '角色ID',
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
@@ -276,6 +276,29 @@ INSERT INTO zeus_user_and_role(user_id, role_id, operator, ctime, utime) VALUES
   (4, 4, 'system', NOW(), NOW()),
   (5, 5, 'system', NOW(), NOW());
 
+
+
+-- ----------------------------
+-- Table structure for zeus_role_and_perm(授权列表)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_role_and_perm`;
+CREATE TABLE `zeus_role_and_perm`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `role_id` int NOT NULL COMMENT '角色ID',
+  `perm_id` int NOT NULL COMMENT '授权ID',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `zeus_role_and_perm_uindex` (`role_id`, `perm_id`) COMMENT '角色授权唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='授权列表';
+
+INSERT INTO zeus_role_and_perm(role_id, perm_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 5, 'system', NOW(), NOW()),
+  (5, 6, 'system', NOW(), NOW());
 
 
 
