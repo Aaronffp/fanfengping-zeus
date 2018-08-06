@@ -254,6 +254,30 @@ INSERT INTO zeus_perm(type, code, name, `desc`, operator, ctime, utime) VALUES
 
 
 
+-- ----------------------------
+-- Table structure for zeus_user_and_role(用户角色表)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_user_and_role`;
+CREATE TABLE `zeus_user_and_role`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '系统主键',
+  `role_id` int NOT NULL COMMENT '授权类型（1，菜单；2，按钮）',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `zeus_user_and_role_uindex` (`user_id`, `role_id`) COMMENT '用户角色唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户角色表';
+
+INSERT INTO zeus_user_and_role(user_id, role_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 4, 'system', NOW(), NOW()),
+  (5, 5, 'system', NOW(), NOW());
+
+
+
 
 -- ----------------------------
 -- Table structure for zeus_menu(菜单列表)
