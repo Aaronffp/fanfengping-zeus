@@ -203,6 +203,43 @@ INSERT INTO zeus_user(uuid, name, mobile, email, account, passwd, valid, operato
 
 
 -- ----------------------------
+-- Table structure for zeus_group(分组表，分组等级：god > admin > user > guest > anon)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_group`;
+CREATE TABLE `zeus_group`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `code` varchar(50) DEFAULT 'anon' NOT NULL COMMENT '分组代码',
+  `name` varchar(50) DEFAULT '匿名组' NOT NULL COMMENT '分组名称',
+  `desc` varchar(100) DEFAULT '匿名组' NULL COMMENT '分组描述',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `zeus_group_code_uindex` (`code`) COMMENT '分组代码唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='分组列表';
+
+INSERT INTO zeus_group(code, name, `desc`, operator, ctime, utime) VALUES
+  ('god', '超管组', '拥有系统所有权限', 'system', NOW(), NOW()),
+  ('admin', '管理组', '拥有除系统设置外的所有权限', 'system', NOW(), NOW()),
+  ('user', '用户组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('guest', '访客组', '拥有除登录用户外的所有读取权限', 'system', NOW(), NOW()),
+  ('anon', '匿名组', '仅可访问系统公共资源', 'system', NOW(), NOW()),
+  ('business', '业务组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('demand', '需求组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('product', '产品组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('schema', '架构组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('develop', '研发组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('manultest', '功能测试组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('apitest', '自动化测试组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('autotest', '自动化测试组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('perftest', '性能组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('linux', '运维组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('service', '客服组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('support', '技术支持组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW());
+
+
+
+-- ----------------------------
 -- Table structure for zeus_role(角色表，角色等级：god > admin > user > guest > anon)
 -- ----------------------------
 DROP TABLE IF EXISTS `zeus_role`;
