@@ -363,6 +363,28 @@ INSERT INTO zeus_user_and_group(user_id, group_id, operator, ctime, utime) VALUE
 
 
 
+-- ----------------------------
+-- Table structure for zeus_group_and_role(分组角色表)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_group_and_role`;
+CREATE TABLE `zeus_group_and_role`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `group_id` int NOT NULL COMMENT '分组ID',
+  `role_id` int NOT NULL COMMENT '角色ID',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `zeus_group_and_role_uindex` (`group_id`, `role_id`) COMMENT '分组角色表唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='分组角色表';
+
+
+INSERT INTO zeus_group_and_role(group_id, role_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 4, 'system', NOW(), NOW()),
+  (5, 5, 'system', NOW(), NOW());
 
 
 
