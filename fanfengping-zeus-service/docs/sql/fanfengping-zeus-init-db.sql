@@ -338,6 +338,28 @@ INSERT INTO zeus_role_and_perm(role_id, perm_id, operator, ctime, utime) VALUES
   (5, 6, 'system', NOW(), NOW());
 
 
+-- ----------------------------
+-- Table structure for zeus_user_and_group(用户分组表)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_user_and_group`;
+CREATE TABLE `zeus_user_and_group`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `group_id` int NOT NULL COMMENT '分组ID',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `zeus_user_and_group_uindex` (`user_id`, `group_id`) COMMENT '用户分组唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户分组表';
+
+
+INSERT INTO zeus_user_and_group(user_id, group_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 4, 'system', NOW(), NOW()),
+  (5, 5, 'system', NOW(), NOW());
 
 -- ----------------------------
 -- Table structure for zeus_menu(菜单列表)
