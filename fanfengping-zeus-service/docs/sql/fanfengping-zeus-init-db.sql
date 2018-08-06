@@ -226,6 +226,33 @@ INSERT INTO zeus_role(code, name, `desc`, operator, ctime, utime) VALUES
   ('anon', '匿名用户', '仅可访问系统公共资源', 'system', NOW(), NOW());
 
 
+-- ----------------------------
+-- Table structure for zeus_perm(授权类型表，授权等级：all > delete > update > create > reseach > forbidden)
+-- ----------------------------
+DROP TABLE IF EXISTS `zeus_perm`;
+CREATE TABLE `zeus_perm`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `type` int NOT NULL DEFAULT 1 COMMENT '授权类型（1，菜单；2，按钮）',
+  `code` varchar(50) DEFAULT 'read' NOT NULL COMMENT '授权代码',
+  `name` varchar(50) DEFAULT '只读权限' NOT NULL COMMENT '授权名称',
+  `desc` varchar(100) DEFAULT '只读权限' NULL COMMENT '授权描述',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `zeus_perm_code_uindex` (`code`) COMMENT '权限代码唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='授权列表';
+
+INSERT INTO zeus_perm(type, code, name, `desc`, operator, ctime, utime) VALUES
+  (1, 'all', '所有', '系统所有/操作权限', 'system', NOW(), NOW()),
+  (1, 'delete', '删除', '删除数据/删除按钮', 'system', NOW(), NOW()),
+  (1, 'update', '更新', '更新数据/修改按钮', 'system', NOW(), NOW()),
+  (1, 'create', '创建', '创建数据/新增按钮', 'system', NOW(), NOW()),
+  (1, 'reseach', '查询', '查询数据/查询按钮', 'system', NOW(), NOW()),
+  (1, 'forbidden', '拒绝', '拒绝访问/操作按钮', 'system', NOW(), NOW());
+
+
+
 
 
 -- ----------------------------
