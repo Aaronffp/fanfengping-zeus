@@ -1,7 +1,6 @@
 package com.fanfengping.zeus.entity.user;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * 说明：
@@ -24,11 +23,6 @@ public class ZeusUser {
     private String operator;
     private String ctime;
     private String utime;
-
-    // 用户 - 角色关系定义：多对多关系
-    @OneToMany
-    @JoinTable(name = "ZeusUserAndRole", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<ZeusRole> roleList;           // 一个用户具有多个角色
 
     public String getId() {
         return id;
@@ -116,14 +110,6 @@ public class ZeusUser {
 
     public void setUtime(String utime) {
         this.utime = utime;
-    }
-
-    public List<ZeusRole> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<ZeusRole> roleList) {
-        this.roleList = roleList;
     }
 
     /**

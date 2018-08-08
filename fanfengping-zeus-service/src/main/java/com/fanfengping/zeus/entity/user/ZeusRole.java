@@ -1,7 +1,6 @@
 package com.fanfengping.zeus.entity.user;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class ZeusRole {
@@ -13,16 +12,6 @@ public class ZeusRole {
     private String operator;
     private String ctime;
     private String utime;
-
-    // 角色 - 用户关系定义：多对多关系
-    @OneToMany
-    @JoinTable(name = "ZeusUserAndRole", joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private List<ZeusUser> userList;
-
-    // 角色 - 授权关系定义：多对多关系
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "ZeusRoleAndPerm", joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "perm_id")})
-    private List<ZeusPerm> permList;
 
     public int getId() {
         return id;
@@ -78,21 +67,5 @@ public class ZeusRole {
 
     public void setUtime(String utime) {
         this.utime = utime;
-    }
-
-    public List<ZeusUser> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<ZeusUser> userList) {
-        this.userList = userList;
-    }
-
-    public List<ZeusPerm> getPermList() {
-        return permList;
-    }
-
-    public void setPermList(List<ZeusPerm> permList) {
-        this.permList = permList;
     }
 }

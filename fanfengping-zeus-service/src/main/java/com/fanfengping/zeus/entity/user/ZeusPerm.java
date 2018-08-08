@@ -1,7 +1,6 @@
 package com.fanfengping.zeus.entity.user;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class ZeusPerm {
@@ -14,11 +13,6 @@ public class ZeusPerm {
     private String operator;
     private String ctime;
     private String utime;
-
-    // 权限 - 角色关系定义：多对多关系
-    @OneToMany
-    @JoinTable(name = "ZeusRoleAndPerm", joinColumns = {@JoinColumn(name = "perm_id", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<ZeusRole> roleList;
 
     public int getId() {
         return id;
@@ -82,13 +76,5 @@ public class ZeusPerm {
 
     public void setUtime(String utime) {
         this.utime = utime;
-    }
-
-    public List<ZeusRole> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<ZeusRole> roleList) {
-        this.roleList = roleList;
     }
 }
