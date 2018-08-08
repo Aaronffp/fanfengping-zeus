@@ -20,8 +20,8 @@ CREATE TABLE `fanfengping_zeus`.`zeus_code_type` (
     `ctime` DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
     `utime` DATETIME NOT NULL DEFAULT NOW() COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `code_UNIQUE` (`code` ASC)
-)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '系统编码类型信息';
+    UNIQUE INDEX `code_type_code_unique` (`code` ASC) COMMENT '系统编码类型信息表/类型编码 唯一键'
+)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '系统编码类型信息表';
 
 -- ----------------------------
 -- Table structure for zeus_code_detail(系统编码详情信息)
@@ -38,8 +38,8 @@ CREATE TABLE `fanfengping_zeus`.`zeus_code_detail` (
   `ctime` DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
   `utime` DATETIME NOT NULL DEFAULT NOW() COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `type_code_unique` (`type_id` ASC, `code` ASC)
-)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '系统编码详情信息';
+  UNIQUE INDEX `type_code_unique` (`type_id` ASC, `code` ASC) COMMENT '系统编码详情信息表/类型ID-详情编码 唯一键'
+)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '系统编码详情信息表';
 
 
 INSERT INTO zeus_code_type(valid, code, name, operator, note) VALUES
@@ -146,7 +146,7 @@ INSERT INTO zeus_code_detail(type_id, valid, code, name, operator, note) VALUES
 
 
 -- ----------------------------
---- zeus_shortcut（首页快捷网站信息）
+-- zeus_shortcut（首页快捷网站信息）
 -- ----------------------------
 DROP TABLE IF EXISTS `zeus_shortcut`;
 CREATE TABLE `fanfengping_zeus`.`zeus_shortcut` (
@@ -163,8 +163,8 @@ CREATE TABLE `fanfengping_zeus`.`zeus_shortcut` (
     `ctime` DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
     `utime` DATETIME NOT NULL DEFAULT NOW() COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `zeus_shortcut_url_UNIQUE` (`url` ASC)
-)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '首页快捷网站信息';
+    UNIQUE INDEX `shortcut_url_uindex` (`url` ASC) COMMENT '快捷网站信息表/网站访问地址 唯一键'
+)ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '快捷网站信息表';
 
 
 INSERT INTO zeus_shortcut(dis, disorder, name, icon, url, manager, mobile, operator, note) VALUES
@@ -189,9 +189,9 @@ CREATE TABLE `zeus_user`
   `valid` int DEFAULT 0 NOT NULL COMMENT '是否启用（默认注销。1，启用；0，注销）',
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
-  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间'
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户列表';
-CREATE UNIQUE INDEX zeus_user_account_uindex ON zeus_user (account);
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `user_account_uindex` (`account`) COMMENT '用户表/用户账号 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
 INSERT INTO zeus_user(uuid, name, mobile, email, account, passwd, valid, operator, ctime, utime) VALUES
   (REPLACE(UUID(), '-', ''), '超级管理员', '15201800268', '263869564@qq.com', 'system', 'zeus123456', '1', '范丰平', NOW(), NOW()),
@@ -215,8 +215,8 @@ CREATE TABLE `zeus_group`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `zeus_group_code_uindex` (`code`) COMMENT '分组代码唯一键'
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='分组列表';
+  UNIQUE INDEX `group_code_uindex` (`code`) COMMENT '分组表/分组代码 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='分组表';
 
 INSERT INTO zeus_group(code, name, `desc`, operator, ctime, utime) VALUES
   ('god', '超管组', '拥有系统所有权限', 'system', NOW(), NOW()),
@@ -252,8 +252,8 @@ CREATE TABLE `zeus_role`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `zeus_role_code_uindex` (`code`) COMMENT '角色代码唯一键'
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色列表';
+  UNIQUE INDEX `role_code_uindex` (`code`) COMMENT '角色表/角色代码 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色表';
 
 INSERT INTO zeus_role(code, name, `desc`, operator, ctime, utime) VALUES
   ('god', '超级管理员', '拥有系统所有权限', 'system', NOW(), NOW()),
@@ -277,8 +277,8 @@ CREATE TABLE `zeus_perm`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `zeus_perm_code_uindex` (`code`) COMMENT '权限代码唯一键'
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='授权列表';
+  UNIQUE INDEX `perm_code_uindex` (`code`) COMMENT '授权表/授权代码 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='授权表';
 
 INSERT INTO zeus_perm(type, code, name, `desc`, operator, ctime, utime) VALUES
   (1, 'all', '所有', '系统所有/操作权限', 'system', NOW(), NOW()),
@@ -303,7 +303,7 @@ CREATE TABLE `zeus_user_and_role`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `zeus_user_and_role_uindex` (`user_id`, `role_id`) COMMENT '用户角色唯一键'
+  UNIQUE INDEX `user_and_role_uindex` (`user_id`, `role_id`) COMMENT '用户角色表/用户ID-角色ID 唯一键'
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户角色表';
 
 INSERT INTO zeus_user_and_role(user_id, role_id, operator, ctime, utime) VALUES
@@ -327,7 +327,7 @@ CREATE TABLE `zeus_role_and_perm`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `zeus_role_and_perm_uindex` (`role_id`, `perm_id`) COMMENT '角色授权唯一键'
+  UNIQUE INDEX `role_and_perm_uindex` (`role_id`, `perm_id`) COMMENT '角色授权表/角色ID-授权ID 唯一键'
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色授权表';
 
 INSERT INTO zeus_role_and_perm(role_id, perm_id, operator, ctime, utime) VALUES
@@ -350,7 +350,7 @@ CREATE TABLE `zeus_user_and_group`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `zeus_user_and_group_uindex` (`user_id`, `group_id`) COMMENT '用户分组唯一键'
+  UNIQUE INDEX `user_and_group_uindex` (`user_id`, `group_id`) COMMENT '用户分组表/用户ID-分组ID 唯一键'
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户分组表';
 
 
@@ -375,7 +375,7 @@ CREATE TABLE `zeus_group_and_role`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `zeus_group_and_role_uindex` (`group_id`, `role_id`) COMMENT '分组角色表唯一键'
+  UNIQUE INDEX `group_and_role_uindex` (`group_id`, `role_id`) COMMENT '分组角色表/分组ID-角色ID 唯一键'
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='分组角色表';
 
 
@@ -406,7 +406,7 @@ CREATE TABLE `zeus_menu`
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间'
-)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单列表';
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单表';
 
 
 INSERT INTO zeus_menu(title, icon, path, level, menu_id, dis, disorder, operator, ctime, utime) VALUES
