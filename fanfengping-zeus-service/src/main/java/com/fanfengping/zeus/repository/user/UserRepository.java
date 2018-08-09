@@ -12,5 +12,5 @@ public interface UserRepository extends JpaRepository<ZeusUser, String> {
      * @param passwd
      * @return
      */
-    ZeusUser findByAccountAndPasswd(String account, String passwd);
+    ZeusUser findByAccountEqualsAndPasswdEquals(String account, String passwd);
 }

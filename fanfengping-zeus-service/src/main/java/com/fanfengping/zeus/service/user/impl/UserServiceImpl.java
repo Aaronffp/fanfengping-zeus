@@ -23,8 +23,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public ZeusUser findByAccountAndPasswd(String account, String passwd) {
-        log.info("UserServiceImpl.findByAccountAndPasswd()");
-        return userRepository.findByAccountAndPasswd(account, passwd);
+    public ZeusUser findByAccountEqualsAndPasswdEquals(String account, String passwd) {
+        return userRepository.findByAccountEqualsAndPasswdEquals(account, passwd);
     }
 }

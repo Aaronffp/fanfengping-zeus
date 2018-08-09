@@ -9,5 +9,5 @@ public interface UserService {
      * @param passwd
      * @return
      */
-    ZeusUser findByAccountAndPasswd(String account, String passwd);
+    ZeusUser findByAccountEqualsAndPasswdEquals(String account, String passwd);
 }
