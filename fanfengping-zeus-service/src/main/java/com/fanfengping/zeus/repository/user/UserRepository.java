@@ -6,5 +6,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<ZeusUser, String> {
-    ZeusUser findOneByAccountAndPasswd(String account, String passwd);
+    /**
+     * 通过账号、密钥获取用户信息
+     * @param account
+     * @param passwd
+     * @return
+     */
+    ZeusUser findByAccountAndPasswd(String account, String passwd);
 }

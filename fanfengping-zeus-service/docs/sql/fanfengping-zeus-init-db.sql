@@ -194,11 +194,11 @@ CREATE TABLE `zeus_user`
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
 INSERT INTO zeus_user(uuid, name, mobile, email, account, passwd, valid, operator, ctime, utime) VALUES
-  (REPLACE(UUID(), '-', ''), '超级管理员', '15201800268', '263869564@qq.com', 'system', 'zeus123456', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '管理员', '15201800268', '263869564@qq.com', 'admin', 'zeus123456', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '普通用户', '15201800268', '263869564@qq.com', 'user', 'zeus123456', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '访客', '15201800268', '263869564@qq.com', 'guest', 'zeus123456', '1', '范丰平', NOW(), NOW()),
-  (REPLACE(UUID(), '-', ''), '匿名用户', '15201800268', '263869564@qq.com', 'anon', 'zeus123456', '1', '范丰平', NOW(), NOW());
+  (REPLACE(UUID(), '-', ''), '超级管理员', '15213149225', '263869564@qq.com', 'system', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '管理员', '15213149225', '263869564@qq.com', 'admin', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '普通用户', '15213149225', '263869564@qq.com', 'user', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '访客', '15213149225', '263869564@qq.com', 'guest', 'zeus123456', '1', '范丰平', NOW(), NOW()),
+  (REPLACE(UUID(), '-', ''), '匿名用户', '15213149225', '263869564@qq.com', 'anon', 'zeus123456', '1', '范丰平', NOW(), NOW());
 
 
 
