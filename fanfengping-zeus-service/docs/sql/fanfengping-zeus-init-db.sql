@@ -210,5 +210,94 @@ INSERT INTO user(uuid, name, mobile, email, account, passwd, valid, operator, ct
 
 
 
+-- ----------------------------
+-- Table structure for group(分组表，分组等级：god > admin > user > guest > anon)
+-- ----------------------------
+DROP TABLE IF EXISTS `group`;
+CREATE TABLE `group`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `code` varchar(50) DEFAULT 'anon' NOT NULL COMMENT '分组代码',
+  `name` varchar(50) DEFAULT '匿名组' NOT NULL COMMENT '分组名称',
+  `desc` varchar(100) DEFAULT '匿名组' NULL COMMENT '分组描述',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `group_uindex_code` (`code`) COMMENT '分组表/分组代码 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='分组表';
+
+INSERT INTO `group`(code, name, `desc`, operator, ctime, utime) VALUES
+  ('god', '超管组', '拥有系统所有权限', 'system', NOW(), NOW()),
+  ('admin', '管理组', '拥有除系统设置外的所有权限', 'system', NOW(), NOW()),
+  ('user', '用户组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('guest', '访客组', '拥有除登录用户外的所有读取权限', 'system', NOW(), NOW()),
+  ('anon', '匿名组', '仅可访问系统公共资源', 'system', NOW(), NOW()),
+  ('business', '业务组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('demand', '需求组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('product', '产品组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('schema', '架构组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('develop', '研发组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('manultest', '功能测试组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('apitest', '自动化测试组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('autotest', '自动化测试组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('perftest', '性能组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('linux', '运维组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('service', '客服组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('support', '技术支持组', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW());
+
+
+
+-- ----------------------------
+-- Table structure for role(角色表，角色等级：god > admin > user > guest > anon)
+-- ----------------------------
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `code` varchar(50) DEFAULT 'anon' NOT NULL COMMENT '角色代码',
+  `name` varchar(50) DEFAULT '匿名用户' NOT NULL COMMENT '角色名称',
+  `desc` varchar(100) DEFAULT '匿名用户' NULL COMMENT '角色描述',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `role_uindex_code` (`code`) COMMENT '角色表/角色代码 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色表';
+
+INSERT INTO role(code, name, `desc`, operator, ctime, utime) VALUES
+  ('god', '超级管理员', '拥有系统所有权限', 'system', NOW(), NOW()),
+  ('admin', '管理员', '拥有除系统设置外的所有权限', 'system', NOW(), NOW()),
+  ('user', '普通用户', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
+  ('guest', '访客用户', '拥有除登录用户外的所有读取权限', 'system', NOW(), NOW()),
+  ('anon', '匿名用户', '仅可访问系统公共资源', 'system', NOW(), NOW());
+
+
+-- ----------------------------
+-- Table structure for permission(授权类型表，授权等级：all > delete > update > create > reseach > forbidden)
+-- ----------------------------
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE `permission`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `type` int NOT NULL DEFAULT 1 COMMENT '授权类型（1，菜单；2，按钮）',
+  `code` varchar(50) DEFAULT 'read' NOT NULL COMMENT '授权代码',
+  `name` varchar(50) DEFAULT '只读权限' NOT NULL COMMENT '授权名称',
+  `desc` varchar(100) DEFAULT '只读权限' NULL COMMENT '授权描述',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `permission_uindex_code` (`code`) COMMENT '授权表/授权代码 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='授权表';
+
+INSERT INTO permission(type, code, name, `desc`, operator, ctime, utime) VALUES
+  (1, 'all', '所有', '系统所有/操作权限', 'system', NOW(), NOW()),
+  (1, 'delete', '删除', '删除数据/删除按钮', 'system', NOW(), NOW()),
+  (1, 'update', '更新', '更新数据/修改按钮', 'system', NOW(), NOW()),
+  (1, 'create', '创建', '创建数据/新增按钮', 'system', NOW(), NOW()),
+  (1, 'reseach', '查询', '查询数据/查询按钮', 'system', NOW(), NOW()),
+  (1, 'forbidden', '拒绝', '拒绝访问/操作按钮', 'system', NOW(), NOW());
+
+
+
+
 
 
