@@ -298,6 +298,203 @@ INSERT INTO permission(type, code, name, `desc`, operator, ctime, utime) VALUES
 
 
 
+-- ----------------------------
+-- Table structure for user_and_group(用户分组表)
+-- ----------------------------
+DROP TABLE IF EXISTS `user_and_group`;
+CREATE TABLE `user_and_group`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `group_id` int NOT NULL COMMENT '分组ID',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `user_and_group_uindex` (`user_id`, `group_id`) COMMENT '用户分组表/用户ID-分组ID 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户分组表';
+
+
+INSERT INTO user_and_group(user_id, group_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 4, 'system', NOW(), NOW()),
+  (5, 5, 'system', NOW(), NOW());
+
+
+
+-- ----------------------------
+-- Table structure for user_and_role(用户角色表)
+-- ----------------------------
+DROP TABLE IF EXISTS `user_and_role`;
+CREATE TABLE `user_and_role`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `role_id` int NOT NULL COMMENT '角色ID',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `user_and_role_uindex` (`user_id`, `role_id`) COMMENT '用户角色表/用户ID-角色ID 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户角色表';
+
+INSERT INTO user_and_role(user_id, role_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 4, 'system', NOW(), NOW()),
+  (5, 5, 'system', NOW(), NOW());
+
+
+-- ----------------------------
+-- Table structure for group_and_role(分组角色表)
+-- ----------------------------
+DROP TABLE IF EXISTS `group_and_role`;
+CREATE TABLE `group_and_role`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `group_id` int NOT NULL COMMENT '分组ID',
+  `role_id` int NOT NULL COMMENT '角色ID',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `group_and_role_uindex` (`group_id`, `role_id`) COMMENT '分组角色表/分组ID-角色ID 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='分组角色表';
+
+
+INSERT INTO group_and_role(group_id, role_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 4, 'system', NOW(), NOW()),
+  (5, 5, 'system', NOW(), NOW());
+
+
+
+-- ----------------------------
+-- Table structure for role_and_permission(角色授权表)
+-- ----------------------------
+DROP TABLE IF EXISTS `role_and_permission`;
+CREATE TABLE `role_and_permission`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `role_id` int NOT NULL COMMENT '角色ID',
+  `perm_id` int NOT NULL COMMENT '授权ID',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `role_and_permission_uindex` (`role_id`, `perm_id`) COMMENT '角色授权表/角色ID-授权ID 唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色授权表';
+
+INSERT INTO role_and_permission(role_id, perm_id, operator, ctime, utime) VALUES
+  (1, 1, 'system', NOW(), NOW()),
+  (2, 2, 'system', NOW(), NOW()),
+  (3, 3, 'system', NOW(), NOW()),
+  (4, 5, 'system', NOW(), NOW()),
+  (5, 6, 'system', NOW(), NOW());
+
+
+
+
+
+-- ----------------------------
+-- Table structure for menu(菜单列表)
+-- ----------------------------
+DROP TABLE IF EXISTS `menu`;
+CREATE TABLE `menu`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `title` varchar(50) DEFAULT '规划菜单' NOT NULL COMMENT '菜单名称',
+  `icon` varchar(50) DEFAULT 'home' NOT NULL COMMENT '菜单图标',
+  `path` varchar(150) DEFAULT '' NOT NULL COMMENT '菜单路径（配置路径即可）',
+  `level` int DEFAULT 999 NOT NULL COMMENT '菜单级别（1，一级菜单；2，二级菜单；3，三级菜单）',
+  `menu_id` int DEFAULT 999 NOT NULL COMMENT '上级菜单ID',
+  `dis` int DEFAULT 0 NOT NULL COMMENT '是否显示（默认不显示。1，显示；0，不显示。）',
+  `disorder` int DEFAULT 999 NOT NULL COMMENT '显示顺序（数字小，则优先显示）',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='菜单表';
+
+
+INSERT INTO menu(title, icon, path, level, menu_id, dis, disorder, operator, ctime, utime) VALUES
+  ('首页', 'home', '/index', 1, 0, 1, 10, 'system', NOW(), NOW()),
+  ('项目管理', 'flag', '', 1, 0, 0, 20, 'system', NOW(), NOW()),
+  ('发布管理', 'tags', '', 1, 0, 0, 30, 'system', NOW(), NOW()),
+  ('开发管理', 'code', '', 1, 0, 0, 40, 'system', NOW(), NOW()),
+  ('测试管理', 'balance-scale', '', 1, 0, 0, 50, 'system', NOW(), NOW()),
+  ('报表管理', 'line-chart', '', 1, 0, 0, 60, 'system', NOW(), NOW()),
+  ('数据管理', 'database', '', 1, 0, 1, 70, 'system', NOW(), NOW()),
+  ('自动化', 'spinner', '', 1, 0, 0, 80, 'system', NOW(), NOW()),
+  ('知识库', 'wikipedia-w', '', 1, 0, 0, 90, 'system', NOW(), NOW()),
+  ('工具库', 'database', '', 1, 0, 0, 100, 'system', NOW(), NOW()),
+  ('运维管理', 'linux', '', 1, 0, 0, 110, 'system', NOW(), NOW()),
+  ('系统管理', 'cog', '', 1, 0, 1, 120, 'system', NOW(), NOW()),
+  ('系统设置', 'cogs', '', 1, 0, 1, 130, 'system', NOW(), NOW());
+
+
+INSERT INTO menu(title, icon, path, level, menu_id, dis, disorder, operator, ctime, utime) VALUES
+  ('项目立项', 'flag-o', '', 2, 2, 1, 10, 'system', NOW(), NOW()),                  -- 项目管理
+  ('项目需求', 'eye', '', 2, 2, 1, 10, 'system', NOW(), NOW()),                     -- 项目管理
+
+  ('变更管理', 'exchange', '', 2, 3, 1, 10, 'system', NOW(), NOW()),                -- 发布管理
+  ('发布管理', 'tag', '', 2, 3, 1, 10, 'system', NOW(), NOW()),                     -- 发布管理
+
+  ('版本管理', 'gitlab', '', 2, 4, 1, 10, 'system', NOW(), NOW()),                  -- 开发管理
+  ('系统设计', 'coffee', '', 2, 4, 1, 10, 'system', NOW(), NOW()),                  -- 开发管理
+  ('接口文档', 'sliders', '', 2, 4, 1, 10, 'system', NOW(), NOW()),                 -- 开发管理
+  ('用户故事', 'user-circle', '', 2, 4, 1, 10, 'system', NOW(), NOW()),             -- 开发管理
+  ('开发任务', 'tasks', '', 2, 4, 1, 20, 'system', NOW(), NOW()),                   -- 开发管理
+
+  ('用例管理', 'suitcase', '', 2, 5, 1, 10, 'system', NOW(), NOW()),                -- 测试管理
+  ('缺陷管理', 'bug', '', 2, 5, 1, 30, 'system', NOW(), NOW()),                     -- 测试管理
+
+  ('发布报表', 'line-chart', '', 2, 6, 1, 30, 'system', NOW(), NOW()),              -- 报表管理
+  ('项目报表', 'area-chart', '', 2, 6, 1, 30, 'system', NOW(), NOW()),              -- 报表管理
+  ('团队报表', 'bar-chart', '', 2, 6, 1, 30, 'system', NOW(), NOW()),               -- 报表管理
+  ('用例分布', 'pie-chart', '', 2, 6, 1, 30, 'system', NOW(), NOW()),               -- 报表管理
+  ('缺陷分布', 'pie-chart', '', 2, 6, 1, 30, 'system', NOW(), NOW()),               -- 报表管理
+
+  ('数据库列表', 'list', '/page1', 2, 7, 1, 10, 'system', NOW(), NOW()),            -- 数据管理
+  ('表结构比对', 'compress', '/page2', 2, 7, 1, 20, 'system', NOW(), NOW()),        -- 数据管理
+  ('数据字典', 'book', '/page3', 2, 7, 1, 30, 'system', NOW(), NOW()),              -- 数据管理
+
+  ('挡板管理', 'puzzle-piece', '', 2, 8, 1, 20, 'system', NOW(), NOW()),            -- 自动化
+  ('接口测试', 'plug', '', 2, 8, 1, 20, 'system', NOW(), NOW()),                    -- 自动化
+  ('性能测试', 'thermometer', '', 2, 8, 1, 20, 'system', NOW(), NOW()),             -- 自动化
+  ('JMeter测试', 'plug', '', 2, 8, 1, 20, 'system', NOW(), NOW()),                  -- 自动化
+  ('WEB测试', 'desktop', '', 2, 8, 1, 20, 'system', NOW(), NOW()),                  -- 自动化
+  ('APP测试', 'android', '', 2, 8, 1, 20, 'system', NOW(), NOW()),                  -- 自动化
+
+  ('知识库', 'wikipedia-w', '', 1, 9, 0, 70, 'system', NOW(), NOW()),               -- 知识库
+
+  ('MD5加密', 'barcode', '/page3', 2, 10, 1, 30, 'system', NOW(), NOW()),           -- 工具库
+  ('AES加密', 'barcode', '/page3', 2, 10, 1, 30, 'system', NOW(), NOW()),           -- 工具库
+  ('数据生成', 'database', '/page3', 10, 6, 1, 30, 'system', NOW(), NOW()),         -- 工具库
+
+  ('应用管理', 'android', '/page3', 2, 11, 1, 30, 'system', NOW(), NOW()),          -- 运维管理
+  ('服务管理', 'rss-square', '/page3', 2, 11, 1, 30, 'system', NOW(), NOW()),       -- 运维管理
+  ('环境管理', 'server', '/page3', 2, 11, 1, 30, 'system', NOW(), NOW()),           -- 运维管理
+  ('监控管理', 'binoculars', '/page3', 2, 11, 1, 30, 'system', NOW(), NOW()),       -- 运维管理
+
+  ('用户管理', 'users', '/user', 2, 12, 1, 10, 'system', NOW(), NOW()),             -- 系统管理
+  ('团队管理', 'handshake-o', '/team', 2, 12, 0, 20, 'system', NOW(), NOW()),       -- 系统管理
+  ('产品线管理', 'product-hunt', '/line', 2, 12, 0, 30, 'system', NOW(), NOW()),    -- 系统管理
+  ('小组管理', 'group', '/group', 2, 12, 0, 40, 'system', NOW(), NOW()),            -- 系统管理
+  ('权限管理', 'gavel', '/permission', 12, 3, 0, 50, 'system', NOW(), NOW()),       -- 系统管理
+
+  ('菜单设置', 'th-list', '/menu', 2, 13, 1, 10, 'system', NOW(), NOW()),           -- 系统设置
+  ('编码设置', 'barcode', '/code', 2, 13, 0, 20, 'system', NOW(), NOW());           -- 系统设置
+
+
+
+
+
+
+
+
+
+
 
 
 
