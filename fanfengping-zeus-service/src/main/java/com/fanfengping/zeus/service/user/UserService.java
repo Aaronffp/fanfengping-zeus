@@ -1,13 +1,12 @@
 package com.fanfengping.zeus.service.user;
 
-import com.fanfengping.zeus.entity.user.ZeusUser;
+import com.fanfengping.zeus.entity.user.User;
+import com.fanfengping.zeus.service.BaseService;
 
-public interface UserService {
-    /**
-     * 通过账号、密钥查询账户信息
-     * @param account
-     * @param passwd
-     * @return
-     */
-    ZeusUser findByAccountEqualsAndPasswdEquals(String account, String passwd);
+import java.util.List;
+
+public interface UserService extends BaseService<User> {
+    List<User> findAllByConditions(String account, String name, String mobile, String email);
+
+    User findByAccountAndPasswd (String account, String passwd);
 }

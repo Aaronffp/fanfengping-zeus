@@ -3,78 +3,140 @@ package com.fanfengping.zeus.controller.user;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fanfengping.zeus.constant.Codes;
-import com.fanfengping.zeus.entity.user.ZeusUser;
+import com.fanfengping.zeus.entity.user.User;
 import com.fanfengping.zeus.service.user.UserService;
-import com.fanfengping.zeus.util.Json;
+import com.fanfengping.zeus.util.ResponseJson;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
-
-
     @Autowired
     UserService userService;
 
-    /**
-     * 通过账号、密钥查询用户信息
-     * @param body
-     * @return
-     */
+    @RequestMapping(path = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public User add(@RequestBody Map<String, Object> reqMap) {
+        String uuid = reqMap.get("uuid").toString();
+        String name = reqMap.get("name").toString();
+        String mobile = reqMap.get("mobile").toString();
+        String email = reqMap.get("email").toString();
+        String account = reqMap.get("account").toString();
+        String passwd = reqMap.get("passwd").toString();
+        String salt = reqMap.get("salt").toString();
+        int state = Integer.parseInt(reqMap.get("state").toString());
+        String operator = reqMap.get("operator").toString();
+
+        User user = new User(uuid, name, mobile, email, account, passwd, salt, state, operator);
+
+        return userService.add(user);
+    }
+
+    @RequestMapping(path = "", method = RequestMethod.PUT, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public User update(@RequestBody Map<String, Object> reqMap) {
+        int id = Integer.parseInt(reqMap.get("id").toString());
+        String uuid = reqMap.get("uuid").toString();
+        String name = reqMap.get("name").toString();
+        String mobile = reqMap.get("mobile").toString();
+        String email = reqMap.get("email").toString();
+        String account = reqMap.get("account").toString();
+        String passwd = reqMap.get("passwd").toString();
+        String salt = reqMap.get("salt").toString();
+        int state = Integer.parseInt(reqMap.get("state").toString());
+        String operator = reqMap.get("operator").toString();
+        String ctime = reqMap.get("ctime").toString();
+        String utime = reqMap.get("utime").toString();
+
+        User user = new User(id, uuid, name, mobile, email, account, passwd, salt, state, operator, ctime, utime);
+
+        return userService.update(user);
+    }
+
+    @RequestMapping(path = "", method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public User delete(@RequestBody Map<String, Object> reqMap) {
+        Integer id = Integer.parseInt(reqMap.get("id").toString());
+        String uuid = reqMap.get("uuid").toString();
+        String name = reqMap.get("name").toString();
+        String mobile = reqMap.get("mobile").toString();
+        String email = reqMap.get("email").toString();
+        String account = reqMap.get("account").toString();
+        String passwd = reqMap.get("passwd").toString();
+        String salt = reqMap.get("salt").toString();
+        int state = Integer.parseInt(reqMap.get("state").toString());
+        String operator = reqMap.get("operator").toString();
+        String ctime = reqMap.get("ctime").toString();
+        String utime = reqMap.get("utime").toString();
+
+        User user = new User(id, uuid, name, mobile, email, account, passwd, salt, state, operator, ctime, utime);
+
+        return userService.delete(user);
+    }
+
+    @RequestMapping(path = "", method = RequestMethod.GET)
+    public List<User> findAllByConditions(@RequestParam String account,
+                                          @RequestParam String name,
+                                          @RequestParam String mobile,
+                                          @RequestParam String email) {
+        return userService.findAllByConditions(account, name, mobile, email);
+    }
+
     @RequestMapping(method = RequestMethod.POST, path = "/login")
     @ResponseBody
-    public Json login(@RequestBody String body) {
-        Json json = new Json(Codes.USER);
+    public ResponseJson login(@RequestBody String body) {
+        ResponseJson responseJson = new ResponseJson(Codes.USER);
+
         try {
             JSONObject reqBody = JSON.parseObject(body);
             String account = reqBody.getString("account");
             String passwd = reqBody.getString("passwd");
 
-            json = json.acti(Codes.USER_LOGIN).data("body", reqBody).oper(account);
+            responseJson = responseJson.acti(Codes.USER_LOGIN).data("body", reqBody).oper(account);
 
-            if (StringUtils.isEmpty(account) || account.length() < Codes.LENGTH_USER_ACCOUNT_MIN || account.length() > Codes.LENGTH_USER_ACCOUNT_MAX){
-                json = json.fail(String.format("用户名为空或长度超出 %s-%s 个字符", Codes.LENGTH_USER_ACCOUNT_MIN, Codes.LENGTH_USER_ACCOUNT_MAX));
-                log.warn(json.toString());
-                return json;
+            if (StringUtils.isEmpty(account) ||
+                    account.length() < Codes.LENGTH_USER_ACCOUNT_MIN ||
+                    account.length() > Codes.LENGTH_USER_ACCOUNT_MAX){
+                responseJson = responseJson.fail(String.format("用户名为空或长度超出 %s-%s 个字符", Codes.LENGTH_USER_ACCOUNT_MIN, Codes.LENGTH_USER_ACCOUNT_MAX));
+                log.warn(responseJson.toString());
+                return responseJson;
             }
 
-            if (StringUtils.isEmpty(passwd) || passwd.length() < Codes.LENGTH_USER_PASSWORD_MIN || passwd.length() > Codes.LENGTH_USER_PASSWORD_MAX){
-                json = json.fail(String.format("密码为空或长度超出 %d-%d 个字符", Codes.LENGTH_USER_PASSWORD_MIN, Codes.LENGTH_USER_PASSWORD_MAX));
-                log.warn(json.toString());
-                return json;
+            if (StringUtils.isEmpty(passwd) ||
+                    passwd.length() < Codes.LENGTH_USER_PASSWORD_MIN ||
+                    passwd.length() > Codes.LENGTH_USER_PASSWORD_MAX){
+                responseJson = responseJson.fail(String.format("密码为空或长度超出 %d-%d 个字符", Codes.LENGTH_USER_PASSWORD_MIN, Codes.LENGTH_USER_PASSWORD_MAX));
+                log.warn(responseJson.toString());
+                return responseJson;
             }
 
-            ZeusUser user = userService.findByAccountEqualsAndPasswdEquals(account, passwd);
+            User user = userService.findByAccountAndPasswd(account, passwd);
 
             if (user == null){
-                json = json.fail("用户不存在或密码错误");
-                log.warn(json.toString());
-                return json;
+                responseJson = responseJson.fail("用户不存在或密码错误");
+                log.warn(responseJson.toString());
+                return responseJson;
             } else {
-                json = json.succ(user);
-                log.info(json.toString());
-                return json;
+                responseJson = responseJson.succ(user);
+                log.info(responseJson.toString());
+                return responseJson;
             }
         } catch ( Exception e ) {
-            json = json.fail(e.getMessage());
-            log.error(json.toString(), e);
-            return json;
+            responseJson = responseJson.fail(e.getMessage());
+            log.error(responseJson.toString(), e);
+            return responseJson;
         }
     }
 
-    /**
-     * 通过账号、密钥查询账户信息
-     * @param account
-     * @param passwd
-     * @return
-     */
     @RequestMapping(method = RequestMethod.GET, path = "/{account}/{passwd}")
-    public ZeusUser getUserInfo(@PathVariable String account, @PathVariable String passwd){
-        return userService.findByAccountEqualsAndPasswdEquals(account, passwd);
+    public User getUserInfo(@PathVariable String account, @PathVariable String passwd){
+        return userService.findByAccountAndPasswd(account, passwd);
     }
 }
