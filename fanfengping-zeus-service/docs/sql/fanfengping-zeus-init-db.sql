@@ -14,7 +14,7 @@ FLUSH PRIVILEGES ;
 DROP TABLE IF EXISTS `code_type`;
 CREATE TABLE `fanfengping_zeus`.`code_type` (
     `id` INT NOT NULL AUTO_INCREMENT COMMENT '系统主键',
-    `valid` INT NOT NULL DEFAULT 0 COMMENT '是否有效（1，有效；0，无效。默认无效）',
+    `available` INT NOT NULL DEFAULT 0 COMMENT '是否有效（1，有效；0，无效。默认无效）',
     `code` INT NOT NULL DEFAULT '000' COMMENT '类型编码',
     `name` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '编码类型名称',
     `operator` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT 'system' COMMENT '更新人',
@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `code_detail`;
 CREATE TABLE `fanfengping_zeus`.`code_detail` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '系统主键',
   `type_id` INT NOT NULL DEFAULT 999 COMMENT '类型ID',
-  `valid` INT NOT NULL DEFAULT 0 COMMENT '是否有效（1，有效；0，无效。默认无效）',
+  `available` INT NOT NULL DEFAULT 0 COMMENT '是否有效（1，有效；0，无效。默认无效）',
   `code` INT NOT NULL DEFAULT 999 COMMENT '详情编码',
   `name` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '编码详情名称',
   `operator` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT 'system' COMMENT '更新人',
@@ -45,7 +45,7 @@ CREATE TABLE `fanfengping_zeus`.`code_detail` (
 )ENGINE = InnoDB DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '系统编码详情信息表';
 
 
-INSERT INTO code_type(valid, code, name, operator, note) VALUES
+INSERT INTO code_type(available, code, name, operator, note) VALUES
   (1, 100, '消息', '范丰平', 'HTTP状态码。这一类型的状态码，代表请求已被接受，需要继续处理。这类响应是临时响应，只包含状态行和某些可选的响应头信息，并以空行结束。由于 HTTP/1.0 协议中没有定义任何 1xx 状态码，所以除非在某些试验条件下，服务器禁止向此类客户端发送 1xx 响应。'),
   (1, 200, '成功', '范丰平', 'HTTP状态码。这一类型的状态码，代表请求已成功被服务器接收、理解、并接受。'),
   (1, 300, '重定向', '范丰平', 'HTTP状态码。这类状态码代表需要客户端采取进一步的操作才能完成请求。通常，这些状态码用来重定向，后续的请求地址（重定向目标）在本次响应的 Location 域中指明。当且仅当后续的请求所使用的方法是 GET 或者 HEAD 时，用户浏览器才可以在没有用户介入的情况下自动提交所需要的后续请求。客户端应当自动监测无限循环重定向（例如：A->A，或者A->B->C->A），因为这会导致服务器和客户端大量不必要的资源消耗。按照 HTTP/1.0 版规范的建议，浏览器不应自动访问超过5次的重定向。'),
@@ -66,7 +66,7 @@ INSERT INTO code_type(valid, code, name, operator, note) VALUES
 
 
 
-INSERT INTO code_detail(type_id, valid, code, name, operator, note) VALUES
+INSERT INTO code_detail(type_id, available, code, name, operator, note) VALUES
   (1, 1, 100, '客户端应当继续发送请求', '范丰平', '这个临时响应是用来通知客户端它的部分请求已经被服务器接收，且仍未被拒绝。客户端应当继续发送请求的剩余部分，或者如果请求已经完成，忽略这个响应。服务器必须在请求完成后向客户端发送一个最终响应。'),
   (2, 1, 200, '请求已成功', '范丰平', '请求已成功，请求所希望的响应头或数据体将随此响应返回。出现此状态码是表示正常状态。'),
   (2, 1, 201, '请求已经被实现', '范丰平', '请求已经被实现，而且有一个新的资源已经依据请求的需要而建立，且其 URI 已经随Location 头信息返回。假如需要的资源无法及时建立的话，应当返回 ''202 Accepted''。'),
@@ -159,12 +159,12 @@ CREATE TABLE `fanfengping_zeus`.`shortcut` (
     `dis` INT NOT NULL DEFAULT 0 COMMENT '是否显示（1，显示；0，不显示。默认不显示）',
     `disorder` INT NOT NULL DEFAULT 200 COMMENT '显示顺序（数字小，则优先显示）',
     `name` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT '个人博客' COMMENT '网站名称',
-    `icon` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '网站图标地址',
+    `icon` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '网站图标地址（可为空，默认网站图标地址）',
     `url` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL DEFAULT 'http://www.cnblogs.com/fengpingfan/' COMMENT '网站访问地址',
     `manager` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT '范丰平' COMMENT '网站管理者',
     `mobile` VARCHAR(15) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '手机号码',
-    `operator` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT 'system' COMMENT '更新人',
     `note` VARCHAR(150) CHARACTER SET 'utf8' NOT NULL DEFAULT '' COMMENT '备注',
+    `operator` VARCHAR(50) CHARACTER SET 'utf8' NOT NULL DEFAULT 'system' COMMENT '更新人',
     `ctime` DATETIME NOT NULL DEFAULT NOW() COMMENT '创建时间',
     `utime` DATETIME NOT NULL DEFAULT NOW() COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -257,18 +257,19 @@ CREATE TABLE `role`
   `code` varchar(50) DEFAULT 'anon' NOT NULL COMMENT '角色代码',
   `name` varchar(50) DEFAULT '匿名用户' NOT NULL COMMENT '角色名称',
   `desc` varchar(100) DEFAULT '匿名用户' NULL COMMENT '角色描述',
+  `available` int DEFAULT 0 NULL COMMENT '是否可用（0、无效；1、有效）',
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
   UNIQUE INDEX `role_uindex_code` (`code`) COMMENT '角色表/角色代码 唯一键'
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色表';
 
-INSERT INTO role(code, name, `desc`, operator, ctime, utime) VALUES
-  ('god', '超级管理员', '拥有系统所有权限', 'system', NOW(), NOW()),
-  ('admin', '管理员', '拥有除系统设置外的所有权限', 'system', NOW(), NOW()),
-  ('user', '普通用户', '拥有除系统设置/管理外的所有权限', 'system', NOW(), NOW()),
-  ('guest', '访客用户', '拥有除登录用户外的所有读取权限', 'system', NOW(), NOW()),
-  ('anon', '匿名用户', '仅可访问系统公共资源', 'system', NOW(), NOW());
+INSERT INTO role(code, name, `desc`, available, operator, ctime, utime) VALUES
+  ('god', '超级管理员', '拥有系统所有权限', 1, 'system', NOW(), NOW()),
+  ('admin', '管理员', '拥有除系统设置外的所有权限', 1, 'system', NOW(), NOW()),
+  ('user', '普通用户', '拥有除系统设置/管理外的所有权限', 1, 'system', NOW(), NOW()),
+  ('guest', '访客用户', '拥有除登录用户外的所有读取权限', 1, 'system', NOW(), NOW()),
+  ('anon', '匿名用户', '仅可访问系统公共资源', 1, 'system', NOW(), NOW());
 
 
 -- ----------------------------
@@ -296,7 +297,31 @@ INSERT INTO permission(type, code, name, `desc`, operator, ctime, utime) VALUES
   (1, 'reseach', '查询', '查询数据/查询按钮', 'system', NOW(), NOW()),
   (1, 'forbidden', '拒绝', '拒绝访问/操作按钮', 'system', NOW(), NOW());
 
+-- ----------------------------
+-- Table structure for perm(授权类型表，授权等级：a > d > u > c > r > f)
+-- ----------------------------
+DROP TABLE IF EXISTS `perm`;
+CREATE TABLE `perm`
+(
+  `id` int PRIMARY KEY NOT NULL COMMENT '系统主键' AUTO_INCREMENT,
+  `code` varchar(50) DEFAULT '' NOT NULL COMMENT '授权代码',
+  `name` varchar(50) DEFAULT '授权名称' NOT NULL COMMENT '授权名称',
+  `desc` varchar(100) DEFAULT '授权描述' NULL COMMENT '授权描述',
+  `parent_id` int NOT NULL COMMENT '父编号',
+  `parent_ids` varchar(100) NOT NULL COMMENT '父编号列表',
+  `resource_type` enum('menu', 'button', 'link') NOT NULL DEFAULT 'menu' COMMENT '资源类型[menu|button|link]',
+  `url` varchar(200) DEFAULT 'system' NOT NULL COMMENT '资源路径',
+  `permission` varchar(100) DEFAULT 'system' NOT NULL COMMENT '权限字符串,menu例子：role:*，button例子：role:create,role:update,role:delete,role:view',
+  `available` int DEFAULT 0 NULL COMMENT '是否可用（0、无效；1、有效）',
+  `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
+  `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
+  `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
+  UNIQUE INDEX `perm_code_uindex` (`code`) COMMENT '权限代码唯一键'
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='授权列表';
 
+INSERT INTO perm(code, name, `desc`, parent_id, parent_ids, resource_type, url, permission, available, operator, ctime, utime) VALUES
+  ('user_login', '用户登录', '用户登录', 0, '0/', 'button', 'user/login','tmUser:view', 1, 'system', NOW(), NOW()),
+  ('user_list', '用户查询', '用户查询', 0, '0/', 'button', 'user/{account}','tmUser:view', 1, 'system', NOW(), NOW());
 
 -- ----------------------------
 -- Table structure for user_and_group(用户分组表)
@@ -485,6 +510,117 @@ INSERT INTO menu(title, icon, path, level, menu_id, dis, disorder, operator, cti
 
   ('菜单设置', 'th-list', '/menu', 2, 13, 1, 10, 'system', NOW(), NOW()),           -- 系统设置
   ('编码设置', 'barcode', '/code', 2, 13, 0, 20, 'system', NOW(), NOW());           -- 系统设置
+
+
+
+DROP TABLE IF EXISTS `log_record`;
+CREATE TABLE `log_record` (
+`id`  int NOT NULL AUTO_INCREMENT COMMENT '系统主键' ,
+`timestamp`  varchar(23) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '日志时间(yyyy-MM-dd HH:mm:ss.SSS)' ,
+`duration`  bigint NOT NULL COMMENT '耗时（距离服务启动时间，单位：毫秒）' ,
+`level`  varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '日志级别' ,
+`threadname`  varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '线程名称' ,
+`message`  text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '日志内容' ,
+`pack`  varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '包路径' ,
+`clazz`  varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '类名称' ,
+`method`  varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '方法名' ,
+`linenumber`  int NOT NULL COMMENT '行数' ,
+`fullinfo`  varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '类全路径信息（包、类、方法、文件名、行数）' ,
+`debug`  text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '调用级联信息（次序、本地方法、调用信息）' ,
+`ctime`  datetime NOT NULL DEFAULT NOW() COMMENT '创建日期' ,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8 COLLATE=utf8_unicode_ci COMMENT='系统日志表';
+
+
+-- ----------------------------
+-- Table structure for database（数据库信息配置表）
+-- ----------------------------
+DROP TABLE IF EXISTS `database`;
+CREATE TABLE `database` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '系统主键',
+  `env` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '环境标识',
+  `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
+  `chs` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '中文简称',
+  `benchmark` int NOT NULL DEFAULT 0 COMMENT '基准数据库（1，是；0，否）',
+  `type` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库类型',
+  `driver` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库驱动',
+  `url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库URL',
+  `account` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库账号',
+  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库密码',
+  `creater` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '维护人',
+  `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  `updater` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '更新人',
+  `utime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `note` varchar(100) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '备注',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `database_unique` (`env`,`eng`) USING BTREE COMMENT '数据库信息配置表/环境-英文简称 联合主键'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='数据库信息配置表';
+
+
+-- ----------------------------
+-- Table structure for database_compare_result（表结构比对结果表）
+-- ----------------------------
+DROP TABLE IF EXISTS `database_compare_result`;
+CREATE TABLE `database_compare_result` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '系统编号',
+  `flag` varchar(25) COLLATE utf8_unicode_ci NOT NULL COMMENT '批次标识',
+  `status` int(3) NOT NULL COMMENT '结果标识（0，成功；-1，失败）',
+  `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
+  `benchmark_id` int NOT NULL COMMENT '基准库编号',
+  `benchmark_env` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '基准库环境标识',
+  `benchmark_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '基准库URL',
+  `target_id` int NOT NULL COMMENT '比对库编号',
+  `target_env` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对库环境标识',
+  `target_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对库URL',
+  `info` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对信息',
+  `note` varchar(50) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '备注',
+  `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `database_compare_result_eng_index` (`eng`) USING HASH COMMENT '数据库比对结果表/英文简称 搜索索引'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='数据库比对结果表';
+
+
+-- ----------------------------
+-- Table structure for build_history（构建历史记录表）
+-- ----------------------------
+DROP TABLE IF EXISTS `build_history`;
+CREATE TABLE `build_history` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '系统ID',
+  `env` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '环境',
+  `addr` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '部署IP',
+  `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
+  `tag` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '构建标识',
+  `release` int(1) DEFAULT '0' COMMENT '发布（1，发布；0，测试版本；-1，开发版本）',
+  `git_url` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'GIT链接',
+  `git_branch` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'GIT分支',
+  `link` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '构建链接',
+  `operator` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '操作人',
+  `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `build_history_index` (`env`,`addr`,`eng`,`operator`) USING BTREE COMMENT '构建历史记录表/环境-部署IP-英文简称-执行人 索引'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='构建历史记录表';
+
+-- ----------------------------
+-- Table structure for service_info（服务信息表）
+-- ----------------------------
+DROP TABLE IF EXISTS `service_info`;
+CREATE TABLE `service_info` (
+  `id` int(15) unsigned NOT NULL AUTO_INCREMENT COMMENT '系统主键',
+  `env` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '环境标识',
+  `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
+  `chs` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '中文简称',
+  `url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '访问链接',
+  `account` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '账号',
+  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '密码',
+  `note` varchar(100) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '备注',
+  `updater` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '更新人',
+  `utime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `service_info_index` (`env`,`eng`) USING HASH COMMENT '服务信息表/环境标识-英文简称 联合主键'
+) ENGINE=InnoDB AUTO_INCREMENT=611 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='服务信息表';
+
+
+
 
 
 
