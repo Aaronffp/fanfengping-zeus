@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-public class Json extends LinkedHashMap<String, Object> {
+public class ResponseJson extends LinkedHashMap<String, Object> {
     /////////////////////// 默认的键 ///////////////////////
     private static final String KEY_CODE = "code";       // 执行结果代码
     private static final String KEY_SUCC = "success";    // 执行结果状态
@@ -40,7 +40,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param operator
      * @param data
      */
-    public Json(int code, boolean success, String message, String menu, String action, String operator, Object data){
+    public ResponseJson(int code, boolean success, String message, String menu, String action, String operator, Object data){
         this.put(KEY_CODE, code);
         this.put(KEY_SUCC, success);
         this.put(KEY_MESS, message);
@@ -51,7 +51,7 @@ public class Json extends LinkedHashMap<String, Object> {
         this.put(KEY_DATA, data == null ? DEFAULT_DATA_VAL : data);
     }
 
-    public Json(int code, boolean success, String message, String menu, String action, String operator){
+    public ResponseJson(int code, boolean success, String message, String menu, String action, String operator){
         this.put(KEY_CODE, code);
         this.put(KEY_SUCC, success);
         this.put(KEY_MESS, message);
@@ -65,7 +65,7 @@ public class Json extends LinkedHashMap<String, Object> {
     /**
      * 操作名称
      */
-    public Json(String menu) {
+    public ResponseJson(String menu) {
         this.put(KEY_CODE, DEFAULT_CODE_SUCC);  // 200
         this.put(KEY_SUCC, DEFAULT_SUCC_SUCC);  // true
         this.put(KEY_MESS, DEFAULT_MESS_SUCC);  // success
@@ -79,7 +79,7 @@ public class Json extends LinkedHashMap<String, Object> {
     /**
      * 操作名称、操作动作
      */
-    public Json(String menu, String action) {
+    public ResponseJson(String menu, String action) {
         this.put(KEY_CODE, DEFAULT_CODE_SUCC);  // 200
         this.put(KEY_SUCC, DEFAULT_SUCC_SUCC);  // true
         this.put(KEY_MESS, DEFAULT_MESS_SUCC);  // success
@@ -93,7 +93,7 @@ public class Json extends LinkedHashMap<String, Object> {
     /**
      * 操作名称，操作动作，执行人
      */
-    public Json(String menu, String action, String operator) {
+    public ResponseJson(String menu, String action, String operator) {
         this.put(KEY_CODE, DEFAULT_CODE_SUCC);
         this.put(KEY_SUCC, DEFAULT_SUCC_SUCC);
         this.put(KEY_MESS, DEFAULT_MESS_SUCC);
@@ -107,42 +107,42 @@ public class Json extends LinkedHashMap<String, Object> {
     /**
      * 操作成功
      */
-    public Json succ(String message) {
+    public ResponseJson succ(String message) {
         this.put(KEY_MESS, message);
         return this;
     }
 
-    public Json succ(Object data) {
+    public ResponseJson succ(Object data) {
         this.data(data);
         return this;
     }
 
-    public Json succ(int code, String message) {
+    public ResponseJson succ(int code, String message) {
         this.put(KEY_CODE, code);
         this.put(KEY_MESS, message);
         return this;
     }
 
-    public Json succ(String message, Object data) {
+    public ResponseJson succ(String message, Object data) {
         this.put(KEY_MESS, message);
         this.data(data);
         return this;
     }
 
-    public Json succ(String message, String dataKey, Object dataVal) {
+    public ResponseJson succ(String message, String dataKey, Object dataVal) {
         this.put(KEY_MESS, message);
         this.data(dataKey, dataVal);
         return this;
     }
 
-    public Json succ(int code, String message, Object data) {
+    public ResponseJson succ(int code, String message, Object data) {
         this.put(KEY_CODE, code);
         this.put(KEY_MESS, message);
         this.data(data);
         return this;
     }
 
-    public Json succ(int code, String message, String dataKey, Object dataVal) {
+    public ResponseJson succ(int code, String message, String dataKey, Object dataVal) {
         this.put(KEY_CODE, code);
         this.put(KEY_MESS, message);
         this.data(dataKey, dataVal);
@@ -153,21 +153,21 @@ public class Json extends LinkedHashMap<String, Object> {
     /**
      * 操作判定失败的
      */
-    public Json fail(String message) {
+    public ResponseJson fail(String message) {
         this.put(KEY_CODE, DEFAULT_CODE_FAIL);
         this.put(KEY_SUCC, DEFAULT_SUCC_FAIL);
         this.put(KEY_MESS, message);
         return this;
     }
 
-    public Json fail(int code, String message) {
+    public ResponseJson fail(int code, String message) {
         this.put(KEY_CODE, code);
         this.put(KEY_SUCC, DEFAULT_SUCC_FAIL);
         this.put(KEY_MESS, message);
         return this;
     }
 
-    public Json fail(String message, Object data) {
+    public ResponseJson fail(String message, Object data) {
         this.put(KEY_CODE, DEFAULT_CODE_FAIL);
         this.put(KEY_SUCC, DEFAULT_SUCC_FAIL);
         this.put(KEY_MESS, message);
@@ -175,7 +175,7 @@ public class Json extends LinkedHashMap<String, Object> {
         return this;
     }
 
-    public Json fail(String message, String dataKey, Object dataVal) {
+    public ResponseJson fail(String message, String dataKey, Object dataVal) {
         this.put(KEY_CODE, DEFAULT_CODE_FAIL);
         this.put(KEY_SUCC, DEFAULT_SUCC_FAIL);
         this.put(KEY_MESS, message);
@@ -183,7 +183,7 @@ public class Json extends LinkedHashMap<String, Object> {
         return this;
     }
 
-    public Json fail(int code, String message, Object data) {
+    public ResponseJson fail(int code, String message, Object data) {
         this.put(KEY_CODE, code);
         this.put(KEY_SUCC, DEFAULT_SUCC_FAIL);
         this.put(KEY_MESS, message);
@@ -191,7 +191,7 @@ public class Json extends LinkedHashMap<String, Object> {
         return this;
     }
 
-    public Json fail(int code, String message, String dataKey, Object dataVal) {
+    public ResponseJson fail(int code, String message, String dataKey, Object dataVal) {
         this.put(KEY_CODE, code);
         this.put(KEY_SUCC, DEFAULT_SUCC_FAIL);
         this.put(KEY_MESS, message);
@@ -203,24 +203,24 @@ public class Json extends LinkedHashMap<String, Object> {
     /**
      * 操作动态判定成功或失败
      */
-    public static Json result(String operator, boolean success) {
-        return new Json(
+    public static ResponseJson result(String operator, boolean success) {
+        return new ResponseJson(
                 success ? DEFAULT_CODE_SUCC : DEFAULT_CODE_FAIL,
                 success ? DEFAULT_SUCC_FAIL : DEFAULT_SUCC_FAIL,
                 success ? DEFAULT_MESS_SUCC : DEFAULT_MESS_FAIL,
                 DEFAULT_MENU_VAL, DEFAULT_ACTI_VAL, operator, DEFAULT_DATA_VAL);
     }
 
-    public static Json result(String operator, boolean success, Object data) {
-        return new Json(
+    public static ResponseJson result(String operator, boolean success, Object data) {
+        return new ResponseJson (
                 success ? DEFAULT_CODE_SUCC : DEFAULT_CODE_FAIL,
                 success ? DEFAULT_SUCC_FAIL : DEFAULT_SUCC_FAIL,
                 success ? DEFAULT_MESS_SUCC : DEFAULT_MESS_FAIL,
                 DEFAULT_MENU_VAL, DEFAULT_ACTI_VAL, operator, data);
     }
 
-    public static Json result(String operator, boolean success, String dataKey, Object dataVal) {
-        return new Json(
+    public static ResponseJson result(String operator, boolean success, String dataKey, Object dataVal) {
+        return new ResponseJson (
                 success ? DEFAULT_CODE_SUCC : DEFAULT_CODE_FAIL,
                 success ? DEFAULT_SUCC_FAIL : DEFAULT_SUCC_FAIL,
                 success ? DEFAULT_MESS_SUCC : DEFAULT_MESS_FAIL,
@@ -234,7 +234,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param code
      * @return
      */
-    public Json code(int code) {
+    public ResponseJson code(int code) {
         this.put(KEY_CODE, code);
         return this;
     }
@@ -244,7 +244,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param success
      * @return
      */
-    public Json succ(boolean success){
+    public ResponseJson succ(boolean success){
         this.put(KEY_SUCC, success);
         return this;
     }
@@ -254,7 +254,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param message
      * @return
      */
-    public Json mess(String message){
+    public ResponseJson mess(String message){
         this.put(KEY_MESS, message);
         return this;
     }
@@ -264,7 +264,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param menu
      * @return
      */
-    public Json menu(String menu){
+    public ResponseJson menu(String menu){
         this.put(KEY_MENU, menu);
         return this;
     }
@@ -274,7 +274,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param action
      * @return
      */
-    public Json acti(String action){
+    public ResponseJson acti(String action){
         this.put(KEY_ACTI, action);
         return this;
     }
@@ -284,7 +284,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param operator
      * @return
      */
-    public Json oper(String operator){
+    public ResponseJson oper(String operator){
         this.put(KEY_OPER, operator);
         return this;
     }
@@ -294,7 +294,7 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param dataVal
      * @return
      */
-    public Json data(Object dataVal){
+    public ResponseJson data(Object dataVal){
         this.put(KEY_DATA, dataVal);
         return this;
     }
@@ -305,8 +305,13 @@ public class Json extends LinkedHashMap<String, Object> {
      * @param dataVal
      * @return
      */
-    public Json data(String dataKey, Object dataVal){
+    public ResponseJson data(String dataKey, Object dataVal){
         this.put(dataKey, dataVal);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return JSONObject.toJSON(this).toString();
     }
 }
