@@ -6,7 +6,7 @@ import com.fanfengping.zeus.service.BaseService;
 import java.util.List;
 
 public interface UserService extends BaseService<User> {
-    List<User> findAllByConditions(String account, String name, String mobile, String email);
+    List<User> findAllByConditions(String username, String name, String mobile, String email);
 
-    User findByAccountAndPasswd (String account, String passwd);
+    User findByUsernameAndPassword (String username, String password);
 }

@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     public User add(User user) {
         if (user != null && userRepository.add(user) > 0) {
-            return userRepository.findByAccount(user.getAccount());
+            return userRepository.findByUsername(user.getUsername());
         } else {
             log.error("用户新增失败！原因：用户信息为空或系统未知异常！");
             return null;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     public User update(User user) {
         if (user != null && userRepository.update(user) > 0) {
-            return userRepository.findByAccount(user.getAccount());
+            return userRepository.findByUsername(user.getUsername());
         } else {
             log.error("用户更新失败！原因：用户信息为空或系统未知异常！");
             return null;
@@ -42,11 +42,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public List<User> findAllByConditions(String account, String name, String mobile, String email) {
-        return userRepository.findAllByConditions(account, name, mobile, email);
+    public List<User> findAllByConditions(String username, String name, String mobile, String email) {
+        return userRepository.findAllByConditions(username, name, mobile, email);
     }
 
-    public User findByAccountAndPasswd(String account, String passwd) {
-        return userRepository.findByAccountAndPasswd(account, passwd);
+    public User findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password);
     }
 }
