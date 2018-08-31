@@ -2,7 +2,6 @@ package com.fanfengping.zeus.repository.basic;
 
 import com.fanfengping.zeus.entity.basic.Shortcut;
 import org.apache.ibatis.annotations.*;
-
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public interface ShortcutRepository {
             @Result(property = "ctime", column = "ctime"),
             @Result(property = "utime", column = "utime"),
     })
-    Integer add(Shortcut shortcut);
+    int add(Shortcut shortcut);
 
     @Update("update shortcut set dis = '${dis}', disorder = '${disorder}', name = '${name}', icon = '${icon}', " +
             "       url = '${url}', manager = '${manager}', mobile = '${mobile}', note = '${note}', " +
@@ -45,7 +44,7 @@ public interface ShortcutRepository {
             @Result(property = "ctime", column = "ctime"),
             @Result(property = "utime", column = "utime"),
     })
-    Integer update(Shortcut shortcut);
+    int update(Shortcut shortcut);
 
     @Delete("delete from shortcut where id = '${id}' ")
     @Results({
@@ -62,7 +61,7 @@ public interface ShortcutRepository {
             @Result(property = "ctime", column = "ctime"),
             @Result(property = "utime", column = "utime"),
     })
-    Integer delete(Shortcut shortcut);
+    int delete(Shortcut shortcut);
 
     @Select("select * from shortcut order by dis desc, disorder ")
     @Results({

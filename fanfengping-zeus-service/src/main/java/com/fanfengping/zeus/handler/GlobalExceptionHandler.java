@@ -1,6 +1,6 @@
 package com.fanfengping.zeus.handler;
 
-import com.fanfengping.zeus.util.Json;
+import com.fanfengping.zeus.util.ResponseJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     //不满足 @RequiresGuest 注解时抛出的异常信息
     private static final String GUEST_ONLY = "Attempting to perform a guest-only operation";
 
-    private Json json = null;
+    private ResponseJson responseJson = null;
 
 //    @ExceptionHandler(UnauthenticatedException.class)
 //    @ResponseBody
