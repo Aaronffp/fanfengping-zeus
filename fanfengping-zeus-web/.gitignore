@@ -1,8 +1,6 @@
 .DS_Store
+node_modules
 /dist
-
-# Nodejs
-/node_modules
 
 # Log files
 npm-debug.log*
@@ -17,5 +15,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-package-lock.json
-dev
+
+# d2admin
+dev/design
+docs/.vuepress/dist
