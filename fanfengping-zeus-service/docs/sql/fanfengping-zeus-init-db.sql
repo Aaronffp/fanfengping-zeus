@@ -192,17 +192,17 @@ CREATE TABLE `user`
   `name` varchar(50) DEFAULT '规划用户' NOT NULL COMMENT '用户名称',
   `mobile` varchar(15) DEFAULT '' NOT NULL COMMENT '手机号码',
   `email` varchar(50) DEFAULT '' NOT NULL COMMENT '用户邮箱',
-  `account` varchar(50) DEFAULT '' NOT NULL COMMENT '用户账号（字母数字下划线）',
-  `passwd` varchar(50) DEFAULT '' NOT NULL COMMENT '用户密码',
-  `salt` varchar(50) DEFAULT 'ADldaEAD21Aadfyadffp==' NOT NULL COMMENT '用户秘钥',
+  `username` varchar(50) DEFAULT '' NOT NULL COMMENT '用户账号（字母数字下划线）',
+  `password` varchar(50) DEFAULT '' NOT NULL COMMENT '用户密码',
+  `token` varchar(50) DEFAULT 'ADldaEAD21Aadfyadffp==' NOT NULL COMMENT '用户秘钥',
   `state` int DEFAULT 0 NOT NULL COMMENT '是否启用（默认注销。1，启用；0，注销）',
   `operator` varchar(50) DEFAULT 'system' NOT NULL COMMENT '操作人',
   `ctime` datetime DEFAULT NOW() NOT NULL COMMENT '创建时间',
   `utime` datetime DEFAULT now() NOT NULL COMMENT '更新时间',
-  UNIQUE INDEX `user_account_uindex` (`account`) COMMENT '用户表/用户账号 唯一键'
+  UNIQUE INDEX `user_username_uindex` (`username`) COMMENT '用户表/用户账号 唯一键'
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='用户表';
 
-INSERT INTO user(uuid, name, mobile, email, account, passwd, state, operator, ctime, utime) VALUES
+INSERT INTO user(uuid, name, mobile, email, username, password, state, operator, ctime, utime) VALUES
   (REPLACE(UUID(), '-', ''), '超级管理员', '15213149225', '263869564@qq.com', 'system', 'zeus123456', '1', '范丰平', NOW(), NOW()),
   (REPLACE(UUID(), '-', ''), '管理员', '15213149225', '263869564@qq.com', 'admin', 'zeus123456', '1', '范丰平', NOW(), NOW()),
   (REPLACE(UUID(), '-', ''), '普通用户', '15213149225', '263869564@qq.com', 'user', 'zeus123456', '1', '范丰平', NOW(), NOW()),
