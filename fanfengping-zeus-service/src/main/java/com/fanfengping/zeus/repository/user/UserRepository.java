@@ -8,14 +8,14 @@ import java.util.List;
 
 @Repository
 public interface UserRepository {
-    @Insert("insert into user (uuid, username, password, salt, name, mobile, email, state, operator) "
-            + "value(REPLACE(UUID(), '-', ''), '${username}', '${password}', '${salt}', '${name}', '${mobile}', '${email}', ${state}, '${operator}') ")
+    @Insert("insert into user (uuid, username, password, token, name, mobile, email, state, operator) "
+            + "value(REPLACE(UUID(), '-', ''), '${username}', '${password}', '${token}', '${name}', '${mobile}', '${email}', ${state}, '${operator}') ")
     @Results({
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "uuid", column = "uuid"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
-            @Result(property = "salt", column = "salt"),
+            @Result(property = "token", column = "token"),
             @Result(property = "name", column = "name"),
             @Result(property = "mobile", column = "mobile"),
             @Result(property = "email", column = "email"),
@@ -26,7 +26,7 @@ public interface UserRepository {
     })
     int add(User user);
 
-    @Update("update user set username = '${username}', password = '${password}', salt = '${salt}', " +
+    @Update("update user set username = '${username}', password = '${password}', token = '${token}', " +
             "       name = '${name}', mobile = '${mobile}', email = '${email}', state = '${state}', " +
             "       operator = '${operator}', utime = NOW() "
             + "where id = '${id}' and uuid = '${uuid}' ")
@@ -35,7 +35,7 @@ public interface UserRepository {
             @Result(property = "uuid", column = "uuid"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
-            @Result(property = "salt", column = "salt"),
+            @Result(property = "token", column = "token"),
             @Result(property = "name", column = "name"),
             @Result(property = "mobile", column = "mobile"),
             @Result(property = "email", column = "email"),
@@ -52,7 +52,7 @@ public interface UserRepository {
             @Result(property = "uuid", column = "uuid"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
-            @Result(property = "salt", column = "salt"),
+            @Result(property = "token", column = "token"),
             @Result(property = "name", column = "name"),
             @Result(property = "mobile", column = "mobile"),
             @Result(property = "email", column = "email"),
@@ -63,8 +63,7 @@ public interface UserRepository {
     })
     int delete(User user);
 
-    @Select("select id, uuid, username, password, salt, name, mobile, email, state, operator, ctime, utime "
-            + "from user "
+    @Select("select * from user "
             + "where username like '%${username}%' and name like '%${name}%' " +
             "    and mobile like '%${mobile}%' and email like '%${email}%' " +
             "  order by state desc, utime desc ")
@@ -73,7 +72,7 @@ public interface UserRepository {
             @Result(property = "uuid", column = "uuid"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
-            @Result(property = "salt", column = "salt"),
+            @Result(property = "token", column = "token"),
             @Result(property = "name", column = "name"),
             @Result(property = "mobile", column = "mobile"),
             @Result(property = "email", column = "email"),
@@ -87,15 +86,13 @@ public interface UserRepository {
                                    @Param("mobile") String mobile,
                                    @Param("email") String email);
 
-    @Select("select id, uuid, username, password, salt, name, mobile, email, state, operator, ctime, utime "
-            + "from user "
-            + "where username = '${username}' ")
+    @Select("select * from user where username = '${username}' ")
     @Results({
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "uuid", column = "uuid"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
-            @Result(property = "salt", column = "salt"),
+            @Result(property = "token", column = "token"),
             @Result(property = "name", column = "name"),
             @Result(property = "mobile", column = "mobile"),
             @Result(property = "email", column = "email"),
@@ -106,15 +103,13 @@ public interface UserRepository {
     })
     User findByUsername(@Param("username") String username);
 
-    @Select("select id, uuid, username, password, salt, name, mobile, email, state, operator, ctime, utime "
-            + "from user "
-            + "where username = '${username}' and password = '${password}' order by state desc, utime desc ")
+    @Select("select * from user where username = '${username}' and password = '${password}' ")
     @Results({
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "uuid", column = "uuid"),
             @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
-            @Result(property = "salt", column = "salt"),
+            @Result(property = "token", column = "token"),
             @Result(property = "name", column = "name"),
             @Result(property = "mobile", column = "mobile"),
             @Result(property = "email", column = "email"),
@@ -123,5 +118,5 @@ public interface UserRepository {
             @Result(property = "ctime", column = "ctime"),
             @Result(property = "utime", column = "utime"),
     })
-    User findByUsernameAndPassword(String username, String password);
+    User findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 }
