@@ -63,27 +63,11 @@ export default {
     return {
       // 快速选择用户
       dialogVisible: false,
-      users: [
-        {
-          name: '管理员',
-          username: 'admin',
-          password: 'admin'
-        },
-        {
-          name: '编辑',
-          username: 'editor',
-          password: 'editor'
-        },
-        {
-          name: '用户1',
-          username: 'user1',
-          password: 'user1'
-        }
-      ],
+      users: [],
       // 表单
       formLogin: {
         username: 'admin',
-        password: 'admin',
+        password: 'zeus123456',
         code: 'v9am'
       },
       // 校验
