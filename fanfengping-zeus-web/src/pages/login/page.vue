@@ -29,16 +29,13 @@
               </el-input>
             </el-form-item>
             <el-button @click="submit" type="primary" class="button-login">登录</el-button>
+            <el-button @click="dialogVisible = true" type="primary" class="button-registe">注册</el-button>
           </el-form>
         </el-card>
       </div>
-      <!-- 快速登录按钮 -->
-      <el-button type="info" class="button-help" @click="dialogVisible = true">
-        快速选择用户（测试功能）
-      </el-button>
     </div>
     <el-dialog
-      title="快速选择用户"
+      title="用户注册"
       :visible.sync="dialogVisible"
       width="400px">
       <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
