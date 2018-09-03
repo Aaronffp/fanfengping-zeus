@@ -19,9 +19,9 @@ public class DatabaseCompareResultController {
 
     @RequestMapping(path = "", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<DatabaseCompareResult> findAllByConditions(@RequestParam("service") String service, @RequestParam("env") String env)
+    public List<DatabaseCompareResult> findAllByConditions(@RequestParam("eng") String eng, @RequestParam("env") String env)
             throws SQLException {
-        return databaseCompareResultService.findAllByConditions(service, env);
+        return databaseCompareResultService.findAllByConditions(eng, env);
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")

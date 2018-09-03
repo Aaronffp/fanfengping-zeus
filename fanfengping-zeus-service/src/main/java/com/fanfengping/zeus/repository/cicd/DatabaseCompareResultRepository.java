@@ -36,7 +36,7 @@ public interface DatabaseCompareResultRepository {
             "        target_env, target_url, info, note, ctime "
             + " from database_compare "
             + "where flag = -1 and ctime > DATE_ADD(NOW(),INTERVAL -30 MINUTE) and "
-            + "      eng like '%${eng}%' and env like '%${env}%' "
+            + "      eng like '%${eng}%' and target_env like '%${env}%' "
             + "order by env, id")
     @Results({
             @Result(property = "id", column = "id"),
@@ -53,13 +53,13 @@ public interface DatabaseCompareResultRepository {
             @Result(property = "note", column = "note"),
             @Result(property = "ctime", column = "ctime"),
     })
-    List<DatabaseCompareResult> findAllByConditions(@Param("eng") String service, @Param("env") String env);
+    List<DatabaseCompareResult> findAllByConditions(@Param("eng") String eng, @Param("env") String env);
 
     @Select(" select id, flag, status, eng, benchmark_id, benchmark_env, benchmark_url, target_id, " +
             "        target_env, target_url, info, note, ctime "
             + " from database_compare "
             + "where flag = -1 and ctime > DATE_ADD(NOW(),INTERVAL -30 MINUTE) and "
-            + "      eng like '%${eng}%' and env like '%${env}%' "
+            + "      eng like '%${eng}%' and target_env like '%${env}%' "
             + "order by env, id")
     @Results({
             @Result(property = "id", column = "id"),
@@ -80,7 +80,7 @@ public interface DatabaseCompareResultRepository {
 
     @Select("select * from database_compare "
             + "where ctime > DATE_ADD(NOW(),INTERVAL -30 MINUTE) "
-            + "and eng like '%${eng}%' and env like '%${env}%' limit 1")
+            + "and eng like '%${eng}%' and target_env like '%${env}%' limit 1")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "flag", column = "flag"),
@@ -99,7 +99,7 @@ public interface DatabaseCompareResultRepository {
     List<DatabaseCompareResult> exist(@Param("eng") String eng, @Param("env") String env);
 
     @Delete("delete from database_compare where ctime > DATE_ADD(NOW(),INTERVAL -30 MINUTE) "
-            + "and eng like '%${eng}%' and env like '%${env}%' ")
+            + "and eng like '%${eng}%' and target_env like '%${env}%' ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "flag", column = "flag"),
