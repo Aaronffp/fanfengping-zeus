@@ -15,16 +15,27 @@ import demoD2Crud from './modules/demo-d2-crud'
 // 第三方网页
 import demoFrame from './modules/demo-frame'
 
+/**
+ * 设置侧边栏
+ */
+// 首页
+import menuHomepage from './modules/menu-homepage'
+// 项目管理
+// 发布管理
+// 开发管理
+// 测试管理
+// 报表管理
+// 数据管理
+// 自动化
+// 知识库
+// 运维管理
+// 系统管理
+// 系统设置
+
+
 // 菜单 侧边栏
 export const menuAside = [
-  demoComponents,
-  demoPlugins,
-  demoCharts,
-  demoElement,
-  demoPlayground,
-  demoBusiness,
-  demoD2Crud,
-  demoFrame
+    menuHomepage
 ]
 
 // 菜单 顶栏
