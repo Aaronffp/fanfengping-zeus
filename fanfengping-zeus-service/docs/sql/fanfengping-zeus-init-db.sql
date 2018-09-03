@@ -496,7 +496,7 @@ INSERT INTO menu(title, icon, path, level, menu_id, dis, disorder, operator, cti
 
   ('MD5加密', 'barcode', '/page3', 2, 10, 1, 30, 'system', NOW(), NOW()),           -- 工具库
   ('AES加密', 'barcode', '/page3', 2, 10, 1, 30, 'system', NOW(), NOW()),           -- 工具库
-  ('数据生成', 'database', '/page3', 10, 6, 1, 30, 'system', NOW(), NOW()),         -- 工具库
+  ('数据生成', 'database', '/page3', 2, 10, 1, 30, 'system', NOW(), NOW()),         -- 工具库
 
   ('应用管理', 'android', '/page3', 2, 11, 1, 30, 'system', NOW(), NOW()),          -- 运维管理
   ('服务管理', 'rss-square', '/page3', 2, 11, 1, 30, 'system', NOW(), NOW()),       -- 运维管理
@@ -507,7 +507,7 @@ INSERT INTO menu(title, icon, path, level, menu_id, dis, disorder, operator, cti
   ('团队管理', 'handshake-o', '/team', 2, 12, 0, 20, 'system', NOW(), NOW()),       -- 系统管理
   ('产品线管理', 'product-hunt', '/line', 2, 12, 0, 30, 'system', NOW(), NOW()),    -- 系统管理
   ('小组管理', 'group', '/group', 2, 12, 0, 40, 'system', NOW(), NOW()),            -- 系统管理
-  ('权限管理', 'gavel', '/permission', 12, 3, 0, 50, 'system', NOW(), NOW()),       -- 系统管理
+  ('权限管理', 'gavel', '/permission', 2, 13, 0, 50, 'system', NOW(), NOW()),       -- 系统管理
 
   ('菜单设置', 'th-list', '/menu', 2, 13, 1, 10, 'system', NOW(), NOW()),           -- 系统设置
   ('编码设置', 'barcode', '/code', 2, 13, 0, 20, 'system', NOW(), NOW());           -- 系统设置
