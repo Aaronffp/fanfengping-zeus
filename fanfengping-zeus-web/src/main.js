@@ -73,8 +73,8 @@ new Vue({
   watch: {
     // 监听路由 控制侧边栏显示
     '$route.matched' (val) {
-      const _side = menuAside.filter(menu => menu.path === val[0].path)
-      this.$store.commit('d2admin/menu/asideSet', _side.length > 0 ? _side[0].children : [])
+      // const _side = menuAside.filter(menu => menu.path === val[0].path)
+      // this.$store.commit('d2admin/menu/asideSet', _side.length > 0 ? _side[0].children : [])
     }
   }
 }).$mount('#app')
