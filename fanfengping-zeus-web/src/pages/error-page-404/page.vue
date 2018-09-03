@@ -1,8 +1,8 @@
 <template>
   <div class="page">
-    <p class="page_title">page not found</p>
+    <p class="page_title">It looks like I'm lost, can you take me home ?</p>
     <el-button class="d2-mt" @click="$router.replace({ path: '/' })">
-      返回首页
+      Go Home
     </el-button>
   </div>
 </template>
