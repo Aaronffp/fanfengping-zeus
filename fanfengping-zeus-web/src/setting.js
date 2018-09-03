@@ -5,7 +5,7 @@ const setting = {
   // 支持快捷键 例如 ctrl+shift+s
   hotkey: {
     search: {
-      open: 's',
+      open: 'sss',
       close: 'esc'
     }
   },
