@@ -8,5 +8,5 @@ export default {
     { path: `${pre}report`, title: '周报管理', icon: 'group' },
     { path: `${pre}sign`, title: '日常打卡', icon: 'bookmark' },
     { path: `${pre}kaoqin`, title: '考勤信息', icon: 'bell' }
-  ])('/workspace/')
+  ])('/work/')
 }

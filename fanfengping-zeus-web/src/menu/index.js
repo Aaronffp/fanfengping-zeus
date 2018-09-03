@@ -1,3 +1,10 @@
+/**
+ * 设置顶栏
+ */
+// 我的工作台
+import menuWorkspace from './modules/menu-workspace'
+// 畅所欲言
+import menuCommunicate from './modules/menu-communicate'
 // 插件
 import demoPlugins from './modules/demo-plugins'
 // 组件
@@ -61,11 +68,9 @@ export const menuAside = [
 
 // 菜单 顶栏
 export const menuHeader = [
-  {
-    path: '/index',
-    title: '首页',
-    icon: 'home'
-  },
+  menuHomepage,
+  menuWorkspace,
+  menuCommunicate,
   {
     title: '功能',
     icon: 'puzzle-piece',
