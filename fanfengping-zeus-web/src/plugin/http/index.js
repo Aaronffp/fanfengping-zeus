@@ -16,11 +16,11 @@ export function HTTP_EDIT(url, data) {
   });
 }
 
-export function HTTP_GET(url, params) {
+export function HTTP_GET(url, data) {
   return request({
     method: 'get',
     url: url,
-    params: params
+    data: data
   });
 }
 
