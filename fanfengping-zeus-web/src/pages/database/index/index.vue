@@ -13,10 +13,15 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="query.eng" placeholder="请输入英文简称" clearable></el-input>
+            <el-select v-model="query.eng" placeholder="请输入英文简称..." clearable>
+              <el-option v-for="item in conditions.engs" :key="item.value" :label="item.label" :value="item.value">
+                <span style="float: left">{{ item.label }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="query.chs" placeholder="请输入中文简称" clearable></el-input>
+            <el-input v-model="query.chs" placeholder="请输入中文简称..." clearable></el-input>
           </el-form-item>
           <el-form-item>
             <el-button @click="handleBtnQuery(query)" type="primary" icon="el-icon-search">搜索</el-button>
@@ -120,21 +125,22 @@
 </template>
 
 <script>
-  import {DbAdd, DbUpdate, DbFindAllByConditions, DbDelete, DbSetBenchmark} from '@/service/database'
+  // import {DbAdd, DbUpdate, DbFindAllByConditions, DbDelete, DbSetBenchmark} from '@/service/database'
   export default {
     methods: {
       handleBtnQuery(query) {
         console.log(query);
         
-        DbFindAllByConditions(query).then(res => {
-          console.log("查询结果");
-          console.log(res);
-          this.tableData = res
-        })
-          .catch(err => {
-            console.log(err)
-          })
+        // DbFindAllByConditions(query).then(res => {
+        //   console.log("查询结果");
+        //   console.log(res);
+        //   this.tableData = res
+        // })
+        // .catch(err => {
+        //   console.log(err)
+        // })
       },
+      
       handleClick(row) {
         console.log(row);
       }
@@ -164,33 +170,33 @@
             {value: 'DOCKER', label: '容器环境'}
           ],
           engs: [
-            {value: 'shenma-admittance', label: 'shenma-admittance(C端准入系统)'},
-            {value: 'shenma-cfbs', label: 'shenma-cfbs(业务系统)'},
-            {value: 'shenma-channel', label: 'shenma-channel(渠道系统)'},
-            {value: 'shenma-chitu', label: 'shenma-chitu(赤兔系统)'},
-            {value: 'shenma-chnl', label: 'shenma-chnl(新渠道系统)'},
-            {value: 'shenma-collection', label: 'shenma-collection(催收系统)'},
-            {value: 'shenma-css', label: 'shenma-css(什马清结算系统)'},
-            {value: 'shenma-ev-order', label: 'shenma-ev-order(EV订单系统)'},
-            {value: 'shenma-fpss', label: 'shenma-fpss(资金兑付系统)'},
-            {value: 'shenma-frss', label: 'shenma-frss(账务对账文件清结算)'},
-            {value: 'shenma-fund', label: 'shenma-fund(旧资金系统)'},
-            {value: 'shenma-insurance', label: 'shenma-insurance(保险项目)'},
-            {value: 'shenma-insurance-admin', label: 'shenma-insurance-admin(新风管理系统)'},
-            {value: 'shenma-insurance-web', label: 'shenma-insurance-web(保险后台页面)'},
-            {value: 'shenma-moxie', label: 'shenma-moxie(新风控魔蝎)'},
-            {value: 'shenma-oss', label: 'shenma-oss(文件系统)'},
-            {value: 'shenma-riskcontrol', label: 'shenma-riskcontrol(风控系统)'},
-            {value: 'shenma-riskeng', label: 'shenma-riskeng(新风控引擎)'},
-            {value: 'shenma-risksrc', label: 'shenma-risksrc(新风控数据源)'},
-            {value: 'shenma-romp', label: 'shenma-romp(EV商品管理系统)'},
-            {value: 'shenma-running', label: 'shenma-running(账务清结算系统)'},
-            {value: 'shenma-samp', label: 'shenma-samp(新资金系统)'},
-            {value: 'shenma-scf', label: 'shenma-scf(供应链金融系统)'},
-            {value: 'shenma-shenmapay', label: 'shenma-shenmapay(支付系统)'},
-            {value: 'shenma-smartpay', label: 'shenma-smartpay(支付路由)'},
-            {value: 'shenma-toprules', label: 'shenma-toprules(规则引擎)'},
-            {value: 'shenma-wechat', label: 'shenma-wechat(微信后台系统)'}
+            {value: 'aaronffp-dev', label: 'aaronffp-dev(宙斯全栈能效)'},
+            {value: 'aaronffp-docs', label: 'aaronffp-docs(宙斯全栈能效)'},
+            {value: 'aaronffp-node', label: 'aaronffp-node(宙斯全栈能效)'},
+            {value: 'aaronffp-modules', label: 'aaronffp-modules(宙斯全栈能效)'},
+            {value: 'aaronffp-public', label: 'aaronffp-public(宙斯全栈能效)'},
+            {value: 'aaronffp-src', label: 'aaronffp-src(宙斯全栈能效)'},
+            {value: 'aaronffp-api', label: 'aaronffp-api(宙斯全栈能效)'},
+            {value: 'aaronffp-assets', label: 'aaronffp-assets(宙斯全栈能效)'},
+            {value: 'aaronffp-compon', label: 'aaronffp-compon(宙斯全栈能效)'},
+            {value: 'aaronffp-layout', label: 'aaronffp-layout(宙斯全栈能效)'},
+            {value: 'aaronffp-libs', label: 'aaronffp-libs(宙斯全栈能效)'},
+            {value: 'aaronffp-menu', label: 'aaronffp-menu(宙斯全栈能效)'},
+            {value: 'aaronffp-mock', label: 'aaronffp-mock(宙斯全栈能效)'},
+            {value: 'aaronffp-pages', label: 'aaronffp-pages(宙斯全栈能效)'},
+            {value: 'aaronffp-plugin', label: 'aaronffp-plugin(宙斯全栈能效)'},
+            {value: 'aaronffp-router', label: 'aaronffp-router(宙斯全栈能效)'},
+            {value: 'aaronffp-store', label: 'aaronffp-store(宙斯全栈能效)'},
+            {value: 'aaronffp-app', label: 'aaronffp-app(宙斯全栈能效)'},
+            {value: 'aaronffp-main', label: 'aaronffp-main(宙斯全栈能效)'},
+            {value: 'aaronffp-setting', label: 'aaronffp-setting(宙斯全栈能效)'},
+            {value: 'aaronffp-tests', label: 'aaronffp-tests(宙斯全栈能效)'},
+            {value: 'aaronffp-env', label: 'aaronffp-env(宙斯全栈能效)'},
+            {value: 'aaronffp-eslintrc', label: 'aaronffp-eslintrc(宙斯全栈能效)'},
+            {value: 'aaronffp-post', label: 'aaronffp-post(宙斯全栈能效)'},
+            {value: 'aaronffp-get', label: 'aaronffp-get(宙斯全栈能效)'},
+            {value: 'aaronffp-update', label: 'aaronffp-update(宙斯全栈能效)'},
+            {value: 'aaronffp-delete', label: 'aaronffp-delete(宙斯全栈能效)'}
           ]
         },
         
@@ -201,24 +207,24 @@
         },
         
         tableData: [
-          {'id': 99, 'env': 'SIT01', 'eng': 'shenma-ev-order', 'chs': 'EV订单系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.125:3306/db_apollo_order', 'account': 'user_shenma', 'password': 'pass_shenma', 'creater': '师宗强', 'ctime': '2018-09-03 15:35:04.0', 'updater': 'system', 'utime': '2018-09-03 15:35:04.0', 'note': 'EV订单系统'},
-          {'id': 101, 'env': 'SIT01', 'eng': 'shenma-romp', 'chs': 'EV商品管理系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.125:3306/db_romp?useUnicode=true&characterEncoding=UTF-8', 'account': 'romp', 'password': 'Shenma007', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:04.0', 'updater': 'system', 'utime': '2018-09-03 15:35:04.0', 'note': 'EV商品管理系统'},
-          {'id': 103, 'env': 'SIT01', 'eng': 'shenma-css', 'chs': '什马清结算系统', 'benchmark': 0, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_css', 'account': 'user_frss', 'password': 'Shenma@fsde', 'creater': '夏天', 'ctime': '2018-09-03 15:35:04.0', 'updater': 'system', 'utime': '2018-09-03 15:35:04.0', 'note': '清结算创世块'},
-          {'id': 92, 'env': 'SIT01', 'eng': 'shenma-frss', 'chs': '账务对账文件清结算', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_frss', 'account': 'user_frss', 'password': 'Shenma@fsde', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': 'system', 'utime': '2018-09-03 15:35:03.0', 'note': '账务对账文件清结算'},
-          {'id': 93, 'env': 'SIT01', 'eng': 'shenma-collection', 'chs': '催收系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.44:3306/db_ccms', 'account': 'user_ccms', 'password': 'Bj132Y11', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': 'system', 'utime': '2018-09-03 15:35:03.0', 'note': '催收系统'},
-          {'id': 97, 'env': 'SIT01', 'eng': 'shenma-fpss', 'chs': '资金兑付系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_running_fund', 'account': 'user_rfund', 'password': 'Shenma#zaq7', 'creater': '夏天', 'ctime': '2018-09-03 15:35:03.0', 'updater': 'system', 'utime': '2018-09-03 15:35:03.0', 'note': '创世块'},
-          {'id': 60, 'env': 'SIT01', 'eng': 'shenma-risksrc', 'chs': '风控数据源', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_xmjk', 'account': 'user_xmjk', 'password': 'Mashen@2qaz', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': 'system', 'utime': '2018-09-03 15:34:59.0', 'note': '风控数据源 + 小马金卡'},
-          {'id': 64, 'env': 'SIT01', 'eng': 'shenma-insurance-web', 'chs': '保险服务', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_insurance_web', 'account': 'user_insurance', 'password': 'Shenma@sob1', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': 'system', 'utime': '2018-09-03 15:34:59.0', 'note': '初始化环境数据库信息'},
-          {'id': 65, 'env': 'SIT01', 'eng': 'shenma-insurance', 'chs': '保险项目', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_insurance', 'account': 'user_insurance', 'password': 'Shenma@sob1', 'creater': '周苏辉', 'ctime': '2018-09-03 15:34:59.0', 'updater': 'system', 'utime': '2018-09-03 15:34:59.0', 'note': '保险项目'},
-          {'id': 51, 'env': 'SIT01', 'eng': 'shenma-samp', 'chs': '新资金系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_samp_fund', 'account': 'user_samp_fund', 'password': 'pass_samp_fund', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': 'system', 'utime': '2018-09-03 15:34:58.0', 'note': '备注'},
-          {'id': 52, 'env': 'SIT01', 'eng': 'shenma-cfbs', 'chs': '业务系统', 'benchmark': 1, 'type': 'ORACLE', 'driver': 'oracle.jdbc.driver.OracleDriver', 'url': 'jdbc:oracle:thin:@172.16.10.85:1521:cfbsdb', 'account': 'huateng', 'password': 'qazxsw', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': 'system', 'utime': '2018-09-03 15:34:58.0', 'note': '业务系统数据库'},
-          {'id': 53, 'env': 'SIT01', 'eng': 'shenma-smartpay', 'chs': '支付路由', 'benchmark': 1, 'type': 'ORACLE', 'driver': 'oracle.jdbc.driver.OracleDriver', 'url': 'jdbc:oracle:thin:@172.16.10.85:1521:cfbsdb', 'account': 'cfbs1', 'password': 'QAZxsw1', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': 'system', 'utime': '2018-09-03 15:34:58.0', 'note': '致富路由数据库'},
-          {'id': 47, 'env': 'SIT01', 'eng': 'shenma-insurance-admin', 'chs': '保险服务', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_insurance_admin', 'account': 'user_insurance', 'password': 'Shenma@sob1', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:57.0', 'updater': 'system', 'utime': '2018-09-03 15:34:57.0', 'note': '初始化环境数据库信息'},
-          {'id': 36, 'env': 'SIT01', 'eng': 'shenma-wechat', 'chs': '微信后台系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_weixin', 'account': 'user_wechat', 'password': 'shenma', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:56.0', 'updater': 'system', 'utime': '2018-09-03 15:34:56.0', 'note': '初始化环境数据库信息'},
-          {'id': 40, 'env': 'SIT01', 'eng': 'shenma-running', 'chs': '账务清结算系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_running_fund', 'account': 'user_rfund', 'password': 'Shenma#zaq7', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:56.0', 'updater': 'system', 'utime': '2018-09-03 15:34:56.0', 'note': '初始化环境数据库信息'},
-          {'id': 28, 'env': 'SIT01', 'eng': 'shenma-chitu', 'chs': '赤兔系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_chitu', 'account': 'user_chitu', 'password': 'Shenmaqaz1', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:55.0', 'updater': 'system', 'utime': '2018-09-03 15:34:55.0', 'note': '初始化环境数据库信息'},
-          {'id': 32, 'env': 'SIT01', 'eng': 'shenma-scf', 'chs': '供应链金融系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_scf', 'account': 'user_scf', 'password': 'UU13k7pm', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:55.0', 'updater': 'system', 'utime': '2018-09-03 15:34:55.0', 'note': '初始化环境数据库信息'},
-          {'id': 4, 'env': 'SIT01', 'eng': 'shenma-shenmapay', 'chs': '支付系统', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_shenmapay', 'account': 'user_shenmapay', 'password': 'w127Gb56', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:51.0', 'updater': 'system', 'utime': '2018-09-03 15:34:51.0', 'note': '初始化环境数据库信息'}
+          {'id': 99, 'env': 'SIT01', 'eng': 'aaronffp-api', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.125:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:04.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:04.0', 'note': '宙斯全栈能效平台'},
+          {'id': 101, 'env': 'SIT01', 'eng': 'aaronffp-assets', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.125:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:04.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:04.0', 'note': '宙斯全栈能效平台'},
+          {'id': 103, 'env': 'SIT01', 'eng': 'aaronffp-components', 'chs': '宙斯全栈能效平台', 'benchmark': 0, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:04.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:04.0', 'note': '宙斯全栈能效平台'},
+          {'id': 92, 'env': 'SIT01', 'eng': 'aaronffp-layout', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:03.0', 'note': '宙斯全栈能效平台'},
+          {'id': 93, 'env': 'SIT01', 'eng': 'aaronffp-libs', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.44:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:03.0', 'note': '宙斯全栈能效平台'},
+          {'id': 97, 'env': 'SIT01', 'eng': 'aaronffp-menu', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:03.0', 'note': '宙斯全栈能效平台'},
+          {'id': 60, 'env': 'SIT01', 'eng': 'aaronffp-mock', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:59.0', 'note': '宙斯全栈能效平台'},
+          {'id': 64, 'env': 'SIT01', 'eng': 'aaronffp-pages', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:59.0', 'note': '宙斯全栈能效平台'},
+          {'id': 65, 'env': 'SIT01', 'eng': 'aaronffp-plugin', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:59.0', 'note': '宙斯全栈能效平台'},
+          {'id': 51, 'env': 'SIT01', 'eng': 'aaronffp-router', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:58.0', 'note': '宙斯全栈能效平台'},
+          {'id': 52, 'env': 'SIT01', 'eng': 'aaronffp-store', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'ORACLE', 'driver': 'oracle.jdbc.driver.OracleDriver', 'url': 'jdbc:oracle:thin:@172.16.10.85:1521:db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:58.0', 'note': '宙斯全栈能效平台'},
+          {'id': 53, 'env': 'SIT01', 'eng': 'aaronffp-app', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'ORACLE', 'driver': 'oracle.jdbc.driver.OracleDriver', 'url': 'jdbc:oracle:thin:@172.16.10.85:1521:db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:58.0', 'note': '宙斯全栈能效平台'},
+          {'id': 47, 'env': 'SIT01', 'eng': 'aaronffp-admin', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:57.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:57.0', 'note': '宙斯全栈能效平台'},
+          {'id': 36, 'env': 'SIT01', 'eng': 'aaronffp-test', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:56.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:56.0', 'note': '宙斯全栈能效平台'},
+          {'id': 40, 'env': 'SIT01', 'eng': 'aaronffp-env', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:56.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:56.0', 'note': '宙斯全栈能效平台'},
+          {'id': 28, 'env': 'SIT01', 'eng': 'aaronffp-license', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:55.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:55.0', 'note': '宙斯全栈能效平台'},
+          {'id': 32, 'env': 'SIT01', 'eng': 'aaronffp-package', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:55.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:55.0', 'note': '宙斯全栈能效平台'},
+          {'id': 4, 'env': 'SIT01', 'eng': 'aaronffp-zeus', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:51.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:51.0', 'note': '宙斯全栈能效平台'}
         ]
       }
     }
