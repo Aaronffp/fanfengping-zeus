@@ -1,0 +1,31 @@
+import {HTTP_ADD, HTTP_EDIT, HTTP_GET, HTTP_DEL} from '@/plugin/http'
+import API_DICT_DATABASE from '../apidict/dict-database'
+
+export function DbAdd(data) {
+  return HTTP_ADD(API_DICT_DATABASE.URL_BASE, data);
+}
+
+export function DbUpdate(data) {
+  return HTTP_EDIT(API_DICT_DATABASE.URL_BASE, data);
+}
+
+export function DbDelete(data) {
+  return HTTP_DEL(API_DICT_DATABASE.URL_BASE, data);
+}
+
+export function DbFindAllByConditions(query) {
+  return HTTP_GET(API_DICT_DATABASE.URL_BASE, query);
+}
+
+export function DbSetBenchmark(data) {
+  return HTTP_EDIT(API_DICT_DATABASE.URL_BENCHMARK, query);
+}
+
+export default {
+  DbAdd,
+  DbUpdate,
+  DbFindAllByConditions,
+  DbDelete,
+  DbSetBenchmark
+}
+
