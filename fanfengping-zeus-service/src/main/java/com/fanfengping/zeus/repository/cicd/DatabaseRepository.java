@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface DatabaseRepository {
-    @Insert("insert into database (env, eng, chs, benchmark, type, driver, url, account, password, creater, updater, note) "
+    @Insert("insert into `database` (env, eng, chs, benchmark, type, driver, url, account, password, creater, updater, note) "
             + "value (#{env}, #{eng}, #{chs}, #{benchmark}, #{type}, #{driver}, #{url}, #{account}, #{password}, #{creater}, #{updater}, #{note})")
     @Results({
             @Result(property = "id", column = "id"),
@@ -29,7 +29,7 @@ public interface DatabaseRepository {
     })
     int add(Database database);
 
-    @Update("update database set benchmark = 0 where eng = '${eng}'")
+    @Update("update `database` set benchmark = 0 where eng = '${eng}'")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
@@ -69,7 +69,7 @@ public interface DatabaseRepository {
     })
     int setBenchmark(Database database);
 
-    @Update("update database set env = '${env}', eng = '${eng}', chs = '${chs}', " +
+    @Update("update `database` set env = '${env}', eng = '${eng}', chs = '${chs}', " +
             "benchmark = '${benchmark}', type = '${type}', driver = '${driver}', url = '${url}', " +
             "account = '${account}', password = '${password}', creater = '${creater}', " +
             "updater = '${updater}', utime = '${utime}', note = '${note}'" +
@@ -93,7 +93,7 @@ public interface DatabaseRepository {
     })
     int update(Database database);
 
-    @Delete("delete from database where id = #{id}")
+    @Delete("delete from `database` where id = #{id}")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
@@ -115,7 +115,7 @@ public interface DatabaseRepository {
 
     @Select("select id, env, eng, chs, benchmark, type, driver, url, account, password, " +
             "creater, ctime, updater, utime, note  "
-            + "from database "
+            + "from `database` "
             + "where env like '%${env}%' and eng like '%${eng}%' and chs like '%${chs}%' "
             + "order by utime desc")
     @Results({
@@ -137,7 +137,7 @@ public interface DatabaseRepository {
     })
     List<Database> findAllByConditions(@Param("env") String env, @Param("eng") String eng, @Param("chs") String chs);
 
-    @Select("select * from database where env = '${env}' and eng = '${eng}' ")
+    @Select("select * from `database` where env = '${env}' and eng = '${eng}' ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
@@ -157,7 +157,7 @@ public interface DatabaseRepository {
     })
     Database findByEnvAndEng(@Param("env") String env, @Param("eng") String eng);
 
-    @Select("select * from database where benchmark = 1 and type = 'MYSQL' and env <> 'DOCKER' and url not like '%oracle%' "
+    @Select("select * from `database` where benchmark = 1 and type = 'MYSQL' and env <> 'DOCKER' and url not like '%oracle%' "
             + "and eng like '%${eng}%' ")
     @Results({
             @Result(property = "id", column = "id"),
@@ -178,7 +178,7 @@ public interface DatabaseRepository {
     })
     List<Database> findAllBenchmark(@Param("eng") String eng);
 
-    @Select("select * from database where eng = #{eng} and env like '%${env}%' and db_benchmark = 0 and type = 'MYSQL' and env <> 'DOCKER' and url not like '%oracle%'")
+    @Select("select * from `database` where eng = #{eng} and env like '%${env}%' and db_benchmark = 0 and type = 'MYSQL' and env <> 'DOCKER' and url not like '%oracle%'")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
