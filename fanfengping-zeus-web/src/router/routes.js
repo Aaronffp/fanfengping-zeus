@@ -276,6 +276,16 @@ const frameIn = [
       { path: 'index', name: `${pre}index`, component: () => import('@/pages/demo/business/index'), meta: { ...meta, title: '示例首页' } },
       { path: 'table/1', name: `${pre}table-1`, component: () => import('@/pages/demo/business/table/1'), meta: { ...meta, title: '表格 1' } }
     ])('demo-business-')
+  },
+  {
+    path: '/db',
+    name: '数据管理',
+    meta,
+    redirect: { name: 'db-index' },
+    component: layoutHeaderAside,
+    children: (pre => [
+      { path: '', name: `${pre}index`, component: () => import('@/pages/database/index'), meta: { ...meta, title: '数据库列表' } }
+    ])('db-')
   }
 ]
 
