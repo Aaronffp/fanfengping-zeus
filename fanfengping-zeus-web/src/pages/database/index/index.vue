@@ -125,20 +125,21 @@
 </template>
 
 <script>
-  // import {DbAdd, DbUpdate, DbFindAllByConditions, DbDelete, DbSetBenchmark} from '@/service/database'
+  import {DbAdd, DbUpdate, DbFindAllByConditions, DbDelete, DbSetBenchmark} from '@/service/database'
   export default {
     methods: {
       handleBtnQuery(query) {
         console.log(query);
         
-        // DbFindAllByConditions(query).then(res => {
-        //   console.log("查询结果");
-        //   console.log(res);
-        //   this.tableData = res
-        // })
-        // .catch(err => {
-        //   console.log(err)
-        // })
+        DbFindAllByConditions(query).then(res => {
+          console.log("查询结果");
+          console.log(res);
+          // 更新查询结果
+          this.tableData = res
+        })
+        .catch(err => {
+          console.log(err)
+        })
       },
       
       handleClick(row) {
