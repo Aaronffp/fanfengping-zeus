@@ -5,6 +5,6 @@ export default {
   children: (pre => [
     {path: `${pre}`, title: '数据库列表', icon: 'list'},
     {path: `${pre}comp`, title: '数据库比对', icon: 'compress'},
-    {path: `${pre}book`, title: '数据库比对', icon: 'book'}
+    {path: `${pre}book`, title: '数据库字典', icon: 'book'}
   ])('/db/')
 }

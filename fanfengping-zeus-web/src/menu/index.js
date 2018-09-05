@@ -43,6 +43,8 @@ import menuDataManage from './modules/menu-data-manage'
 import menuAutoTest from './modules/menu-autotest'
 // 知识库
 import menuKnowledgeWiki from './modules/menu-knowledge-wiki'
+// 工具库
+import menuToolKits from './modules/menu-tool-kits'
 // 运维管理
 import menuCicdManage from './modules/menu-ops-manage'
 // 系统管理
@@ -61,6 +63,7 @@ export const menuAside = [
   menuDataManage,
   menuAutoTest,
   menuKnowledgeWiki,
+  menuToolKits,
   menuCicdManage,
   menuSystemManage,
   menuSystemSettings
