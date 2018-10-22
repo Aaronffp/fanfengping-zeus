@@ -186,6 +186,10 @@
           })
         }
       },
+      handleBtnEdit(row) {
+        this.formData = row;
+        this.dialogFormVisible = true;
+      },
       handleClick(row) {
         console.log(row);
       }
