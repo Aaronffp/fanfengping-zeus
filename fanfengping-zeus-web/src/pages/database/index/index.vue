@@ -41,24 +41,25 @@
       style="width: 100%">
       <el-table-column fixed type="index" width="50"></el-table-column>
       <!--<el-table-column fixed prop="id" label="主键" width="50" v-show="false"></el-table-column>-->
-      <el-table-column fixed prop="eng" label="英文简称" width="160"></el-table-column>
+      <el-table-column fixed prop="eng" label="英文简称" width="200"></el-table-column>
       <el-table-column prop="chs" label="中文简称" width="150"></el-table-column>
-      <el-table-column prop="env" label="环境标识" width="80"></el-table-column>
+      <el-table-column prop="env" label="环境标识" width="100"></el-table-column>
+      <el-table-column prop="valid" label="是否有效" width="80"></el-table-column>
       <el-table-column prop="benchmark" label="基准库" width="70"></el-table-column>
       <el-table-column prop="type" label="数据库类型" width="100"></el-table-column>
       <el-table-column prop="driver" label="数据库驱动" width="210"></el-table-column>
-      <el-table-column prop="url" label="数据库URL" width="400"></el-table-column>
-      <el-table-column prop="account" label="数据库账号" width="100"></el-table-column>
-      <el-table-column prop="password" label="数据库密码" width="100"></el-table-column>
-      <el-table-column prop="note" label="备注" width="200"></el-table-column>
+      <el-table-column prop="url" label="数据库URL" width="400" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="username" label="数据库账号" width="150"></el-table-column>
+      <el-table-column prop="password" label="数据库密码" width="150"></el-table-column>
+      <el-table-column prop="note" label="备注" width="200" show-overflow-tooltip></el-table-column>
       <el-table-column prop="creater" label="创建人" width="80"></el-table-column>
       <el-table-column prop="ctime" label="创建时间" width="170"></el-table-column>
       <el-table-column prop="updater" label="更新人" width="80"></el-table-column>
       <el-table-column prop="utime" label="更新时间" width="170"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="text" size="small">编辑</el-button>
-          <el-button type="text" size="small">删除</el-button>
+          <el-button @click="handleBtnEdit(scope.row)" type="text" size="small">编辑</el-button>
+          <el-button @click="handleBtnDelete(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,6 +78,12 @@
         </el-form-item>
         <el-form-item label="中文名称：" :label-width="formLabelWidth">
           <el-input v-model="formData.chs" clearable placeholder="请输入中文名称..."></el-input>
+        </el-form-item>
+        <el-form-item label="是否有效：" :label-width="formLabelWidth">
+          <el-select v-model="formData.valid" placeholder="请选择...">
+            <el-option label="是" value="1"></el-option>
+            <el-option label="否" value="0"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="基准库：" :label-width="formLabelWidth">
           <el-select v-model="formData.benchmark" placeholder="请选择...">
@@ -101,7 +108,7 @@
           </el-input>
         </el-form-item>
         <el-form-item label="账号：" :label-width="formLabelWidth">
-          <el-input v-model="formData.account" clearable placeholder="请输入账号...">
+          <el-input v-model="formData.username" clearable placeholder="请输入账号...">
           </el-input>
         </el-form-item>
         <el-form-item label="密码：" :label-width="formLabelWidth">
@@ -115,7 +122,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleBtnAdd()">确 定</el-button>
       </div>
     </el-dialog>
   </d2-container>
@@ -127,18 +134,48 @@
     methods: {
       handleBtnQuery(query) {
         console.log(query);
-        
+
         DbFindAllByConditions(query).then(res => {
           console.log("查询结果");
           console.log(res);
           // 更新查询结果
-          this.tableData = res
+          this.tableData = res.data;
+          this.$message({
+            message: res.msg,
+            type: res.code == 200 ? 'success' : 'warning'
+          });
         })
         .catch(err => {
           console.log(err)
         })
       },
-      
+      handleBtnAdd(){
+        this.dialogFormVisible = false;
+
+        if (this.formData.id > 0) {
+          DbUpdate(this.formData).then(res => {
+            this.$message({
+              message: res.msg,
+              type: res.code == 200 ? 'success' : 'warning'
+            });
+          })
+          .catch(err => {
+            console.log(err)
+          });
+
+          this.formData = {id:0, valid: 1, benchmark: 1, type: 'MYSQL', driver: 'com.mysql.jdbc.Driver'}
+        } else {
+          DbAdd(this.formData).then(res => {
+            this.$message({
+              message: res.msg,
+              type: res.code == 200 ? 'success' : 'warning'
+            });
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }
+      },
       handleClick(row) {
         console.log(row);
       }
@@ -152,12 +189,15 @@
           env: '',
           eng: '',
           chs: '',
-          benchmark: 0,
+          valid: 1,
+          benchmark: 1,
           type: 'MYSQL',
           driver: 'com.mysql.jdbc.Driver',
           url: '',
-          account: '',
+          username: '',
           password: '',
+          creater: '',
+          updater: '',
           note: ''
         },
         conditions: {
@@ -168,33 +208,33 @@
             {value: 'DOCKER', label: '容器环境'}
           ],
           engs: [
-            {value: 'aaronffp-dev', label: 'aaronffp-dev(宙斯全栈能效)'},
-            {value: 'aaronffp-docs', label: 'aaronffp-docs(宙斯全栈能效)'},
-            {value: 'aaronffp-node', label: 'aaronffp-node(宙斯全栈能效)'},
-            {value: 'aaronffp-modules', label: 'aaronffp-modules(宙斯全栈能效)'},
-            {value: 'aaronffp-public', label: 'aaronffp-public(宙斯全栈能效)'},
-            {value: 'aaronffp-src', label: 'aaronffp-src(宙斯全栈能效)'},
-            {value: 'aaronffp-api', label: 'aaronffp-api(宙斯全栈能效)'},
-            {value: 'aaronffp-assets', label: 'aaronffp-assets(宙斯全栈能效)'},
-            {value: 'aaronffp-compon', label: 'aaronffp-compon(宙斯全栈能效)'},
-            {value: 'aaronffp-layout', label: 'aaronffp-layout(宙斯全栈能效)'},
-            {value: 'aaronffp-libs', label: 'aaronffp-libs(宙斯全栈能效)'},
-            {value: 'aaronffp-menu', label: 'aaronffp-menu(宙斯全栈能效)'},
-            {value: 'aaronffp-mock', label: 'aaronffp-mock(宙斯全栈能效)'},
-            {value: 'aaronffp-pages', label: 'aaronffp-pages(宙斯全栈能效)'},
-            {value: 'aaronffp-plugin', label: 'aaronffp-plugin(宙斯全栈能效)'},
-            {value: 'aaronffp-router', label: 'aaronffp-router(宙斯全栈能效)'},
-            {value: 'aaronffp-store', label: 'aaronffp-store(宙斯全栈能效)'},
-            {value: 'aaronffp-app', label: 'aaronffp-app(宙斯全栈能效)'},
-            {value: 'aaronffp-main', label: 'aaronffp-main(宙斯全栈能效)'},
-            {value: 'aaronffp-setting', label: 'aaronffp-setting(宙斯全栈能效)'},
-            {value: 'aaronffp-tests', label: 'aaronffp-tests(宙斯全栈能效)'},
-            {value: 'aaronffp-env', label: 'aaronffp-env(宙斯全栈能效)'},
-            {value: 'aaronffp-eslintrc', label: 'aaronffp-eslintrc(宙斯全栈能效)'},
-            {value: 'aaronffp-post', label: 'aaronffp-post(宙斯全栈能效)'},
-            {value: 'aaronffp-get', label: 'aaronffp-get(宙斯全栈能效)'},
-            {value: 'aaronffp-update', label: 'aaronffp-update(宙斯全栈能效)'},
-            {value: 'aaronffp-delete', label: 'aaronffp-delete(宙斯全栈能效)'}
+            {value: 'fanfengping-admittance', label: 'fanfengping-admittance(宙斯全栈能效)'},
+            {value: 'fanfengping-cfbs', label: 'fanfengping-cfbs(宙斯全栈能效)'},
+            {value: 'fanfengping-channel', label: 'fanfengping-channel(宙斯全栈能效)'},
+            {value: 'fanfengping-chitu', label: 'fanfengping-chitu(宙斯全栈能效)'},
+            {value: 'fanfengping-chnl', label: 'fanfengping-chnl(宙斯全栈能效)'},
+            {value: 'fanfengping-collection', label: 'fanfengping-collection(宙斯全栈能效)'},
+            {value: 'fanfengping-css', label: 'fanfengping-css(宙斯全栈能效)'},
+            {value: 'fanfengping-ev-order', label: 'fanfengping-ev-order(宙斯全栈能效)'},
+            {value: 'fanfengping-fanfengpingpay', label: 'fanfengping-fanfengpingpay(宙斯全栈能效)'},
+            {value: 'fanfengping-fpss', label: 'fanfengping-fpss(宙斯全栈能效)'},
+            {value: 'fanfengping-frss', label: 'fanfengping-frss(宙斯全栈能效)'},
+            {value: 'fanfengping-fund', label: 'fanfengping-fund(宙斯全栈能效)'},
+            {value: 'fanfengping-insurance', label: 'fanfengping-insurance(宙斯全栈能效)'},
+            {value: 'fanfengping-insurance-admin', label: 'fanfengping-insurance-admin(宙斯全栈能效)'},
+            {value: 'fanfengping-insurance-web', label: 'fanfengping-insurance-web(宙斯全栈能效)'},
+            {value: 'fanfengping-moxie', label: 'fanfengping-moxie(宙斯全栈能效)'},
+            {value: 'fanfengping-oss', label: 'fanfengping-oss(宙斯全栈能效)'},
+            {value: 'fanfengping-riskcontrol', label: 'fanfengping-riskcontrol(宙斯全栈能效)'},
+            {value: 'fanfengping-riskeng', label: 'fanfengping-riskeng(宙斯全栈能效)'},
+            {value: 'fanfengping-risksrc', label: 'fanfengping-risksrc(宙斯全栈能效)'},
+            {value: 'fanfengping-romp', label: 'fanfengping-romp(宙斯全栈能效)'},
+            {value: 'fanfengping-running', label: 'fanfengping-running(宙斯全栈能效)'},
+            {value: 'fanfengping-samp', label: 'fanfengping-samp(宙斯全栈能效)'},
+            {value: 'fanfengping-scf', label: 'fanfengping-scf(宙斯全栈能效)'},
+            {value: 'fanfengping-smartpay', label: 'fanfengping-smartpay(宙斯全栈能效)'},
+            {value: 'fanfengping-toprules', label: 'fanfengping-toprules(宙斯全栈能效)'},
+            {value: 'fanfengping-wechat', label: 'fanfengping-wechat(宙斯全栈能效)'}
           ]
         },
         
@@ -204,26 +244,7 @@
           chs: ''
         },
         
-        tableData: [
-          {'id': 99, 'env': 'SIT01', 'eng': 'aaronffp-api', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.125:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:04.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:04.0', 'note': '宙斯全栈能效平台'},
-          {'id': 101, 'env': 'SIT01', 'eng': 'aaronffp-assets', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.125:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:04.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:04.0', 'note': '宙斯全栈能效平台'},
-          {'id': 103, 'env': 'SIT01', 'eng': 'aaronffp-components', 'chs': '宙斯全栈能效平台', 'benchmark': 0, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:04.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:04.0', 'note': '宙斯全栈能效平台'},
-          {'id': 92, 'env': 'SIT01', 'eng': 'aaronffp-layout', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:03.0', 'note': '宙斯全栈能效平台'},
-          {'id': 93, 'env': 'SIT01', 'eng': 'aaronffp-libs', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.44:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:03.0', 'note': '宙斯全栈能效平台'},
-          {'id': 97, 'env': 'SIT01', 'eng': 'aaronffp-menu', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:35:03.0', 'updater': '范丰平', 'utime': '2018-09-03 15:35:03.0', 'note': '宙斯全栈能效平台'},
-          {'id': 60, 'env': 'SIT01', 'eng': 'aaronffp-mock', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:59.0', 'note': '宙斯全栈能效平台'},
-          {'id': 64, 'env': 'SIT01', 'eng': 'aaronffp-pages', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:59.0', 'note': '宙斯全栈能效平台'},
-          {'id': 65, 'env': 'SIT01', 'eng': 'aaronffp-plugin', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:59.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:59.0', 'note': '宙斯全栈能效平台'},
-          {'id': 51, 'env': 'SIT01', 'eng': 'aaronffp-router', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:58.0', 'note': '宙斯全栈能效平台'},
-          {'id': 52, 'env': 'SIT01', 'eng': 'aaronffp-store', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'ORACLE', 'driver': 'oracle.jdbc.driver.OracleDriver', 'url': 'jdbc:oracle:thin:@172.16.10.85:1521:db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:58.0', 'note': '宙斯全栈能效平台'},
-          {'id': 53, 'env': 'SIT01', 'eng': 'aaronffp-app', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'ORACLE', 'driver': 'oracle.jdbc.driver.OracleDriver', 'url': 'jdbc:oracle:thin:@172.16.10.85:1521:db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:58.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:58.0', 'note': '宙斯全栈能效平台'},
-          {'id': 47, 'env': 'SIT01', 'eng': 'aaronffp-admin', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:57.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:57.0', 'note': '宙斯全栈能效平台'},
-          {'id': 36, 'env': 'SIT01', 'eng': 'aaronffp-test', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:56.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:56.0', 'note': '宙斯全栈能效平台'},
-          {'id': 40, 'env': 'SIT01', 'eng': 'aaronffp-env', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:56.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:56.0', 'note': '宙斯全栈能效平台'},
-          {'id': 28, 'env': 'SIT01', 'eng': 'aaronffp-license', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:55.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:55.0', 'note': '宙斯全栈能效平台'},
-          {'id': 32, 'env': 'SIT01', 'eng': 'aaronffp-package', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:55.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:55.0', 'note': '宙斯全栈能效平台'},
-          {'id': 4, 'env': 'SIT01', 'eng': 'aaronffp-zeus', 'chs': '宙斯全栈能效平台', 'benchmark': 1, 'type': 'MYSQL', 'driver': 'com.mysql.jdbc.Driver', 'url': 'jdbc:mysql://172.16.10.15:3306/db_aaronffp', 'account': 'fanfengping', 'password': 'fanfengping', 'creater': '范丰平', 'ctime': '2018-09-03 15:34:51.0', 'updater': '范丰平', 'utime': '2018-09-03 15:34:51.0', 'note': '宙斯全栈能效平台'}
-        ]
+        tableData: []
       }
     }
   }
