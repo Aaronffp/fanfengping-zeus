@@ -114,7 +114,7 @@ service.interceptors.response.use(
       // 有 code 代表这是一个后端接口 可以进行进一步的判断
       switch (code) {
         case 200:    // 200 代表没有错误
-          return dataAxios.data;
+          return dataAxios;
         case '999':  // 999 系统未知错误响应码
           errorCreat(`[ code: 999 ] ${dataAxios.msg}: ${response.config.url}`);
           break;
