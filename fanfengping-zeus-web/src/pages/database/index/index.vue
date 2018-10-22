@@ -190,6 +190,19 @@
         this.formData = row;
         this.dialogFormVisible = true;
       },
+      handleBtnDelete(row) {
+        this.formData = row;
+        DbDelete(this.formData).then(res => {
+          this.formData = {id:0, benchmark: 1, type: 'MYSQL', driver: 'com.mysql.jdbc.Driver'};
+          this.$message({
+            message: res.msg,
+            type: res.code == 200 ? 'success' : 'warning'
+          });
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      },
       handleClick(row) {
         console.log(row);
       }
