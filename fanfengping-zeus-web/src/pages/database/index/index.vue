@@ -44,8 +44,18 @@
       <el-table-column fixed prop="eng" label="英文简称" width="200"></el-table-column>
       <el-table-column prop="chs" label="中文简称" width="150"></el-table-column>
       <el-table-column prop="env" label="环境标识" width="100"></el-table-column>
-      <el-table-column prop="valid" label="是否有效" width="80"></el-table-column>
-      <el-table-column prop="benchmark" label="基准库" width="70"></el-table-column>
+      <el-table-column prop="valid" label="是否有效" width="80">
+        <template scope="scope">
+          <span v-if="scope.row.valid==1">是</span>
+          <span v-if="scope.row.valid==0">否</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="benchmark" label="基准库" width="70">
+        <template scope="scope">
+          <span v-if="scope.row.benchmark==1">是</span>
+          <span v-if="scope.row.benchmark==0">否</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="type" label="数据库类型" width="100"></el-table-column>
       <el-table-column prop="driver" label="数据库驱动" width="210"></el-table-column>
       <el-table-column prop="url" label="数据库URL" width="400" show-overflow-tooltip></el-table-column>
