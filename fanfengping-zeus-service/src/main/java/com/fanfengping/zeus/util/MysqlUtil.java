@@ -35,8 +35,8 @@ public class MysqlUtil {
         this.dbt = dbt;
         this.timestamp = timestamp;
 
-        try (Connection dbsConnection = DriverManager.getConnection(dbs.getUrl(), dbs.getAccount(), dbs.getPassword());
-             Connection dbtConnection = DriverManager.getConnection(dbt.getUrl(), dbt.getAccount(), dbt.getPassword())) {
+        try (Connection dbsConnection = DriverManager.getConnection(dbs.getUrl(), dbs.getUsername(), dbs.getPassword());
+             Connection dbtConnection = DriverManager.getConnection(dbt.getUrl(), dbt.getUsername(), dbt.getPassword())) {
             DatabaseMetaData dbsMetData = dbsConnection.getMetaData();
             DatabaseMetaData dbtMetData = dbtConnection.getMetaData();
             List<String> dbsTables = getAllTableAsString(dbsMetData);
@@ -84,7 +84,7 @@ public class MysqlUtil {
                 }
             }
         } catch (Exception e){
-            message = String.format("数据库[%s | %s] - [%s | %s] 连接失败。。。", dbs.getUrl(), dbs.getAccount(), dbt.getUrl(), dbt.getAccount());
+            message = String.format("数据库[%s | %s] - [%s | %s] 连接失败。。。", dbs.getUrl(), dbs.getUsername(), dbt.getUrl(), dbt.getUsername());
             log(message, -1);
             e.printStackTrace();
         }

@@ -10,7 +10,7 @@ public class ResponseJson extends LinkedHashMap<String, Object> {
     /////////////////////// 默认的键 ///////////////////////
     private static final String KEY_CODE = "code";       // 执行结果代码
     private static final String KEY_SUCC = "success";    // 执行结果状态
-    private static final String KEY_MESS = "message";    // 执行结果消息
+    private static final String KEY_MESS = "msg";        // 执行结果消息
     private static final String KEY_MENU = "menu";       // 操作菜单名称
     private static final String KEY_ACTI = "action";     // 操作动作
     private static final String KEY_OPER = "operator";   // 操作人

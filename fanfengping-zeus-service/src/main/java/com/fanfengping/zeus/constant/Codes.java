@@ -12,6 +12,17 @@ public interface Codes {
     String USER_DELETE = "USER_DELETE";
 
     /**
+     * 数据管理
+     */
+    String DATABASE = "DATABASE";
+    String DATABASE_INSERT = "DATABASE_INSERT";
+    String DATABASE_SEARCH = "DATABASE_SEARCH";
+    String DATABASE_UPDATE = "DATABASE_UPDATE";
+    String DATABASE_DELETE = "DATABASE_DELETE";
+    String DATABASE_BENCHMARK = "DATABASE_BENCHMARK";
+    String DATABASE_COMPARE = "DATABASE_COMPARE";
+
+    /**
      * 服务、服务状态
      */
     String SERVICE        = "SERVICE";

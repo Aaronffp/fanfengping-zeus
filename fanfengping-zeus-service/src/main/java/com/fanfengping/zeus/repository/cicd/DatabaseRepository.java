@@ -8,18 +8,19 @@ import java.util.List;
 
 @Repository
 public interface DatabaseRepository {
-    @Insert("insert into `database` (env, eng, chs, benchmark, type, driver, url, account, password, creater, updater, note) "
-            + "value (#{env}, #{eng}, #{chs}, #{benchmark}, #{type}, #{driver}, #{url}, #{account}, #{password}, #{creater}, #{updater}, #{note})")
+    @Insert("insert into `database` (env, eng, chs, valid, benchmark, type, driver, url, username, password, creater, updater, note) "
+            + "value (#{env}, #{eng}, #{chs}, #{valid}, #{benchmark}, #{type}, #{driver}, #{url}, #{username}, #{password}, #{creater}, #{updater}, #{note})")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -35,11 +36,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -55,11 +57,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -69,9 +72,9 @@ public interface DatabaseRepository {
     })
     int setBenchmark(Database database);
 
-    @Update("update `database` set env = '${env}', eng = '${eng}', chs = '${chs}', " +
+    @Update("update `database` set env = '${env}', eng = '${eng}', chs = '${chs}', valid = '${valid}', " +
             "benchmark = '${benchmark}', type = '${type}', driver = '${driver}', url = '${url}', " +
-            "account = '${account}', password = '${password}', creater = '${creater}', " +
+            "username = '${username}', password = '${password}', creater = '${creater}', " +
             "updater = '${updater}', utime = '${utime}', note = '${note}'" +
             "where id = '${id}'")
     @Results({
@@ -79,11 +82,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -99,11 +103,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -113,9 +118,7 @@ public interface DatabaseRepository {
     })
     int delete(Database database);
 
-    @Select("select id, env, eng, chs, benchmark, type, driver, url, account, password, " +
-            "creater, ctime, updater, utime, note  "
-            + "from `database` "
+    @Select("select * from `database` "
             + "where env like '%${env}%' and eng like '%${eng}%' and chs like '%${chs}%' "
             + "order by utime desc")
     @Results({
@@ -123,11 +126,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -143,11 +147,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -164,11 +169,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),
@@ -184,11 +190,12 @@ public interface DatabaseRepository {
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
+            @Result(property = "valid", column = "valid"),
             @Result(property = "benchmark", column = "benchmark"),
             @Result(property = "type", column = "type"),
             @Result(property = "driver", column = "driver"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "creater", column = "creater"),
             @Result(property = "ctime", column = "ctime"),

@@ -16,11 +16,12 @@ public class Database implements Serializable {
     private String env;       // 环境标识
     private String eng;       // 英文简称
     private String chs;       // 中文简称
+    private int valid;        // 是否有效（1，是；0，否）
     private int benchmark;    // 基准数据库（1，是；0，否）
     private String type;      // 数据库类型
     private String driver;    // 数据库驱动
     private String url;       // 数据库URL
-    private String account;   // 数据库账号
+    private String username;  // 数据库账号
     private String password;  // 数据库密码
     private String creater;   // 维护人
     private String ctime;     // 创建日期
@@ -28,8 +29,8 @@ public class Database implements Serializable {
     private String utime;     // 更新时间
     private String note;      // 备注
 
-    public Database(String env, String eng, String chs, Integer benchmark, String type,
-                    String driver, String url, String account, String password,
+    public Database(String env, String eng, String chs, Integer valid, Integer benchmark, String type,
+                    String driver, String url, String username, String password,
                     String creater, String updater, String note) {
         this.env = env;
         this.eng = eng;
@@ -38,7 +39,7 @@ public class Database implements Serializable {
         this.type = type;
         this.driver = driver;
         this.url = url;
-        this.account = account;
+        this.username = username;
         this.password = password;
         this.creater = creater;
         this.updater = updater;
