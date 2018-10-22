@@ -32,7 +32,7 @@
     </el-form>
     
     <el-table
-      :data="tableData"
+      :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       hight="250"
       border
       stripe
@@ -41,8 +41,8 @@
       style="width: 100%">
       <el-table-column fixed type="index" width="50"></el-table-column>
       <!--<el-table-column fixed prop="id" label="主键" width="50" v-show="false"></el-table-column>-->
-      <el-table-column fixed prop="eng" label="英文简称" width="200"></el-table-column>
-      <el-table-column prop="chs" label="中文简称" width="150"></el-table-column>
+      <el-table-column fixed prop="eng" label="英文简称" width="200" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="chs" label="中文简称" width="150" show-overflow-tooltip></el-table-column>
       <el-table-column prop="env" label="环境标识" width="100"></el-table-column>
       <el-table-column prop="valid" label="是否有效" width="80">
         <template scope="scope">
@@ -57,10 +57,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="type" label="数据库类型" width="100"></el-table-column>
-      <el-table-column prop="driver" label="数据库驱动" width="210"></el-table-column>
+      <el-table-column prop="driver" label="数据库驱动" width="210" show-overflow-tooltip></el-table-column>
       <el-table-column prop="url" label="数据库URL" width="400" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="username" label="数据库账号" width="150"></el-table-column>
-      <el-table-column prop="password" label="数据库密码" width="150"></el-table-column>
+      <el-table-column prop="username" label="数据库账号" width="150" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="password" label="数据库密码" width="150" show-overflow-tooltip></el-table-column>
       <el-table-column prop="note" label="备注" width="200" show-overflow-tooltip></el-table-column>
       <el-table-column prop="creater" label="创建人" width="80"></el-table-column>
       <el-table-column prop="ctime" label="创建时间" width="170"></el-table-column>
@@ -73,6 +73,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[15, 30, 50, 100]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="currentTotal">
+    </el-pagination>
     <el-dialog title="新增数据库" :visible.sync="dialogFormVisible">
       <el-form :model="formData">
         <el-form-item label="环境：" :label-width="formLabelWidth">
@@ -143,13 +152,9 @@
   export default {
     methods: {
       handleBtnQuery(query) {
-        console.log(query);
-
         DbFindAllByConditions(query).then(res => {
-          console.log("查询结果");
-          console.log(res);
-          // 更新查询结果
           this.tableData = res.data;
+          this.currentTotal = this.tableData.length;
           this.$message({
             message: res.msg,
             type: res.code == 200 ? 'success' : 'warning'
@@ -203,12 +208,18 @@
           console.log(err)
         })
       },
-      handleClick(row) {
-        console.log(row);
+      handleSizeChange(val) {
+        this.pageSize = val;
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
       }
     },
     data() {
       return {
+        currentPage: 1,
+        pageSize: 30,
+        currentTotal: 0,
         dialogTableVisible: false,
         dialogFormVisible: false,
         formLabelWidth: '120px',
