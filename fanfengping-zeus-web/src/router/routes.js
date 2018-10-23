@@ -284,7 +284,8 @@ const frameIn = [
     redirect: { name: 'db-index' },
     component: layoutHeaderAside,
     children: (pre => [
-      { path: '', name: `${pre}index`, component: () => import('@/pages/database/index'), meta: { ...meta, title: '数据库列表' } }
+      { path: '', name: `${pre}index`, component: () => import('@/pages/database/index'), meta: { ...meta, title: '数据库列表' } },
+      { path: 'comp', name: `${pre}comp`, component: () => import('@/pages/database/compare'), meta: { ...meta, title: '数据库比对' } }
     ])('db-')
   }
 ]

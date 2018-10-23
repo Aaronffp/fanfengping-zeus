@@ -261,6 +261,7 @@
             {value: '0', label: '无效'}
           ],
           engs: [
+            {value: 'fanfengping-zeus', label: 'fanfengping-zeus(宙斯全栈能效平台)'},
             {value: 'fanfengping-admittance', label: 'fanfengping-admittance(宙斯全栈能效)'},
             {value: 'fanfengping-cfbs', label: 'fanfengping-cfbs(宙斯全栈能效)'},
             {value: 'fanfengping-channel', label: 'fanfengping-channel(宙斯全栈能效)'},
