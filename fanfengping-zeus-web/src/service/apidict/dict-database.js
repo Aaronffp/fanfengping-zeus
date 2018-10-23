@@ -32,7 +32,19 @@ export const API_DICT_COMPARE = {
   }
 };
 
+export const API_DICT = {
+  URL_BASE: '/db/dict',
+  query: {
+    env: '',
+    eng: '',
+    url: '',
+    tableName: '',
+    columnName: ''
+  },
+};
+
 export default {
   API_DICT_DATABASE,
-  API_DICT_COMPARE
+  API_DICT_COMPARE,
+  API_DICT
 }
