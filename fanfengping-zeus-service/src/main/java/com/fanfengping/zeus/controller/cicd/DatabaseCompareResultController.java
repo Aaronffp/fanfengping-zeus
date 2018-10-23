@@ -1,7 +1,9 @@
 package com.fanfengping.zeus.controller.cicd;
 
+import com.fanfengping.zeus.constant.Codes;
 import com.fanfengping.zeus.entity.cicd.DatabaseCompareResult;
 import com.fanfengping.zeus.service.cicd.DatabaseCompareResultService;
+import com.fanfengping.zeus.util.ResponseJson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +21,17 @@ public class DatabaseCompareResultController {
 
     @RequestMapping(path = "", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<DatabaseCompareResult> findAllByConditions(@RequestParam("eng") String eng, @RequestParam("env") String env)
-            throws SQLException {
-        return databaseCompareResultService.findAllByConditions(eng, env);
+    public ResponseJson findAllByConditions(@RequestParam("eng") String eng, @RequestParam("env") String env) {
+        ResponseJson responseJson = new ResponseJson(Codes.DATABASE, Codes.DATABASE_SEARCH);
+        List<DatabaseCompareResult> dbCompResultList = databaseCompareResultService.findAllByConditions(eng, env);
+
+        responseJson.succ(200, "成功").data(dbCompResultList);
+        return responseJson;
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public String compare(@RequestBody Map<String,Object> reqMap) throws SQLException {
+    public ResponseJson compare(@RequestBody Map<String,Object> reqMap) {
         String eng = reqMap.get("eng") == null ? "" : reqMap.get("eng").toString();
         String env = reqMap.get("env") == null ? "" : reqMap.get("env").toString();
 

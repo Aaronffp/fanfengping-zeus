@@ -1,11 +1,13 @@
 package com.fanfengping.zeus.service.cicd.impl;
 
+import com.fanfengping.zeus.constant.Codes;
 import com.fanfengping.zeus.entity.cicd.Database;
 import com.fanfengping.zeus.entity.cicd.DatabaseCompareResult;
 import com.fanfengping.zeus.repository.cicd.DatabaseCompareResultRepository;
 import com.fanfengping.zeus.repository.cicd.DatabaseRepository;
 import com.fanfengping.zeus.service.cicd.DatabaseCompareResultService;
 import com.fanfengping.zeus.util.MysqlUtil;
+import com.fanfengping.zeus.util.ResponseJson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,21 +27,21 @@ public class DatabaseCompareResultServiceImpl implements DatabaseCompareResultSe
     @Autowired
     MysqlUtil mysqlUtil;
 
-    public DatabaseCompareResult add(DatabaseCompareResult databaseCompareResult) {
-        if (databaseCompareResult != null && databaseCompareResultRepository.add(databaseCompareResult) > 0) {
-            return databaseCompareResultRepository.findByEngAndTargerEnv(databaseCompareResult.getEng(), databaseCompareResult.getTargetEnv());
-        }
-        return null;
+    public Integer add(DatabaseCompareResult databaseCompareResult) {
+        return databaseCompareResultRepository.add(databaseCompareResult);
     }
 
     public List<DatabaseCompareResult> findAllByConditions(String eng, String env) {
         return databaseCompareResultRepository.findAllByConditions(eng, env);
     }
 
-    public String compare(String eng, String env) {
+    public ResponseJson compare(String eng, String env) {
+        ResponseJson responseJson = new ResponseJson(Codes.DATABASE, Codes.DATABASE_COMPARE);
+
         try {
             if (databaseCompareResultRepository.exist(eng, env).size() > 0) {
-                return "{\"status\":\"OK\", \"message\":\"数据库表结构信息已存在半小时内比对结果，敬请查询；或半小时后重新比对!\"}";
+                responseJson.succ(200, "数据库表结构信息已存在半小时内比对结果，敬请查询；或半小时后重新比对!");
+                return responseJson;
             }
 
             databaseCompareResultRepository.delete(eng, env);
@@ -49,7 +51,8 @@ public class DatabaseCompareResultServiceImpl implements DatabaseCompareResultSe
             long start = System.currentTimeMillis();
 
             if (dbs.size() < 1) {
-                return "";
+                responseJson.succ(200, "未存在基准库，请返回数据库列表页面确认！");
+                return responseJson;
             }
 
             for (Database ds : dbs) {
@@ -62,10 +65,10 @@ public class DatabaseCompareResultServiceImpl implements DatabaseCompareResultSe
                 for (Database dt : dbt) {
                     String timestamp = String.valueOf(System.currentTimeMillis());
 
-                    DatabaseCompareResult compInfo = new DatabaseCompareResult(timestamp, 0, ds.getEng(), ds.getId(), ds.getEnv(), ds.getUrl(), dt.getId(), dt.getEnv(), dt.getUrl(), "开始比对数据库...", "");
+                    DatabaseCompareResult databaseCompareResult = new DatabaseCompareResult(timestamp, 0, ds.getEng(), ds.getId(), ds.getEnv(), ds.getUrl(), dt.getId(), dt.getEnv(), dt.getUrl(), "开始比对数据库...", "");
 
-                    databaseCompareResultRepository.add(compInfo);
-                    System.out.println(String.format("[基准库：%s - 比对库：%s] - 开始比对数据库...", ds.getUrl(), dt.getUrl()));
+                    databaseCompareResultRepository.add(databaseCompareResult);
+                    log.info(String.format("[基准库：%s - %s：%s] - 开始比对数据库...", ds.getUrl(), dt.getEnv(), dt.getUrl()));
 
                     mysqlUtil.compareAllTables(ds, dt, timestamp);
                 }
@@ -73,15 +76,16 @@ public class DatabaseCompareResultServiceImpl implements DatabaseCompareResultSe
 
             long end = System.currentTimeMillis();
 
-            return String.format("{\"status\":\"OK\", \"message\":\"数据库比对完成，总计耗时：%d分%d秒\"}", (end - start)/1000/60, (end - start)/1000 % 60);
+            responseJson.succ(200, String.format("数据库比对完成，总计耗时：%d 分 %d 秒", (end - start)/1000/60, (end - start)/1000 % 60));
+            return responseJson;
         } catch (SQLException sqle) {
-            log.error(sqle.getMessage(), sqle);
-            return null;
-            // TODO
+            responseJson.fail(999, sqle.getMessage());
+            log.info(responseJson.toString(), sqle);
+            return responseJson;
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return null;
-            // TODO
+            responseJson.fail(999, e.getMessage());
+            log.info(responseJson.toString(), e);
+            return responseJson;
         }
     }
 }
