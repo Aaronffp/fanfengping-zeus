@@ -92,9 +92,9 @@ public class DatabaseController {
 
     @RequestMapping(path = "", method = { RequestMethod.GET }, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResponseJson findAllByConditions(@RequestParam("env") String env, @RequestParam("eng") String eng, @RequestParam("chs") String chs) {
+    public ResponseJson findAllByConditions(@RequestParam("env") String env, @RequestParam("valid") String valid, @RequestParam("eng") String eng, @RequestParam("chs") String chs) {
         ResponseJson responseJson = new ResponseJson(Codes.DATABASE, Codes.DATABASE_SEARCH);
-        List<Database> databases = databaseService.findAllByConditions(env, eng, chs);
+        List<Database> databases = databaseService.findAllByConditions(env, valid, eng, chs);
 
         responseJson.succ(200, "成功查询").data(databases);
         return responseJson;

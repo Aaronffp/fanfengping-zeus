@@ -119,7 +119,7 @@ public interface DatabaseRepository {
     int delete(Database database);
 
     @Select("select * from `database` "
-            + "where env like '%${env}%' and eng like '%${eng}%' and chs like '%${chs}%' "
+            + "where env like '%${env}%' and valid in ('${valid}') and eng like '%${eng}%' and chs like '%${chs}%' "
             + "order by utime desc")
     @Results({
             @Result(property = "id", column = "id"),
@@ -139,7 +139,7 @@ public interface DatabaseRepository {
             @Result(property = "utime", column = "utime"),
             @Result(property = "note", column = "note"),
     })
-    List<Database> findAllByConditions(@Param("env") String env, @Param("eng") String eng, @Param("chs") String chs);
+    List<Database> findAllByConditions(@Param("env") String env, @Param("valid") String valid, @Param("eng") String eng, @Param("chs") String chs);
 
     @Select("select * from `database` where env = '${env}' and eng = '${eng}' ")
     @Results({

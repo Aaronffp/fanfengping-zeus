@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DatabaseService extends BaseService<Database> {
     Database setBenchmark(Database database);
-    List<Database> findAllByConditions(String env, String eng, String chs);
+    List<Database> findAllByConditions(String env, String valid, String eng, String chs);
 }

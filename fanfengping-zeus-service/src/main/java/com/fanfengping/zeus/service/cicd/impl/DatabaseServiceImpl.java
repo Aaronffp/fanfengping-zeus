@@ -94,8 +94,8 @@ public class DatabaseServiceImpl implements DatabaseService {
         }
     }
 
-    public List<Database> findAllByConditions(String env, String eng, String chs) {
-        return databaseRepository.findAllByConditions(env, eng, chs);
+    public List<Database> findAllByConditions(String env, String valid, String eng, String chs) {
+        return databaseRepository.findAllByConditions(env, valid, eng, chs);
     }
 
     public Database setBenchmark(Database database) {

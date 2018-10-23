@@ -9,6 +9,13 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="状态：">
+        <el-select v-model="query.valid" clearable filterable placeholder="请选择状态...">
+          <el-option v-for="item in conditions.valids" :key="item.value" :label="item.label" :value="item.value">
+            <span style="float: left">{{ item.label }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="英文简称：">
         <el-select v-model="query.eng" placeholder="请输入英文简称..." clearable>
           <el-option v-for="item in conditions.engs" :key="item.value" :label="item.label" :value="item.value">
@@ -43,8 +50,8 @@
       <!--<el-table-column fixed prop="id" label="主键" width="50" v-show="false"></el-table-column>-->
       <el-table-column fixed prop="eng" label="英文简称" width="200" show-overflow-tooltip></el-table-column>
       <el-table-column prop="chs" label="中文简称" width="150" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="env" label="环境标识" width="100"></el-table-column>
-      <el-table-column prop="valid" label="是否有效" width="80">
+      <el-table-column prop="env" label="所属环境" width="100"></el-table-column>
+      <el-table-column prop="valid" label="状态" width="60">
         <template scope="scope">
           <span v-if="scope.row.valid==1">有效</span>
           <span v-if="scope.row.valid==0">无效</span>
@@ -84,7 +91,7 @@
     </el-pagination>
     <el-dialog title="新增数据库" :visible.sync="dialogFormVisible">
       <el-form :model="formData">
-        <el-form-item label="环境：" :label-width="formLabelWidth">
+        <el-form-item label="所属环境：" :label-width="formLabelWidth">
           <el-select v-model="formData.env" clearable placeholder="请选择数据库环境...">
             <el-option v-for="item in conditions.envs" :key="item.value" :label="item.label" :value="item.value">
               <span style="float: left">{{ item.label }}</span>
@@ -98,17 +105,17 @@
         <el-form-item label="中文名称：" :label-width="formLabelWidth">
           <el-input v-model="formData.chs" clearable placeholder="请输入中文名称..."></el-input>
         </el-form-item>
-        <el-form-item label="是否有效：" :label-width="formLabelWidth">
-          <el-select v-model="formData.valid" placeholder="请选择...">
-            <el-option label="有效" value="1"></el-option>
-            <el-option label="无效" value="0"></el-option>
-          </el-select>
+        <el-form-item label="状态：" :label-width="formLabelWidth">
+          <el-radio-group v-model="formData.valid">
+            <el-radio :label="1">有效</el-radio>
+            <el-radio :label="0">无效</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="基准库：" :label-width="formLabelWidth">
-          <el-select v-model="formData.benchmark" placeholder="请选择...">
-            <el-option label="是" value="1"></el-option>
-            <el-option label="否" value="0"></el-option>
-          </el-select>
+          <el-radio-group v-model="formData.benchmark">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="类型：" :label-width="formLabelWidth">
           <el-select v-model="formData.type" placeholder="请选择数据库类型...">
@@ -229,7 +236,7 @@
           eng: '',
           chs: '',
           valid: 1,
-          benchmark: 1,
+          benchmark: 0,
           type: 'MYSQL',
           driver: 'com.mysql.jdbc.Driver',
           url: '',
@@ -247,6 +254,11 @@
             {value: 'SIT04', label: '开发环境'},
             {value: 'PRE', label: '预发环境'},
             {value: 'DOCKER', label: '容器环境'}
+          ],
+          valids: [
+            {value: '1, 0', label: '全部'},
+            {value: '1', label: '有效'},
+            {value: '0', label: '无效'}
           ],
           engs: [
             {value: 'fanfengping-admittance', label: 'fanfengping-admittance(宙斯全栈能效)'},
@@ -281,6 +293,7 @@
         
         query: {
           env: '',
+          valid: '1',
           eng: '',
           chs: ''
         },
