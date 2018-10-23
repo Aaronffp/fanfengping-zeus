@@ -46,8 +46,8 @@
       <el-table-column prop="env" label="环境标识" width="100"></el-table-column>
       <el-table-column prop="valid" label="是否有效" width="80">
         <template scope="scope">
-          <span v-if="scope.row.valid==1">是</span>
-          <span v-if="scope.row.valid==0">否</span>
+          <span v-if="scope.row.valid==1">有效</span>
+          <span v-if="scope.row.valid==0">无效</span>
         </template>
       </el-table-column>
       <el-table-column prop="benchmark" label="基准库" width="70">
@@ -100,8 +100,8 @@
         </el-form-item>
         <el-form-item label="是否有效：" :label-width="formLabelWidth">
           <el-select v-model="formData.valid" placeholder="请选择...">
-            <el-option label="是" value="1"></el-option>
-            <el-option label="否" value="0"></el-option>
+            <el-option label="有效" value="1"></el-option>
+            <el-option label="无效" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="基准库：" :label-width="formLabelWidth">
@@ -206,7 +206,7 @@
         })
         .catch(err => {
           console.log(err)
-        })
+        });
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -224,6 +224,7 @@
         dialogFormVisible: false,
         formLabelWidth: '120px',
         formData: {
+          id: 0,
           env: '',
           eng: '',
           chs: '',
@@ -235,7 +236,9 @@
           username: '',
           password: '',
           creater: '',
+          ctime: '',
           updater: '',
+          utime: '',
           note: ''
         },
         conditions: {

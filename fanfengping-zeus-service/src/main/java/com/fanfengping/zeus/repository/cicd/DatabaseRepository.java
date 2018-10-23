@@ -30,7 +30,7 @@ public interface DatabaseRepository {
     })
     int add(Database database);
 
-    @Update("update `database` set benchmark = 0 where eng = '${eng}'")
+    @Update("update `database` set benchmark = 0 where eng = '${eng}' and id <> ${id}")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
@@ -51,7 +51,7 @@ public interface DatabaseRepository {
     })
     int setBenchmarkFalse(Database database);
 
-    @Update("update database set benchmark = 1 where id = '${id}'")
+    @Update("update `database` set benchmark = 1 where id = '${id}'")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
