@@ -622,7 +622,39 @@ CREATE TABLE `service_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=611 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='服务信息表';
 
 
-
+-- ----------------------------
+-- Table structure for data_dictionary（数据库数据字典）
+-- ----------------------------
+DROP TABLE IF EXISTS `data_dictionary`;
+CREATE TABLE `data_dictionary` (
+  `id`  int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '系统主键' ,
+  `sn` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '查询流水' ,
+  `databaseId` int UNSIGNED NOT NULL COMMENT '数据库ID' ,
+  `env` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '所属环境' ,
+  `eng` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称' ,
+  `url` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库连接' ,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '账号' ,
+  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '密码' ,
+  `table_schema`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库名称' ,
+  `table_name`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '表名称' ,
+  `table_comment`  varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '表注释' ,
+  `engine`  varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '表引擎' ,
+  `table_collation`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '表字符集' ,
+  `column_name`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '字段名称' ,
+  `column_comment`  varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '字段注释' ,
+  `column_key`  varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '是否主键' ,
+  `column_type`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '字段类型' ,
+  `nullable`  varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'NO' COMMENT '是否可为空' ,
+  `column_default`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '字段默认值' ,
+  `character_set_name`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '字段字符集' ,
+  `collation_name`  varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '字段字符排序规则' ,
+  `ctime`  datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期（若半小时内存在生成数据，则不生成；否则，先生成后查询）' ,
+  PRIMARY KEY (`id`)
+)
+  ENGINE=InnoDB
+  DEFAULT CHARACTER SET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  COMMENT='数据库数据字典'
+;
 
 
 
