@@ -162,7 +162,7 @@ public interface DatabaseRepository {
     })
     Database findByEnvAndEng(@Param("env") String env, @Param("eng") String eng);
 
-    @Select("select * from `database` where benchmark = 1 and type = 'MYSQL' and env <> 'DOCKER' and url not like '%oracle%' "
+    @Select("select * from `database` where valid = 1 and benchmark = 1 and type = 'MYSQL' and env <> 'DOCKER' and url not like '%oracle%' "
             + "and eng like '%${eng}%' ")
     @Results({
             @Result(property = "id", column = "id"),
@@ -184,7 +184,10 @@ public interface DatabaseRepository {
     })
     List<Database> findAllBenchmark(@Param("eng") String eng);
 
-    @Select("select * from `database` where eng = #{eng} and env like '%${env}%' and db_benchmark = 0 and type = 'MYSQL' and env <> 'DOCKER' and url not like '%oracle%'")
+    @Select("select * from `database` " +
+            "where eng = #{eng} and env like '%${env}%' and " +
+            "valid = 1 and benchmark = 0 and type = 'MYSQL' " +
+            "and env <> 'DOCKER' and url not like '%oracle%'")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
@@ -203,5 +206,5 @@ public interface DatabaseRepository {
             @Result(property = "utime", column = "utime"),
             @Result(property = "note", column = "note"),
     })
-    List<Database> findAllComp(String eng, String env);
+    List<Database> findAllComp(@Param("eng") String eng, @Param("env") String env);
 }
