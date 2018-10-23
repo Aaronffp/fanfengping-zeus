@@ -142,9 +142,12 @@ public class MysqlUtil {
             String columnType = rs.getString("TYPE_NAME");
             int datasize = rs.getInt("COLUMN_SIZE");
             int digits = rs.getInt("DECIMAL_DIGITS");
-            int nullable = rs.getInt("NULLABLE");
+            String nullable = rs.getString("IS_NULLABLE");
+            String defaultValue = rs.getString("COLUMN_DEF");
+            String columnComment = rs.getString("REMARKS");
 
-            res.put(columnName, String.format("%s-%s-%s-%s", columnType, datasize, digits, nullable));
+            // 字段类型，字段长度，小数位数，是否可为空，默认值，备注
+            res.put(columnName, String.format("%s | %s | %s | %s | %s | %s", columnType, datasize, digits, nullable, defaultValue, columnComment));
         }
         return res;
     }
