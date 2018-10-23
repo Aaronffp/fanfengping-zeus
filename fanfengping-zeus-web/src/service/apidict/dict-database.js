@@ -24,4 +24,15 @@ export const API_DICT_DATABASE = {
   }
 };
 
-export default API_DICT_DATABASE
+export const API_DICT_COMPARE = {
+  URL_BASE: '/db/compare',
+  QUERY: {
+    eng: '',
+    env: ''
+  }
+};
+
+export default {
+  API_DICT_DATABASE,
+  API_DICT_COMPARE
+}

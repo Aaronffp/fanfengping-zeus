@@ -1,5 +1,7 @@
 import {HTTP_ADD, HTTP_EDIT, HTTP_GET, HTTP_DEL} from '@/plugin/http'
-import API_DICT_DATABASE from '../apidict/dict-database'
+import {API_DICT_DATABASE, API_DICT_COMPARE} from "../apidict/dict-database";
+
+'../apidict/dict-database'
 
 export function DbAdd(data) {
   return HTTP_ADD(API_DICT_DATABASE.URL_BASE, data);
@@ -21,11 +23,21 @@ export function DbSetBenchmark(data) {
   return HTTP_EDIT(API_DICT_DATABASE.URL_BENCHMARK, query);
 }
 
+export function DbCompFindAllByConditions(query) {
+  return HTTP_GET(API_DICT_COMPARE.URL_BASE, query);
+}
+
+export function DbComp(query) {
+  return HTTP_ADD(API_DICT_COMPARE.URL_BASE, query);
+}
+
 export default {
   DbAdd,
   DbUpdate,
   DbFindAllByConditions,
   DbDelete,
-  DbSetBenchmark
+  DbSetBenchmark,
+  DbCompFindAllByConditions,
+  DbComp
 }
 
