@@ -574,7 +574,7 @@ CREATE TABLE `database_compare_result` (
   `target_id` int NOT NULL COMMENT '比对库编号',
   `target_env` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对库环境标识',
   `target_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对库URL',
-  `info` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对信息',
+  `info` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对信息',
   `note` varchar(50) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '备注',
   `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
   PRIMARY KEY (`id`),

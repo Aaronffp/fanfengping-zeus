@@ -25,7 +25,7 @@ public class DatabaseCompareResultController {
         ResponseJson responseJson = new ResponseJson(Codes.DATABASE, Codes.DATABASE_SEARCH);
         List<DatabaseCompareResult> dbCompResultList = databaseCompareResultService.findAllByConditions(eng, env);
 
-        responseJson.succ(200, "成功").data(dbCompResultList);
+        responseJson.succ(200, "成功查询").data(dbCompResultList);
         return responseJson;
     }
 
