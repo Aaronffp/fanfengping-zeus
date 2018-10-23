@@ -285,6 +285,7 @@ const frameIn = [
     component: layoutHeaderAside,
     children: (pre => [
       { path: '', name: `${pre}index`, component: () => import('@/pages/database/index'), meta: { ...meta, title: '数据库列表' } },
+      { path: 'dict', name: `${pre}dict`, component: () => import('@/pages/database/dictionary'), meta: { ...meta, title: '数据库字典' } },
       { path: 'comp', name: `${pre}comp`, component: () => import('@/pages/database/compare'), meta: { ...meta, title: '数据库比对' } }
     ])('db-')
   }
