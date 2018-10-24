@@ -43,10 +43,10 @@
       max-height="700"
       style="width: 100%">
       <el-table-column fixed type="index" width="50"></el-table-column>
-      <el-table-column fixed prop="id" label="主键" width="80" ></el-table-column>
+      <el-table-column fixed prop="id" label="主键" width="80" v-if="false"></el-table-column>
       <el-table-column fixed prop="eng" label="英文简称" width="150" show-overflow-tooltip></el-table-column>
       <el-table-column prop="sn" label="流水号" width="130"></el-table-column>
-      <el-table-column prop="databaseId" label="数据库ID" width="80" ></el-table-column>
+      <el-table-column prop="databaseId" label="数据库ID" width="80" v-if="false"></el-table-column>
       <el-table-column prop="env" label="所属环境" width="80"></el-table-column>
       <el-table-column prop="url" label="数据库URL" width="350" show-overflow-tooltip></el-table-column>
       <el-table-column prop="username" label="账号" width="100" show-overflow-tooltip></el-table-column>

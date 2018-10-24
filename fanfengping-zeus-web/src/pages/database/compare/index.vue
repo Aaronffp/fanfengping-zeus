@@ -32,8 +32,8 @@
         max-height="650"
         style="width: 100%">
       <el-table-column fixed type="index" width="50"></el-table-column>
-      <!--<el-table-column prop="id" label="系统编号" width="150"></el-table-column>
-      <el-table-column fixed prop="flag" label="批次标识" width="130"></el-table-column>-->
+      <el-table-column prop="id" label="系统编号" width="150" v-if="false"></el-table-column>
+      <el-table-column fixed prop="flag" label="批次标识" width="130" v-if="false"></el-table-column>
       <el-table-column fixed prop="eng" label="英文简称" width="150"></el-table-column>
       <el-table-column prop="status" label="结果" width="50">
         <template scope="scope">
@@ -41,14 +41,14 @@
           <span v-if="scope.row.status==0">成功</span>
         </template>
       </el-table-column>
-      <!--<el-table-column prop="benchmarkId" label="基准库编号" width="150"></el-table-column>-->
+      <el-table-column prop="benchmarkId" label="基准库编号" width="150" v-if="false"></el-table-column>
       <el-table-column prop="benchmarkEnv" label="基准库环境" width="100"></el-table-column>
       <el-table-column prop="benchmarkUrl" label="基准库URL" width="350" show-overflow-tooltip></el-table-column>
-      <!--<el-table-column prop="targetId" label="比对库编号" width="150"></el-table-column>-->
+      <el-table-column prop="targetId" label="比对库编号" width="150" v-if="false"></el-table-column>
       <el-table-column prop="targetEnv" label="比对库环境" width="100"></el-table-column>
       <el-table-column prop="targetUrl" label="比对库URL" width="350" show-overflow-tooltip></el-table-column>
       <el-table-column prop="info" label="结果信息（字段类型，字段长度，小数位数，是否可为空，默认值，备注）" width="500" show-overflow-tooltip></el-table-column>
-      <!--<el-table-column prop="note" label="备注" width="150"></el-table-column>-->
+      <el-table-column prop="note" label="备注" width="150" v-if="false"></el-table-column>
       <el-table-column prop="ctime" label="日期" width="165"></el-table-column>
     </el-table>
     <el-pagination

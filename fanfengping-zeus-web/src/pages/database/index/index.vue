@@ -47,7 +47,7 @@
       max-height="700"
       style="width: 100%">
       <el-table-column fixed type="index" width="50"></el-table-column>
-      <!--<el-table-column fixed prop="id" label="主键" width="50" v-show="false"></el-table-column>-->
+      <el-table-column fixed prop="id" label="主键" width="50" v-if="false"></el-table-column>
       <el-table-column fixed prop="eng" label="英文简称" width="200" show-overflow-tooltip></el-table-column>
       <el-table-column prop="chs" label="中文简称" width="150" show-overflow-tooltip></el-table-column>
       <el-table-column prop="env" label="所属环境" width="100"></el-table-column>
