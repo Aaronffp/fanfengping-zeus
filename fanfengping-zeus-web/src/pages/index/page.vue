@@ -26,7 +26,6 @@
             </p>
           </el-popover>
         </div>
-        <d2-help-btn class="d2-mt"/>
       </template>
     </d2-page-cover>
   </d2-container>
