@@ -1,33 +1,47 @@
-# 宙斯平台（fanfengping-zeus）
-宙斯平台是一个开源的项目研发管理系统解决方案。使用了 Springboot + JPA + Vue + MySQL 技术，开发者可以更好更快捷的进行管理系统的研发。
-<br><br>
+## 宙斯简介（fanfengping-zeus）
+ZEUS平台的设计初衷是做全栈能效平台，利用业务时间完成。当前使用了 Springboot + Mybatis + Vue + MySQL 实现，开发者可以更好更快捷的进行管理系统的研发。
+<br><br><br>
 
-### **仓库和文档**
+```
+// install package
+npm i
+
+// run
+npm run dev
+
+// build
+npm run build
+``` 
+
+**仓库和文档**
+
 [Github 仓库](https://github.com/Aaronffp/fanfengping-zeus.git) | 
-[欢迎提交建议](https://github.com/Aaronffp/fanfengping-zeus/issues) 
+[提交建议](https://github.com/Aaronffp/fanfengping-zeus/issues) 
 
-### **宙斯菜单列表**
-* 数据管理
-  * 数据库列表
-  * 表结构比对
-  * 数据字典
-* 系统设置
-  * 菜单设置
-  * 编码设置
-* ...
-<br><br>
+**关于我**
 
-### **关于菜鸟**
 [范丰平](263869564@qq.com) | 
 [个人履历](http://www.fanfengping.com/) | 
 [个人博客](http://www.cnblogs.com/fengpingfan/)
-<br><br>
 
-### **变更历史**
-* 20180804
-  * 初始化宙斯项目
-  * 
 
-<br><br><br><br>
+## 功能
+
+以下功能完善中，敬请期待...
+* 登录和注销
+* 菜单设置
+* 权限设置
+* 角色设置
+* 组设置
+* 用户管理
+* 数据库管理
+* 数据库比对
+* 数据字典
+* 常用网站
+* 编码类型
+* 编码详情
+* 应用管理
+* 。。。
+
 
 

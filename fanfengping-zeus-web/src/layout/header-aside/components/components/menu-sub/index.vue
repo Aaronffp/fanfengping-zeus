@@ -1,7 +1,12 @@
 <template>
-  <el-submenu :index="menu.path || uniqueid">
+  <el-submenu :index="menu.path || uniqueId">
     <template slot="title">
-      <i :class="`fa fa-${menu.icon || 'folder-o'}`"></i>
+      <i v-if="menu.icon" :class="`fa fa-${menu.icon}`"></i>
+      <!-- <i v-else-if="menu.iconSvg">
+        <d2-icon-svg :name="menu.iconSvg"/>
+      </i> -->
+      <d2-icon-svg v-else-if="menu.iconSvg" :name="menu.iconSvg"/>
+      <i v-else class="fa fa-folder-o"></i>
       <span slot="title">{{menu.title}}</span>
     </template>
     <template v-for="(child, childIndex) in menu.children">
@@ -12,7 +17,7 @@
 </template>
 
 <script>
-import uniqueid from 'lodash.uniqueid'
+import { uniqueId } from 'lodash'
 // 组件
 import d2LayoutMainMenuItem from '../menu-item'
 
@@ -30,7 +35,7 @@ export default {
   },
   data () {
     return {
-      uniqueid: uniqueid('d2-menu-empty-')
+      uniqueId: uniqueId('d2-menu-empty-')
     }
   }
 }

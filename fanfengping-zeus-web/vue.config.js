@@ -6,7 +6,7 @@ function resolve (dir) {
 }
 
 // 基础路径 注意发布之前要先修改这里
-const baseUrl = '/zeus/'
+const baseUrl = '/'
 
 module.exports = {
   baseUrl: baseUrl, // 根据你的实际情况更改这里
@@ -17,6 +17,20 @@ module.exports = {
   // webpack 设置
   // 默认设置: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-service/lib/config/base.js
   chainWebpack: config => {
+    // markdown
+    config.module
+      .rule('md')
+      .test(/\.md$/)
+      .use('text-loader')
+      .loader('text-loader')
+      .end()
+    // i18n
+    config.module
+      .rule('i18n')
+      .resourceQuery(/blockType=i18n/)
+      .use('i18n')
+      .loader('@kazupon/vue-i18n-loader')
+      .end()
     // svg
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
