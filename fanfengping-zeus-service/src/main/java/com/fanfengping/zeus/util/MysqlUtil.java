@@ -35,7 +35,7 @@ public class MysqlUtil {
         databaseCompareResultService.add(databaseCompare);
     }
 
-    public void genDataDictionary(Database dbs) {
+    public ResponseJson genDataDictionary(Database dbs) {
         ResponseJson responseJson = new ResponseJson(Codes.DICTIONARY, Codes.DICTIONARY_INSERT);
         Connection conn = null;
         Statement sqlStatement = null;
@@ -56,7 +56,7 @@ public class MysqlUtil {
             String sn = "" + System.currentTimeMillis();
 
             if (!conn.isClosed()) {
-                responseJson.succ(200,"Succeeded connecting to the Database!").data(dbs);
+                responseJson.succ(200,"成功连接到数据库！开始生成数据库字典...").data("source", dbs);
                 log.info(responseJson.toString());
             }
 
@@ -83,13 +83,24 @@ public class MysqlUtil {
                         tableSchema, tableName, tableComment, engine, tableCollation,
                         columnName, columnComment, columnKey, columnType, nullable, columnDefault, characterSetName, collationName);
                 dataDictionaryService.add(dataDictionary);
+                log.info(responseJson.succ(200, "新增数据字典信息").data(String.format("环境：%s，数据库：%s，数据表：%s", dbs.getEnv(), tableSchema, tableName)).toString());
             }
+
+            responseJson.succ(200, "成功生成数据库字典！").data("source", dbs);
+            log.info(responseJson.toString());
+            return responseJson;
         } catch (ClassNotFoundException cnfe) {
-            responseJson.fail(999, "数据库驱动失败。" + cnfe.getMessage()).data(dbs);
+            responseJson.fail(999, "生成数据库字典失败！原因：" + cnfe.getMessage()).data("source", dbs);
             log.error(responseJson.toString(), cnfe);
+            return responseJson;
+        } catch (SQLException sqle){
+            responseJson.fail(999, "生成数据库字典失败！原因：" + sqle.getMessage()).data("source", dbs);
+            log.error(responseJson.toString(), sqle);
+            return responseJson;
         } catch (Exception e){
-            responseJson.fail(999, "数据库连接失败。" + e.getMessage()).data(dbs);
+            responseJson.fail(999, "生成数据库字典失败！原因：" + e.getMessage()).data("source", dbs);
             log.error(responseJson.toString(), e);
+            return responseJson;
         } finally {
             try {
                 if (sqlStatement != null) {
@@ -99,8 +110,9 @@ public class MysqlUtil {
                     conn.close();
                 }
             } catch (SQLException sqle) {
-                responseJson.fail(999, "数据库语句执行异常。" + sqle.getMessage()).data(dbs);
+                responseJson.fail(999, "数据库连接关闭失败！原因：" + sqle.getMessage()).data("source", dbs);
                 log.error(responseJson.toString(), sqle);
+                return responseJson;
             }
         }
     }
