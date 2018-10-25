@@ -29,26 +29,31 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return dataDictionaryRepository.add(dataDictionary);
     }
 
-    public List<DataDictionary> findAllByConditions(String env, String eng, String url, String tableName, String columnName) {
+    public ResponseJson findAllByConditions(String env, String eng, String url, String tableName, String columnName) {
         ResponseJson responseJson = new ResponseJson(Codes.DICTIONARY, Codes.DICTIONARY_SEARCH);
         List<DataDictionary> dataDictionaryList = dataDictionaryRepository.findAllByConditions(env, eng, url, tableName, columnName);
 
         // 存在半小时内数据
         if (dataDictionaryList.size() > 0) {
-            responseJson.succ(200, "已存在半小时内数据").data(dataDictionaryList);
+            responseJson.succ(200, "成功查询").data(dataDictionaryList);
             log.info(responseJson.toString());
-            return dataDictionaryList;
+            return responseJson;
         }
 
         Database db = databaseRepository.findByEnvAndEng(env, eng);
-        if (db != null) {
-            responseJson.succ(200, "开始生成数据库字典信息").data(db);
-            log.info(responseJson.toString());
-            mysqlUtil.genDataDictionary(db);
-            responseJson.succ(200, "成功生成数据库字典信息").data(db);
-            log.info(responseJson.toString());
+
+        if (db != null && "mysql".equals(db.getType().toLowerCase()) && !"docker".equals(db.getEnv().toLowerCase())) {
+            responseJson = mysqlUtil.genDataDictionary(db);
+
+            if ("200".equals(responseJson.get("code"))) {
+                responseJson.data(dataDictionaryRepository.findAllByConditions(env, eng, url, tableName, columnName));
+                log.info(responseJson.toString());
+                return responseJson;
+            }
+
+            return responseJson;
         }
 
-        return dataDictionaryRepository.findAllByConditions(env, eng, url, tableName, columnName);
+        return responseJson.fail(999, "数据库字典查询失败！原因：数据库必须为MySQL且数据库必须可连通。").data("source", db);
     }
 }
