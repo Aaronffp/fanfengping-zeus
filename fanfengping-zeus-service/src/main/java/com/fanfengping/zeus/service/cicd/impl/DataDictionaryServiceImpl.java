@@ -24,8 +24,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     @Autowired
     MysqlUtil mysqlUtil;
 
-    @Override
-    public Integer add(DataDictionary dataDictionary) {
+    public int add(DataDictionary dataDictionary) {
         return dataDictionaryRepository.add(dataDictionary);
     }
 
@@ -45,7 +44,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         if (db != null && "mysql".equals(db.getType().toLowerCase()) && !"docker".equals(db.getEnv().toLowerCase())) {
             responseJson = mysqlUtil.genDataDictionary(db);
 
-            if ("200".equals(responseJson.get("code"))) {
+            if ("200".equals(String.valueOf(responseJson.get("code")))) {
                 responseJson.data(dataDictionaryRepository.findAllByConditions(env, eng, url, tableName, columnName));
                 log.info(responseJson.toString());
                 return responseJson;
