@@ -31,8 +31,11 @@ public class DatabaseCompareResultServiceImpl implements DatabaseCompareResultSe
         return databaseCompareResultRepository.add(databaseCompareResult);
     }
 
-    public List<DatabaseCompareResult> findAllByConditions(String eng, String env) {
-        return databaseCompareResultRepository.findAllByConditions(eng, env);
+    public ResponseJson findAllByConditions(String eng, String env) {
+        ResponseJson responseJson = new ResponseJson(Codes.DATABASE, Codes.DATABASE_SEARCH);
+        responseJson.succ(200, "成功查询").data(databaseCompareResultRepository.findAllByConditions(eng, env));
+        log.info(responseJson.toString());
+        return responseJson;
     }
 
     public ResponseJson compare(String eng, String env) {
@@ -79,11 +82,11 @@ public class DatabaseCompareResultServiceImpl implements DatabaseCompareResultSe
             responseJson.succ(200, String.format("数据库比对完成，总计耗时：%d 分 %d 秒", (end - start)/1000/60, (end - start)/1000 % 60));
             return responseJson;
         } catch (SQLException sqle) {
-            responseJson.fail(999, sqle.getMessage());
+            responseJson.fail(999, "数据库比对失败！原因：" + sqle.getMessage());
             log.info(responseJson.toString(), sqle);
             return responseJson;
         } catch (Exception e) {
-            responseJson.fail(999, e.getMessage());
+            responseJson.fail(999, "数据库比对失败！原因：" + e.getMessage());
             log.info(responseJson.toString(), e);
             return responseJson;
         }

@@ -22,11 +22,7 @@ public class DatabaseCompareResultController {
     @RequestMapping(path = "", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResponseJson findAllByConditions(@RequestParam("eng") String eng, @RequestParam("env") String env) {
-        ResponseJson responseJson = new ResponseJson(Codes.DATABASE, Codes.DATABASE_SEARCH);
-        List<DatabaseCompareResult> dbCompResultList = databaseCompareResultService.findAllByConditions(eng, env);
-
-        responseJson.succ(200, "成功查询").data(dbCompResultList);
-        return responseJson;
+        return databaseCompareResultService.findAllByConditions(eng, env);
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
@@ -35,6 +31,6 @@ public class DatabaseCompareResultController {
         String eng = reqMap.get("eng") == null ? "" : reqMap.get("eng").toString();
         String env = reqMap.get("env") == null ? "" : reqMap.get("env").toString();
 
-        return databaseCompareResultService.compare(eng, env);
+        return databaseCompareResultService.compare(eng, env).data("requestParams", reqMap);
     }
 }
