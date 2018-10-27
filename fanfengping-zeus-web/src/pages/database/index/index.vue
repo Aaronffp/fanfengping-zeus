@@ -159,6 +159,9 @@
   export default {
     methods: {
       handleBtnQuery(query) {
+        if(this.query.valid === '') {
+            this.query.valid = '1, 0';
+        }
         DbFindAllByConditions(query).then(res => {
           this.tableData = res.data;
           this.currentTotal = this.tableData.length;

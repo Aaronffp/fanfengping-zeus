@@ -1,7 +1,9 @@
 package com.fanfengping.zeus.service;
 
+import com.fanfengping.zeus.util.ResponseJson;
+
 public interface BaseService<T> {
-    T add(T t);
-    T update(T t);
-    T delete(T t);
+    ResponseJson add(T t);
+    ResponseJson update(T t);
+    ResponseJson delete(T t);
 }
