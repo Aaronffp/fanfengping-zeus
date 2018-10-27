@@ -15,7 +15,7 @@ public class FanfengpingZeusServiceController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ResponseJson index() {
-        responseJson.succ("system","Fanfengping Zeus Serivce ok.");
+        responseJson.succ(200,"Fanfengping Zeus Serivce ok.");
         log.info(responseJson.toString());
         return responseJson;
     }
