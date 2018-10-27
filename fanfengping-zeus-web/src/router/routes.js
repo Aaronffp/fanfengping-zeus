@@ -288,6 +288,16 @@ const frameIn = [
       { path: 'dict', name: `${pre}dict`, component: () => import('@/pages/database/dictionary'), meta: { ...meta, title: '数据库字典' } },
       { path: 'comp', name: `${pre}comp`, component: () => import('@/pages/database/compare'), meta: { ...meta, title: '数据库比对' } }
     ])('db-')
+  },
+  {
+    path: '/cicd',
+    name: '持续集成',
+    meta,
+    redirect: { name: 'db-serv' },
+    component: layoutHeaderAside,
+    children: (pre => [
+      { path: 'serv', name: `${pre}serv`, component: () => import('@/pages/cicd/serv'), meta: { ...meta, title: '服务信息管理' } }
+    ])('cicd-')
   }
 ]
 

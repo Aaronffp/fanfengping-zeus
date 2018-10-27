@@ -39,6 +39,8 @@ import menuTestManage from './modules/menu-test-manage'
 import menuReportManage from './modules/menu-report-manage'
 // 数据管理
 import menuDataManage from './modules/menu-data-manage'
+// 持续集成
+import menuCicd from './modules/menu-cicd'
 // 自动化
 import menuAutoTest from './modules/menu-autotest'
 // 知识库
@@ -61,6 +63,7 @@ export const menuAside = [
   menuTestManage,
   menuReportManage,
   menuDataManage,
+  menuCicd,
   menuAutoTest,
   menuKnowledgeWiki,
   menuToolKits,
