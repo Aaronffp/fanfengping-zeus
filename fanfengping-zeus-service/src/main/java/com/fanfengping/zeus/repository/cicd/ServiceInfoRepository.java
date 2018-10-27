@@ -8,15 +8,15 @@ import java.util.List;
 
 @Repository
 public interface ServiceInfoRepository {
-    @Insert("insert into service_info (env, eng, chs, url, account, password, note, updater) "
-            + "value (#{env}, #{eng}, #{chs}, #{url}, #{account}, #{password}, #{note}, #{updater})")
+    @Insert("insert into service_info (env, eng, chs, url, username, password, note, updater) "
+            + "value (#{env}, #{eng}, #{chs}, #{url}, #{username}, #{password}, #{note}, #{updater})")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "note", column = "note"),
             @Result(property = "updater", column = "updater"),
@@ -25,7 +25,7 @@ public interface ServiceInfoRepository {
     Integer add(ServiceInfo serviceInfo);
 
     @Update("update service_info set env = '${env}', eng = '${eng}', chs = '${chs}', url = '${url}', " +
-            "       account = '${account}', password = '${password}', note = '${note}, " +
+            "       username = '${username}', password = '${password}', note = '${note}, " +
             "       updater = '${updater}', utime = NOW() " +
             "where id = '${id}'")
     @Results({
@@ -34,7 +34,7 @@ public interface ServiceInfoRepository {
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "note", column = "note"),
             @Result(property = "updater", column = "updater"),
@@ -49,7 +49,7 @@ public interface ServiceInfoRepository {
             @Result(property = "eng", column = "eng"),
             @Result(property = "chs", column = "chs"),
             @Result(property = "url", column = "url"),
-            @Result(property = "account", column = "account"),
+            @Result(property = "username", column = "username"),
             @Result(property = "password", column = "password"),
             @Result(property = "note", column = "note"),
             @Result(property = "updater", column = "updater"),
@@ -59,8 +59,24 @@ public interface ServiceInfoRepository {
 
     @Select("select * from service_info "
             + "where env like '%${env}%' and eng like '%${eng}%' and chs like '%${chs}%' " +
-            "        and updater like '%${updater}%' "
+            "        and url like '%${url}%' and updater like '%${updater}%' "
             + "order by utime desc ")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "env", column = "env"),
+            @Result(property = "eng", column = "eng"),
+            @Result(property = "chs", column = "chs"),
+            @Result(property = "url", column = "url"),
+            @Result(property = "username", column = "username"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "note", column = "note"),
+            @Result(property = "updater", column = "updater"),
+            @Result(property = "utime", column = "utime"),
+    })
+    List<ServiceInfo> findAllByConditions(@Param("env") String env, @Param("eng") String eng, @Param("chs") String chs, @Param("url") String url, @Param("updater") String updater);
+
+    @Select("select * from service_info "
+            + "where env = '${env}' and eng = '${eng}' and url = '${url}' ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "env", column = "env"),
@@ -69,9 +85,9 @@ public interface ServiceInfoRepository {
             @Result(property = "url", column = "url"),
             @Result(property = "account", column = "account"),
             @Result(property = "password", column = "password"),
-            @Result(property = "note", column = "note"),
             @Result(property = "updater", column = "updater"),
             @Result(property = "utime", column = "utime"),
+            @Result(property = "note", column = "note"),
     })
-    List<ServiceInfo> findAllByConditions(@Param("env") String env, @Param("eng") String eng, @Param("chs") String schs, @Param("updater") String updater);
+    ServiceInfo findAllByEnvAndEngAndUrl(ServiceInfo serviceInfo);
 }
