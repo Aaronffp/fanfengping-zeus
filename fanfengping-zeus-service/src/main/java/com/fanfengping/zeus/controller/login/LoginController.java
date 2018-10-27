@@ -20,18 +20,16 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.POST, path = "/login", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResponseJson login(@RequestBody String body) {
-        ResponseJson responseJson = new ResponseJson(Codes.USER);
+        ResponseJson responseJson = new ResponseJson(Codes.USER, Codes.USER_LOGIN).data("requestParams", body);
 
         try {
             JSONObject reqBody = JSON.parseObject(body);
             String username = reqBody.getString("username");
             String password = reqBody.getString("password");
 
-            responseJson = responseJson.acti(Codes.USER_LOGIN).data("body", reqBody).oper(username);
-
             if (StringUtils.isEmpty(username) ||
                     username.length() < Codes.LENGTH_USER_ACCOUNT_MIN || username.length() > Codes.LENGTH_USER_ACCOUNT_MAX){
-                responseJson = responseJson.fail(String.format("用户名为空或长度超出 %s-%s 个字符",
+                responseJson.fail(999, String.format("登陆失败！原因：用户名为空或长度超出 %s-%s 个字符",
                                                                 Codes.LENGTH_USER_ACCOUNT_MIN, Codes.LENGTH_USER_ACCOUNT_MAX));
                 log.warn(responseJson.toString());
                 return responseJson;
@@ -39,7 +37,7 @@ public class LoginController {
 
             if (StringUtils.isEmpty(password) ||
                     password.length() < Codes.LENGTH_USER_PASSWORD_MIN || password.length() > Codes.LENGTH_USER_PASSWORD_MAX){
-                responseJson = responseJson.fail(String.format("密码为空或长度超出 %d-%d 个字符",
+                responseJson.fail(999, String.format("登陆失败！原因：密码为空或长度超出 %d-%d 个字符",
                                                                 Codes.LENGTH_USER_PASSWORD_MIN, Codes.LENGTH_USER_PASSWORD_MAX));
                 log.warn(responseJson.toString());
                 return responseJson;
@@ -48,18 +46,18 @@ public class LoginController {
             User user = userService.findByUsernameAndPassword(username, password);
 
             if (user == null){
-                responseJson = responseJson.fail("用户不存在或密码错误");
+                responseJson.fail(999, "登陆失败！原因：用户不存在或密码错误");
                 log.warn(responseJson.toString());
-                return responseJson;
             } else {
-                responseJson = responseJson.succ(user);
+                responseJson = responseJson.succ(200, "成功登陆！").data(user);
                 log.info(responseJson.toString());
-                return responseJson;
             }
         } catch ( Exception e ) {
             responseJson = responseJson.fail(e.getMessage());
             log.error(responseJson.toString(), e);
             return responseJson;
         }
+
+        return responseJson;
     }
 }
