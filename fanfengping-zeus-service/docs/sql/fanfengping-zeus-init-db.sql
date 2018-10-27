@@ -612,7 +612,7 @@ CREATE TABLE `service_info` (
   `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
   `chs` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '中文简称',
   `url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '访问链接',
-  `account` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '账号',
+  `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '账号',
   `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '密码',
   `note` varchar(100) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '备注',
   `updater` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '更新人',
