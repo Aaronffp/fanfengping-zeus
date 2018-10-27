@@ -25,7 +25,7 @@ public interface ServiceInfoRepository {
     Integer add(ServiceInfo serviceInfo);
 
     @Update("update service_info set env = '${env}', eng = '${eng}', chs = '${chs}', url = '${url}', " +
-            "       username = '${username}', password = '${password}', note = '${note}, " +
+            "       username = '${username}', password = '${password}', note = '${note}', " +
             "       updater = '${updater}', utime = NOW() " +
             "where id = '${id}'")
     @Results({

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/app")
+@RequestMapping("/cicd/serv")
 public class ServiceInfoController {
     @Autowired
     ServiceInfoService serviceInfoService;
