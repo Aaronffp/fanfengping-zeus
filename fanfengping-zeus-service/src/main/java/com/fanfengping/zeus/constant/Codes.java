@@ -22,6 +22,27 @@ public interface Codes {
     String DATABASE_BENCHMARK = "DATABASE_BENCHMARK";
     String DATABASE_COMPARE = "DATABASE_COMPARE";
 
+    /**
+     * 持续集成
+     */
+    String APPS = "APPS";
+    String APPS_INSERT = "APPS_INSERT";
+    String APPS_SEARCH = "APPS_SEARCH";
+    String APPS_UPDATE = "APPS_UPDATE";
+    String APPS_DELETE = "APPS_DELETE";
+
+    String SERV = "SERV";
+    String SERV_INSERT = "SERV_INSERT";
+    String SERV_SEARCH = "SERV_SEARCH";
+    String SERV_UPDATE = "SERV_UPDATE";
+    String SERV_DELETE = "SERV_DELETE";
+
+    String BUILD = "BUILD";
+    String BUILD_INSERT = "BUILD_INSERT";
+    String BUILD_SEARCH = "BUILD_SEARCH";
+    String BUILD_UPDATE = "BUILD_UPDATE";
+    String BUILD_DELETE = "BUILD_DELETE";
+
     String DICTIONARY = "DICTIONARY";
     String DICTIONARY_INSERT = "DICTIONARY_INSERT";
     String DICTIONARY_SEARCH = "DICTIONARY_SEARCH";
