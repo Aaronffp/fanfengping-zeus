@@ -12,27 +12,25 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuildHistory implements Serializable {
-    private int id;
-    private String env;
-    private String addr;
-    private String eng;
-    private String tag;
-    private String release;
-    private String gitUrl;
-    private String gitBranch;
-    private String link;
-    private String operator;
-    private String ctime;
+    private int id;               // 系统主键
+    private String eng;           // 英文简称
+    private String tag;           // 构建版本
+    private String publish;       // 版本状态
+    private String gitUrl;        // GIT仓库地址
+    private String gitBranch;     // GIT分支
+    private String addr;          // 构建服务器
+    private String link;          // 构建链接
+    private String operator;      // 操作人
+    private String ctime;         // 构建时间
 
-    public BuildHistory(String env, String addr, String eng, String tag, String release,
-                        String gitUrl, String gitBranch, String link, String operator) {
-        this.env = env;
-        this.addr = addr;
+    public BuildHistory(String eng, String tag, String publish, String gitUrl, String gitBranch,
+                        String addr, String link, String operator) {
         this.eng = eng;
         this.tag = tag;
-        this.release = release;
+        this.publish = publish;
         this.gitUrl = gitUrl;
         this.gitBranch = gitBranch;
+        this.addr = addr;
         this.link = link;
         this.operator = operator;
     }
