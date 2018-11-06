@@ -296,7 +296,9 @@ const frameIn = [
     redirect: { name: 'db-serv' },
     component: layoutHeaderAside,
     children: (pre => [
-      { path: 'serv', name: `${pre}serv`, component: () => import('@/pages/cicd/serv'), meta: { ...meta, title: '服务信息管理' } }
+      { path: 'serv', name: `${pre}serv`, component: () => import('@/pages/cicd/serv'), meta: { ...meta, title: '服务信息管理' } },
+      { path: 'build', name: `${pre}build`, component: () => import('@/pages/cicd/build'), meta: { ...meta, title: '构建信息管理' } },
+      { path: 'deploy', name: `${pre}deploy`, component: () => import('@/pages/cicd/deploy'), meta: { ...meta, title: '部署信息管理' } }
     ])('cicd-')
   }
 ]
