@@ -2,20 +2,31 @@
   <d2-container>
     <el-form :model="query" :inline="true">
       <el-form-item label="英文简称：">
-        <el-select v-model="query.eng" clearable filterable placeholder="请选择系统英文简称...">
+        <el-select v-model="query.eng" clearable filterable placeholder="请选择英文简称...">
           <el-option v-for="item in conditions.engs" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left">{{ item.label }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="比对库环境：">
-        <el-select v-model="query.env" clearable placeholder="请选择比对库...">
+      <el-form-item label="基准库环境：">
+        <el-select v-model="query.bEnv" clearable placeholder="请选择基准库环境...">
           <el-option v-for="item in conditions.envs" :key="item.value" :label="item.label" :value="item.value">
             <span style="float: left">{{ item.label }}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
           </el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="比对库环境：">
+        <el-select v-model="query.tEnv" clearable placeholder="请选择比对库环境...">
+          <el-option v-for="item in conditions.envs" :key="item.value" :label="item.label" :value="item.value">
+            <span style="float: left">{{ item.label }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="数据库表名：">
+        <el-input v-model="query.tableName" placeholder="请输入数据库表名..." clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="handleBtnQuery(query)" type="primary" icon="el-icon-search">搜索</el-button>
@@ -35,7 +46,7 @@
       <el-table-column prop="id" label="系统编号" width="150" v-if="false"></el-table-column>
       <el-table-column fixed prop="flag" label="批次标识" width="130" v-if="false"></el-table-column>
       <el-table-column fixed prop="eng" label="英文简称" width="150"></el-table-column>
-      <el-table-column prop="status" label="结果" width="50">
+      <el-table-column prop="status" label="比对结果" width="80">
         <template scope="scope">
           <span v-if="scope.row.status==-1">失败</span>
           <span v-if="scope.row.status==0">成功</span>
@@ -43,13 +54,16 @@
       </el-table-column>
       <el-table-column prop="benchmarkId" label="基准库编号" width="150" v-if="false"></el-table-column>
       <el-table-column prop="benchmarkEnv" label="基准库环境" width="100"></el-table-column>
-      <el-table-column prop="benchmarkUrl" label="基准库URL" width="350" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="benchmarkUrl" label="基准库URL" width="350" v-if="false" show-overflow-tooltip></el-table-column>
       <el-table-column prop="targetId" label="比对库编号" width="150" v-if="false"></el-table-column>
       <el-table-column prop="targetEnv" label="比对库环境" width="100"></el-table-column>
-      <el-table-column prop="targetUrl" label="比对库URL" width="350" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="info" label="结果信息（字段类型，字段长度，小数位数，是否可为空，默认值，备注）" width="500" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="note" label="备注" width="150" v-if="false"></el-table-column>
-      <el-table-column prop="ctime" label="日期" width="165"></el-table-column>
+      <el-table-column prop="targetUrl" label="比对库URL" width="350" v-if="false" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="tableName" label="数据库表名" width="350" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="info" label="比对结果信息" width="300" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="benchmarkDetail" label="基准库详情（字段类型，字段长度，小数位数，是否可为空，默认值，备注）" width="500" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="targetDetail" label="比对库详情（字段类型，字段长度，小数位数，是否可为空，默认值，备注）" width="500" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="note" label="备注信息" width="150" v-if="false"></el-table-column>
+      <el-table-column prop="ctime" label="比对日期" width="165"></el-table-column>
     </el-table>
     <el-pagination
         @size-change="handleSizeChange"
@@ -68,9 +82,9 @@
   export default {
     methods: {
       handleBtnQuery(query) {
-        if (query.eng === "") {
+        if (query.eng === "" || query.bEnv === "" || query.tEnv === "") {
           this.$message({
-            message: '请选择查询的数据库',
+            message: '请选择查询/比对的数据库英文简称、基准库环境、比对库环境！',
             type: 'warning'
           });
           return;
@@ -84,14 +98,14 @@
             type: res.code == 200 ? 'success' : 'warning'
           });
         })
-          .catch(err => {
-            console.log(err)
-          })
+        .catch(err => {
+          console.log(err)
+        })
       },
       handleBtnCompare(query) {
-        if (query.eng === "") {
+        if (query.eng === "" || query.bEnv === "" || query.tEnv === "") {
           this.$message({
-            message: '请选择比对的数据库',
+            message: '请选择查询/比对的数据库英文简称、基准库环境、比对库环境！',
             type: 'warning'
           });
           return;
@@ -102,10 +116,12 @@
             message: res.msg,
             type: res.code == 200 ? 'success' : 'warning'
           });
+            this.tableData = res.data;
+            this.currentTotal = this.tableData.length;
         })
-          .catch(err => {
-            console.log(err)
-          })
+        .catch(err => {
+          console.log(err)
+        })
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -124,7 +140,7 @@
         conditions: {
           envs: [
             {value: 'SIT01', label: '测试环境'},
-            {value: 'SIT04', label: '开发环境'},
+            {value: 'DEV', label: '开发环境'},
             {value: 'PRE', label: '预发环境'},
             {value: 'DOCKER', label: '容器环境'}
           ],
@@ -162,7 +178,9 @@
 
         query: {
           eng: '',
-          env: ''
+          bEnv: '',
+          tEnv: '',
+          tableName: ''
         },
 
         tableData: []
