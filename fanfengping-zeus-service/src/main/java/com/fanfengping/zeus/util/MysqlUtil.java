@@ -3,9 +3,9 @@ package com.fanfengping.zeus.util;
 import com.fanfengping.zeus.constant.Codes;
 import com.fanfengping.zeus.entity.cicd.DataDictionary;
 import com.fanfengping.zeus.entity.cicd.Database;
-import com.fanfengping.zeus.entity.cicd.DatabaseCompareResult;
+import com.fanfengping.zeus.entity.cicd.DatabaseCompare;
 import com.fanfengping.zeus.service.cicd.DataDictionaryService;
-import com.fanfengping.zeus.service.cicd.DatabaseCompareResultService;
+import com.fanfengping.zeus.service.cicd.DatabaseCompareService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,19 +20,28 @@ import java.util.Map;
 @Service
 public class MysqlUtil {
     @Autowired
-    DatabaseCompareResultService databaseCompareResultService;
+    DatabaseCompareService databaseCompareService;
     @Autowired
     DataDictionaryService dataDictionaryService;
 
     private Database dbs;
     private Database dbt;
     private String message = "";
-    private DatabaseCompareResult databaseCompare;
-    private String timestamp;
+    private DatabaseCompare databaseCompare;
+    private String flag;
 
-    private void log(String message, Integer tblCompResult){
-        databaseCompare = new DatabaseCompareResult(timestamp, tblCompResult, dbs.getEng(), dbs.getId(), dbs.getEnv(), dbs.getUrl(), dbt.getId(), dbt.getEnv(), dbt.getUrl(), message, "");
-        databaseCompareResultService.add(databaseCompare);
+    private void log(int status, String tableName, String info, String benchmarkDetail, String targetDetail){
+        ResponseJson responseJson = new ResponseJson(Codes.DATABASE_COMPARE, Codes.DATABASE_COMPARE);
+        databaseCompare = new DatabaseCompare(flag, status, dbs.getEng(), dbs.getId(), dbs.getEnv(), dbs.getUrl(), dbt.getId(), dbt.getEnv(), dbt.getUrl(), tableName, info, benchmarkDetail, targetDetail, "");
+        databaseCompareService.add(databaseCompare);
+
+        if (status == 999) {
+            responseJson.fail(999, info);
+            log.error(responseJson.toString());
+        } else {
+            responseJson.succ(200, "数据库比对信息").data("detail", databaseCompare);
+            log.info(responseJson.toString());
+        }
     }
 
     public ResponseJson genDataDictionary(Database dbs) {
@@ -117,10 +126,10 @@ public class MysqlUtil {
         }
     }
 
-    public void compareAllTables(Database dbs, Database dbt, String timestamp) throws SQLException {
+    public void compareAllTables(Database dbs, Database dbt, String flag) throws SQLException {
         this.dbs = dbs;
         this.dbt = dbt;
-        this.timestamp = timestamp;
+        this.flag = flag;
 
         try (Connection dbsConnection = DriverManager.getConnection(dbs.getUrl(), dbs.getUsername(), dbs.getPassword());
              Connection dbtConnection = DriverManager.getConnection(dbt.getUrl(), dbt.getUsername(), dbt.getPassword())) {
@@ -130,8 +139,7 @@ public class MysqlUtil {
             List<String> dbtTables = getAllTableAsString(dbtMetData);
 
             if (dbsTables.size() != dbtTables.size()) {
-                message = String.format("表数量不一致。基准库：%d，比对库：%d", dbsTables.size(), dbtTables.size());
-                log(message, -1);
+                log(-1, "", "基准库同比对库的表数量不一致！", "" + dbsTables.size(), "" + dbtTables.size());
             }
 
             for (int i = 0, l = dbsTables.size(); i < l; i++) {
@@ -141,8 +149,7 @@ public class MysqlUtil {
                     if (dbsTables.get(i).equals(dbtTables.get(j))) {
                         sexist = true;
 
-                        message = String.format("开始比对数据表：%s", dbsTables.get(i));
-                        log(message, 0);
+                        log(0, dbsTables.get(i), String.format("开始比对数据表：%s", dbsTables.get(i)), "", "");
 
                         matchOneTable(dbsMetData, dbtMetData, dbsTables.get(i));
                         break;
@@ -150,8 +157,7 @@ public class MysqlUtil {
                 }
 
                 if (!sexist) {
-                    message = String.format("数据表：%s 在比对库中缺失", dbsTables.get(i));
-                    log(message, -1);
+                    log(-1, dbsTables.get(i), "数据表在比对库中缺失", dbsTables.get(i), "");
                 }
             }
 
@@ -166,14 +172,18 @@ public class MysqlUtil {
                 }
 
                 if (!texist) {
-                    message = String.format("数据表：%s 在比对库中冗余", dbtTables.get(i));
-                    log(message, -1);
+                    log(-1, dbtTables.get(i), "数据表在比对库中冗余", "", dbtTables.get(i));
                 }
             }
         } catch (Exception e){
-            message = String.format("数据库[%s | %s] - [%s | %s] 连接失败。。。", dbs.getUrl(), dbs.getUsername(), dbt.getUrl(), dbt.getUsername());
-            log(message, -1);
-            e.printStackTrace();
+            try {
+                Connection dbsConnection = DriverManager.getConnection(dbs.getUrl(), dbs.getUsername(), dbs.getPassword());
+                log(-1, "", "比对库连接失败！请确认比对库连接信息！" + e.getMessage(), "", String.format("比对库URL：%s， 账号：%s， 密码：%s", dbt.getUrl(), dbt.getUsername(), dbt.getPassword()));
+                log.error("比对库连接失败！请确认比对库连接信息！" + e.getMessage(), e);
+            } catch (Exception se) {
+                log(-1, "", "基准库连接失败！请确认基准库连接信息！" + se.getMessage(), "", String.format("比对库URL：%s， 账号：%s， 密码：%s", dbs.getUrl(), dbs.getUsername(), dbs.getPassword()));
+                log.error("比对库连接失败！请确认比对库连接信息！" + e.getMessage(), e);
+            }
         }
     }
 
@@ -201,24 +211,26 @@ public class MysqlUtil {
                 for (Map.Entry<String, String> entry : dbsTable.entrySet()) {
                     if (dbtTable.containsKey(entry.getKey())) {
                         if (!dbtTable.get(entry.getKey()).equals(entry.getValue())) {
-                            message = String.format("比对库表[%s]字段[%s]基本设置不一致。[%s >>> %s]", tableName, entry.getKey(), entry.getValue(), dbtTable.get(entry.getKey()));
-                            log(message, -1);
+                            log(-1, tableName, String.format("数据库表字段[%s]基本设置不一致", entry.getKey()), entry.getValue(), dbtTable.get(entry.getKey()));
                         }
                     } else {
-                        message = String.format("比对库表[%s]字段缺失，字段名称为：%s", tableName, entry.getKey());
-                        log(message, -1);
+                        log(-1, tableName, String.format("比对库中表字段[%s]缺失！", entry.getKey()), entry.getKey() + " ---> " + entry.getValue(), "");
+                    }
+                }
+
+                for (Map.Entry<String, String> entry : dbtTable.entrySet()) {
+                    if (!dbsTable.containsKey(entry.getKey())) {
+                        log(-1, tableName, String.format("比对库中表字段[%s]冗余！", entry.getKey()), "", entry.getKey() + " ---> " + entry.getValue());
                     }
                 }
             } else if (dbsTable.size() < 1) {
-                message = String.format("基准库表[%s]存在空表现象", tableName);
-                log(message, -1);
+                log(-1, tableName, String.format("基准库表[%s]中无任何字段设置！", tableName), "", "");
             } else {
-                message = String.format("比对库表[%s]存在空表现象", tableName);
-                log(message, -1);
+                log(-1, tableName, String.format("比对库表[%s]中无任何字段设置！", tableName), "", "");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+            log(999, tableName, "比对数据库表过程中存在异常！原因：" + e.getMessage(), "", "");
+            log.error("比对数据库表过程中存在异常！原因：" + e.getMessage(), e);
         }
     }
 
