@@ -560,13 +560,13 @@ CREATE TABLE `database` (
 
 
 -- ----------------------------
--- Table structure for database_compare_result（表结构比对结果表）
+-- Table structure for database_compare（表结构比对结果表）
 -- ----------------------------
-DROP TABLE IF EXISTS `database_compare_result`;
-CREATE TABLE `database_compare_result` (
+DROP TABLE IF EXISTS `database_compare`;
+CREATE TABLE `database_compare` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '系统编号',
   `flag` varchar(25) COLLATE utf8_unicode_ci NOT NULL COMMENT '批次标识',
-  `status` int(3) NOT NULL COMMENT '结果标识（0，成功；-1，失败）',
+  `status` int(3) NOT NULL COMMENT '比对结果（0，成功；-1，失败）',
   `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
   `benchmark_id` int NOT NULL COMMENT '基准库编号',
   `benchmark_env` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '基准库环境标识',
@@ -574,11 +574,14 @@ CREATE TABLE `database_compare_result` (
   `target_id` int NOT NULL COMMENT '比对库编号',
   `target_env` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对库环境标识',
   `target_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对库URL',
-  `info` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对信息',
+  `table_name` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '数据库表名',
+  `info` varchar(500) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对结果信息',
+  `benchmark_detail` varchar(1000) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '基准库详情',
+  `target_detail` varchar(1000) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '比对库详情',
   `note` varchar(50) COLLATE utf8_unicode_ci DEFAULT '' COMMENT '备注',
   `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `database_compare_result_eng_index` (`eng`) USING HASH COMMENT '数据库比对结果表/英文简称 搜索索引'
+  KEY `database_compare_eng_index` (`eng`) USING HASH COMMENT '数据库比对结果表/英文简称 搜索索引'
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='数据库比对结果表';
 
 
@@ -588,19 +591,39 @@ CREATE TABLE `database_compare_result` (
 DROP TABLE IF EXISTS `build_history`;
 CREATE TABLE `build_history` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '系统ID',
-  `env` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '环境',
-  `addr` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '部署IP',
   `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
-  `tag` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '构建标识',
-  `release` int(1) DEFAULT '0' COMMENT '发布（1，发布；0，测试版本；-1，开发版本）',
-  `git_url` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'GIT链接',
+  `tag` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '构建版本',
+  `publish` int(1) DEFAULT '0' COMMENT '版本状态（1，发布；0，测试版本；-1，开发版本）',
+  `git_url` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'GIT仓库地址',
   `git_branch` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'GIT分支',
+  `addr` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '构建服务器地址',
   `link` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '构建链接',
   `operator` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '操作人',
-  `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '构建时间',
   PRIMARY KEY (`id`),
-  KEY `build_history_index` (`env`,`addr`,`eng`,`operator`) USING BTREE COMMENT '构建历史记录表/环境-部署IP-英文简称-执行人 索引'
+  KEY `build_history_index` (`eng`,`tag`) USING BTREE COMMENT '构建历史记录表/英文简称-构建标识 索引'
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='构建历史记录表';
+
+-- ----------------------------
+-- Table structure for deploy_history（部署历史记录表）
+-- ----------------------------
+DROP TABLE IF EXISTS `deploy_history`;
+CREATE TABLE `deploy_history` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '系统ID',
+  `eng` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '英文简称',
+  `env` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '部署环境',
+  `addr` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '部署地址',
+  `link` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '访问链接',
+  `bulid_id` int unsigned NOT NULL COMMENT '构建历史ID',
+  `tag` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '部署版本',
+  `publish` int(1) DEFAULT '0' COMMENT '部署状态（1，发布；0，测试版本；-1，开发版本）',
+  `git_url` varchar(150) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'GIT链接',
+  `git_branch` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'GIT分支',
+  `operator` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '部署人',
+  `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '部署时间',
+  PRIMARY KEY (`id`),
+  KEY `deploy_history_index` (`eng`,`addr`) USING BTREE COMMENT '部署历史记录表/英文简称-部署地址 索引'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='部署历史记录表';
 
 -- ----------------------------
 -- Table structure for service_info（服务信息表）
