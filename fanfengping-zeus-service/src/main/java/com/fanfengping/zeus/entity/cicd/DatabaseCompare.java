@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DatabaseCompareResult implements Serializable {
+public class DatabaseCompare implements Serializable {
     private int id;	               // 系统编号
     private String flag;	       // 批次标识
     private int status;	           // 结果标识（0，成功；-1，失败）
@@ -22,13 +22,17 @@ public class DatabaseCompareResult implements Serializable {
     private int targetId;	       // 比对库编号
     private String targetEnv;	   // 比对库环境标识
     private String targetUrl;	   // 比对库URL
+    private String tableName;	   // 数据库表名
     private String info;	       // 比对信息
+    private String benchmarkDetail;// 基准库详情
+    private String targetDetail;   // 比对库详情
     private String note;	       // 备注
     private String ctime;	       // 创建日期
 
-    public DatabaseCompareResult(String flag, int status, String eng,
-                                 int benchmarkId, String benchmarkEnv, String benchmarkUrl,
-                                 int targetId, String targetEnv, String targetUrl, String info, String note) {
+    public DatabaseCompare(String flag, int status, String eng,
+                           int benchmarkId, String benchmarkEnv, String benchmarkUrl,
+                           int targetId, String targetEnv, String targetUrl, String tableName,
+                           String info, String benchmarkDetail, String targetDetail, String note) {
         this.flag = flag;
         this.status = status;
         this.eng = eng;
@@ -38,7 +42,10 @@ public class DatabaseCompareResult implements Serializable {
         this.targetId = targetId;
         this.targetEnv = targetEnv;
         this.targetUrl = targetUrl;
+        this.tableName = tableName;
         this.info = info;
+        this.benchmarkDetail = benchmarkDetail;
+        this.targetDetail = targetDetail;
         this.note = note;
     }
 }
