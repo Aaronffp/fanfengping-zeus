@@ -11,7 +11,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/db/compare")
-public class DatabaseCompareResultController {
+public class DatabaseCompareController {
     @Autowired
     DatabaseCompareService databaseCompareService;
 

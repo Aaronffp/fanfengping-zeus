@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface DatabaseCompareRepository {
     @Insert("insert into database_compare (flag, status, eng, benchmark_id, benchmark_env, benchmark_url, target_id, target_env, target_url, table_name, info, benchmark_detail, target_detail, note) "
-            + "values (#{flag}, #{status}, #{eng}, #{benchmarkId}, #{benchmarkEnv}, #{benchmarkUrl}, #{targetId}, #{targetEnv}, #{targetUrl}, #{tableName}, #{info}, #{note})")
+            + "values (#{flag}, #{status}, #{eng}, #{benchmarkId}, #{benchmarkEnv}, #{benchmarkUrl}, #{targetId}, #{targetEnv}, #{targetUrl}, #{tableName}, #{info}, #{benchmarkDetail}, #{targetDetail}, #{note})")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "flag", column = "flag"),
@@ -37,7 +37,7 @@ public interface DatabaseCompareRepository {
 
     @Select(" select * from database_compare "
             + "where status = -1 and ctime > DATE_ADD(NOW(),INTERVAL -10 MINUTE) and "
-            + "      eng like '%${eng}%' and table_name like '%${tableName}%' and benchmark_env like '%${bEnv}%' and target_env like '%${tEnv}%' "
+            + "      eng like '%${eng}%' and benchmark_env like '%${bEnv}%' and target_env like '%${tEnv}%' and table_name like '%${tableName}%' "
             + "order by id")
     @Results({
             @Result(property = "id", column = "id"),

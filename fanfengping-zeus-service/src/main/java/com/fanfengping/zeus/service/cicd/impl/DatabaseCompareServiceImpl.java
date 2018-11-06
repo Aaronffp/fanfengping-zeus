@@ -49,7 +49,7 @@ public class DatabaseCompareServiceImpl implements DatabaseCompareService {
             }
 
             if (databaseCompareRepository.exist(eng, bEnv, tEnv).size() > 0) {
-                responseJson.succ(200, "数据库表结构信息已存在十分钟内比对结果，敬请查询；或半小时后重新比对!");
+                responseJson.succ(200, "数据库表结构信息已存在十分钟内比对结果，敬请查询；或十分钟后重新比对！");
                 log.info(responseJson.toString());
                 return responseJson;
             }
