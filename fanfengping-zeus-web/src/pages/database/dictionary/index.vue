@@ -119,7 +119,7 @@
         conditions: {
           envs: [
             {value: 'SIT01', label: '测试环境'},
-            {value: 'SIT04', label: '开发环境'},
+            {value: 'DEV', label: '开发环境'},
             {value: 'PRE', label: '预发环境'},
             {value: 'DOCKER', label: '容器环境'}
           ],
