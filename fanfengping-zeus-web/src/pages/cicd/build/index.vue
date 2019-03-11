@@ -1,25 +1,25 @@
 <template>
   <d2-container>
     <el-form :model="query" :inline="true">
-      <el-form-item label="所属环境：">
-        <el-select v-model="query.env" clearable filterable placeholder="请选择数据库环境...">
-          <el-option v-for="item in conditions.envs" :key="item.value" :label="item.label" :value="item.value">
-            <span style="float: left">{{ item.label }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="域名地址：">
-        <el-input v-model="query.url" placeholder="请输入域名地址..." clearable></el-input>
-      </el-form-item>
       <el-form-item label="英文简称：">
         <el-input v-model="query.eng" placeholder="请输入英文简称..." clearable></el-input>
       </el-form-item>
-      <el-form-item label="中文简称：">
-        <el-input v-model="query.chs" placeholder="请输入中文简称..." clearable></el-input>
+      <el-form-item label="版本状态：">
+        <el-select v-model="query.status" clearable filterable placeholder="请选择版本状态...">
+          <el-option v-for="item in conditions.status" :key="item.value" :label="item.label" :value="item.value">
+            <span style="float: left">{{ item.label }}</span>
+            <!--<span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="更新人：">
-        <el-input v-model="query.updater" placeholder="请输入更新人..." clearable></el-input>
+      <el-form-item label="GIT仓库地址：">
+        <el-input v-model="query.gitUrl" placeholder="请输入GIT仓库地址..." clearable></el-input>
+      </el-form-item>
+      <el-form-item label="GIT分支：">
+        <el-input v-model="query.gitBranch" placeholder="请输入GIT分支..." clearable></el-input>
+      </el-form-item>
+      <el-form-item label="构建人：">
+        <el-input v-model="query.operator" placeholder="请输入构建构建人..." clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="handleBtnQuery(query)" type="primary" icon="el-icon-search">搜索</el-button>
@@ -39,21 +39,27 @@
       <el-table-column fixed type="index" width="50"></el-table-column>
       <!--<el-table-column prop="id" label="系统主键" width="100"></el-table-column>-->
       <el-table-column fixed prop="eng" label="英文简称" width="180"></el-table-column>
-      <el-table-column prop="publish" label="版本状态" width="180" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="status" label="版本状态" width="80">
+        <template scope="scope">
+          <span v-if="scope.row.status==-1">开发版本</span>
+          <span v-if="scope.row.status==0">测试版本</span>
+          <span v-if="scope.row.status==1">发布版本</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="tag" label="构建版本" width="170"></el-table-column>
       <el-table-column label="GIT仓库地址" width="400" show-overflow-tooltip>
         <template slot-scope="scope">
-          <a :href="scope.row.gitUrl" target="_blank" class="buttonText">{{scope.row.url}}</a>
+          <a :href="scope.row.gitUrl" target="_blank" class="buttonText">{{scope.row.gitUrl}}</a>
         </template>
       </el-table-column>
       <el-table-column prop="gitBranch" label="GIT分支" width="120"></el-table-column>
-      <el-table-column prop="addr" label="构建服务器" width="120"></el-table-column>
+      <el-table-column prop="addr" label="构建服务器" width="180"></el-table-column>
       <el-table-column label="构建链接" width="400" show-overflow-tooltip>
         <template slot-scope="scope">
-          <a :href="scope.row.link" target="_blank" class="buttonText">{{scope.row.url}}</a>
+          <a :href="scope.row.link" target="_blank" class="buttonText">{{scope.row.link}}</a>
         </template>
       </el-table-column>
-      <el-table-column prop="note" label="备注" width="200" show-overflow-tooltip></el-table-column>
-      <el-table-column prop="operator" label="操作人" width="100"></el-table-column>
+      <el-table-column prop="operator" label="构建人" width="100"></el-table-column>
       <el-table-column prop="ctime" label="构建时间" width="170"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
@@ -71,40 +77,47 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="currentTotal">
     </el-pagination>
-    <el-dialog :title="!formData.id ? '新增服务信息' : '修改服务信息'" :visible.sync="dialogFormVisible">
+    <el-dialog :title="!formData.id ? '新增构建信息' : '修改构建信息'" :visible.sync="dialogFormVisible">
       <el-form :model="formData">
+        <el-form-item label="系统编号：" :label-width="formLabelWidth">
+          <el-input v-model="formData.id" clearable placeholder="请输入系统编号..."></el-input>
+        </el-form-item>
         <el-form-item label="英文简称：" :label-width="formLabelWidth">
-          <el-input v-model="formData.eng" clearable placeholder="请输入英文名称..."></el-input>
+          <el-input v-model="formData.eng" clearable placeholder="请输入英文简称..."></el-input>
         </el-form-item>
-        <el-form-item label="中文简称：" :label-width="formLabelWidth">
-          <el-input v-model="formData.chs" clearable placeholder="请输入中文名称..."></el-input>
+        <el-form-item label="构建版本：" :label-width="formLabelWidth">
+          <el-input v-model="formData.tag" clearable placeholder="请输入构建版本..."></el-input>
         </el-form-item>
-        <el-form-item label="环境：" :label-width="formLabelWidth">
-          <el-select v-model="formData.env" clearable placeholder="请选择数据库环境...">
-            <el-option v-for="item in conditions.envs" :key="item.value" :label="item.label" :value="item.value">
+        <el-form-item label="版本状态：" :label-width="formLabelWidth">
+          <el-select v-model="formData.status" clearable placeholder="请选择版本状态...">
+            <el-option v-for="item in conditions.status" :key="item.value" :label="item.label" :value="item.value">
               <span style="float: left">{{ item.label }}</span>
-              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+              <!--<span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>-->
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="访问链接：" :label-width="formLabelWidth">
-          <el-input v-model="formData.url" clearable placeholder="请输入链接...">
+        <el-form-item label="GIT仓库地址：" :label-width="formLabelWidth">
+          <el-input v-model="formData.gitUrl" clearable placeholder="请输入GIT仓库地址...">
           </el-input>
         </el-form-item>
-        <el-form-item label="账号：" :label-width="formLabelWidth">
-          <el-input v-model="formData.username" clearable placeholder="请输入账号...">
+        <el-form-item label="GIT分支：" :label-width="formLabelWidth">
+          <el-input v-model="formData.gitBranch" clearable placeholder="请输入GIT分支...">
           </el-input>
         </el-form-item>
-        <el-form-item label="密码：" :label-width="formLabelWidth">
-          <el-input v-model="formData.password" clearable placeholder="请输入密码...">
+        <el-form-item label="构建服务器：" :label-width="formLabelWidth">
+          <el-input v-model="formData.addr" clearable placeholder="请输入构建服务器IP地址...">
           </el-input>
         </el-form-item>
-        <el-form-item label="更新人：" :label-width="formLabelWidth">
-          <el-input v-model="formData.updater" clearable placeholder="请输入备注信息...">
+        <el-form-item label="构建链接：" :label-width="formLabelWidth">
+          <el-input v-model="formData.link" clearable placeholder="请输入构建链接...">
           </el-input>
         </el-form-item>
-        <el-form-item label="备注：" :label-width="formLabelWidth">
-          <el-input v-model="formData.note" type="textarea" :autosize="{maxRows: 4}" clearable placeholder="请输入备注信息...">
+        <el-form-item label="构建人：" :label-width="formLabelWidth">
+          <el-input v-model="formData.operator" clearable placeholder="请输入构建人...">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="构建时间：" :label-width="formLabelWidth">
+          <el-input v-model="formData.ctime" clearable placeholder="请输入构建时间...">
           </el-input>
         </el-form-item>
       </el-form>
@@ -117,19 +130,15 @@
 </template>
 
 <script>
-  import {ServAdd, ServUpdate, ServDelete, ServFindAllByConditions} from '@/service/cicd'
+  import {BuildAdd, BuildUpdate, BuildDelete, BuildFindAllByConditions,} from '@/service/cicd'
   export default {
     methods: {
       handleBtnQuery(query) {
-        if (query.env === "") {
-          this.$message({
-            message: '请选择查询环境',
-            type: 'warning'
-          });
-          return;
+        if (query.status === "") {
+          query.status = '1,0,-1';
         }
 
-        ServFindAllByConditions(query).then(res => {
+          BuildFindAllByConditions(query).then(res => {
           this.tableData = res.data;
           this.currentTotal = this.tableData.length;
           this.$message({
@@ -145,7 +154,7 @@
         this.dialogFormVisible = false;
 
         if (this.formData.id > 0) {
-          ServUpdate(this.formData).then(res => {
+          BuildUpdate(this.formData).then(res => {
             this.$message({
               message: res.msg,
               type: res.code == 200 ? 'success' : 'warning'
@@ -157,7 +166,7 @@
 
           this.formData = { id: 0, env: '', eng: '', chs: '', url: '', username: '', password: '', updater: '', utime: '', note: ''}
         } else {
-          ServAdd(this.formData).then(res => {
+          BuildAdd(this.formData).then(res => {
             this.$message({
               message: res.msg,
               type: res.code == 200 ? 'success' : 'warning'
@@ -174,7 +183,7 @@
       },
       handleBtnDelete(row) {
         this.formData = row;
-        ServDelete(this.formData).then(res => {
+        BuildDelete(this.formData).then(res => {
           this.formData = { id: 0, env: '', eng: '', chs: '', url: '', username: '', password: '', updater: '', utime: '', note: ''}
           this.$message({
             message: res.msg,
@@ -184,6 +193,7 @@
         .catch(err => {
           console.log(err)
         })
+        handleBtnQuery(query)
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -211,31 +221,31 @@
         formLabelWidth: '120px',
         formData: {
           id: 0,
-          env: '',
           eng: '',
-          chs: '',
-          url: '',
-          username: '',
-          password: '',
-          updater: '',
-          utime: '',
-          note: ''
+          tag: '',
+          status: '',
+          gitUrl: '',
+          gitBranch: '',
+          addr: '',
+          link: '',
+          operator: '',
+          ctime: ''
         },
         conditions: {
-          envs: [
-            {value: 'SIT01', label: '测试环境'},
-            {value: 'DEV', label: '开发环境'},
-            {value: 'PRE', label: '预发环境'},
-            {value: 'DOCKER', label: '容器环境'}
+          status: [
+            {value: '1,0,-1', label: '全部版本'},
+            {value: '-1', label: '开发版本'},
+            {value: '0', label: '测试版本'},
+            {value: '1', label: '发布版本'}
           ]
         },
 
         query: {
-          env: '',
-          url: '',
           eng: '',
-          chs: '',
-          updater: ''
+          status: '',
+          gitUrl: '',
+          gitBranch: '',
+          operator: ''
         },
 
         tableData: []
