@@ -5,5 +5,5 @@ import com.fanfengping.zeus.service.BaseService;
 import com.fanfengping.zeus.util.ResponseJson;
 
 public interface BuildHistoryService extends BaseService<BuildHistory> {
-    ResponseJson findAllByConditions(String eng, String publish, String addr, String gitUrl, String gitBranch, String operator);
+    ResponseJson findAllByConditions(String eng, String status, String gitUrl, String gitBranch, String operator);
 }

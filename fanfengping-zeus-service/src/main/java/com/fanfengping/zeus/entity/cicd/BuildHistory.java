@@ -15,7 +15,7 @@ public class BuildHistory implements Serializable {
     private int id;               // 系统主键
     private String eng;           // 英文简称
     private String tag;           // 构建版本
-    private String publish;       // 版本状态
+    private String status;        // 版本状态（1，发布；0，测试版本；-1，开发版本）
     private String gitUrl;        // GIT仓库地址
     private String gitBranch;     // GIT分支
     private String addr;          // 构建服务器
@@ -23,11 +23,11 @@ public class BuildHistory implements Serializable {
     private String operator;      // 操作人
     private String ctime;         // 构建时间
 
-    public BuildHistory(String eng, String tag, String publish, String gitUrl, String gitBranch,
+    public BuildHistory(String eng, String tag, String status, String gitUrl, String gitBranch,
                         String addr, String link, String operator) {
         this.eng = eng;
         this.tag = tag;
-        this.publish = publish;
+        this.status = status;
         this.gitUrl = gitUrl;
         this.gitBranch = gitBranch;
         this.addr = addr;

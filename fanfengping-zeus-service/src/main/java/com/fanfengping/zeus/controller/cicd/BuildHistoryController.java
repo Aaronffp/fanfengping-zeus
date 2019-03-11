@@ -16,6 +16,8 @@ public class BuildHistoryController implements BaseController<BuildHistory> {
     @Autowired
     BuildHistoryService buildHistoryService;
 
+    @RequestMapping(path = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
     public ResponseJson add(@RequestBody BuildHistory buildHistory) {
         ResponseJson responseJson = new ResponseJson(Codes.BUILD, Codes.BUILD_INSERT);
 
@@ -54,5 +56,15 @@ public class BuildHistoryController implements BaseController<BuildHistory> {
         }
 
         return buildHistoryService.delete(buildHistory);
+    }
+
+    @RequestMapping(path = "", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResponseJson findAllByConditions(@RequestParam("eng") String eng,
+                                            @RequestParam("status") String status,
+                                            @RequestParam("gitUrl") String gitUrl,
+                                            @RequestParam("gitBranch") String gitBranch,
+                                            @RequestParam("operator") String operator) {
+        return buildHistoryService.findAllByConditions(eng, status, gitUrl, gitBranch, operator);
     }
 }

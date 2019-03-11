@@ -48,16 +48,49 @@ public class BuildHistoryServiceImpl implements BuildHistoryService {
 
     public ResponseJson update(BuildHistory buildHistory) {
         ResponseJson responseJson = new ResponseJson(Codes.BUILD, Codes.BUILD_UPDATE).data("requestParams", buildHistory);
-        return responseJson.succ(200, "构建历史不提供更新功能！请知悉！");
+
+        try{
+            if (buildHistoryRepository.update(buildHistory) > 0) {
+                responseJson.succ(200, "成功更新！");
+                log.info(responseJson.toString());
+                return responseJson;
+            }
+
+            responseJson.fail(999, "更新失败！");
+            log.error(responseJson.toString());
+        } catch (Exception e) {
+            responseJson.fail(999, "更新失败！原因：" + e.getMessage());
+            log.error(responseJson.toString(), e);
+            return responseJson;
+        }
+
+        return responseJson;
     }
 
     public ResponseJson delete(BuildHistory buildHistory) {
         ResponseJson responseJson = new ResponseJson(Codes.BUILD, Codes.BUILD_DELETE).data("requestParams", buildHistory);
-        return responseJson.succ(200, "构建历史不提供删除功能！请知悉！");
+
+        try{
+            if (buildHistoryRepository.findAllByConditions(buildHistory.getEng(), buildHistory.getStatus(), buildHistory.getGitUrl(), buildHistory.getGitBranch(), buildHistory.getOperator()) == null) {
+                responseJson.succ(200, "成功删除！");
+                log.info(responseJson.toString());
+                return responseJson;
+            }
+
+            buildHistoryRepository.delete(buildHistory);
+            responseJson.succ(200, "成功删除！");
+            log.info(responseJson.toString());
+        } catch (Exception e) {
+            responseJson.fail(999, "删除失败！原因：" + e.getMessage());
+            log.error(responseJson.toString(), e);
+            return responseJson;
+        }
+
+        return responseJson;
     }
 
-    public ResponseJson findAllByConditions(String eng, String publish, String addr, String gitUrl, String gitBranch, String operator) {
+    public ResponseJson findAllByConditions(String eng, String status, String gitUrl, String gitBranch, String operator) {
         ResponseJson responseJson = new ResponseJson(Codes.BUILD, Codes.BUILD_SEARCH);
-        return responseJson.succ(200, "成功查询！").data(buildHistoryRepository.findAllByConditions(eng, publish, addr, gitUrl, gitBranch, operator));
+        return responseJson.succ(200, "成功查询！").data(buildHistoryRepository.findAllByConditions(eng, status, gitUrl, gitBranch, operator));
     }
 }
