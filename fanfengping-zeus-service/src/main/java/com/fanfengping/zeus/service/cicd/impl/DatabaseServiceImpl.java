@@ -60,7 +60,7 @@ public class DatabaseServiceImpl implements DatabaseService {
                     log.info(responseJson.toString());
                 }
 
-                responseJson.succ(200, "成功更新！").data(databaseRepository.findByEnvAndEng(database.getEnv(), database.getEng()));
+                responseJson.succ(200, "成功更新！");
                 log.info(responseJson.toString());
                 return responseJson;
             }
