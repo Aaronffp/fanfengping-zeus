@@ -5,13 +5,10 @@ import com.fanfengping.zeus.entity.cicd.ServiceInfo;
 import com.fanfengping.zeus.repository.cicd.ServiceInfoRepository;
 import com.fanfengping.zeus.service.cicd.ServiceInfoService;
 import com.fanfengping.zeus.util.ResponseJson;
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -52,7 +49,7 @@ public class ServiceInfoServiceImpl implements ServiceInfoService {
         ResponseJson responseJson = new ResponseJson(Codes.SERV, Codes.SERV_UPDATE).data("requestParams", serviceInfo);
 
         if (serviceInfoRepository.update(serviceInfo) > 0) {
-            responseJson.succ(200, "成功更新").data(serviceInfoRepository.findAllByEnvAndEngAndUrl(serviceInfo));
+            responseJson.succ(200, "成功更新");
             log.info(responseJson.toString());
         } else {
             responseJson.fail(999, "更新失败！");
